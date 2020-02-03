@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/pages/post_list/models/post_list_item_data.dart';
 
+/// Обработчик нажатия на пост
+typedef void OnPostClickFunc(PostListItemData post);
+
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
   /// Данные поста
   final PostListItemData post;
 
+  /// Обрабатывает нажатие на пост
+  final OnPostClickFunc onPostClick;
+
   /// Конструктор
-  PostItemWidget(this.post);
+  PostItemWidget(this.post, this.onPostClick);
 
   /// Создаёт виджет
   @override
@@ -54,10 +60,13 @@ class PostItemWidget extends StatelessWidget {
                                     children: <Widget>[
                                       Expanded(
                                         flex: 9,
-                                        child: Text(post.title,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold)),
+                                        child: InkWell(
+                                          onTap: () => onPostClick(post),
+                                          child: Text(post.title,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
                                       ),
                                       IconButton(
                                         icon: Icon(Icons.favorite_border),
@@ -72,10 +81,14 @@ class PostItemWidget extends StatelessWidget {
                                       style: TextStyle(
                                           color: Colors.grey.shade500)),
                                 ),
-                                Text(post.shortText,
+                                InkWell(
+                                  onTap: () => onPostClick(post),
+                                  child: Text(
+                                    post.shortText,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 4,                                    
-                                    )
+                                    maxLines: 4,
+                                  ),
+                                )
                               ],
                             ),
                           ))

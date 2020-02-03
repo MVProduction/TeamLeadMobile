@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:team_lead/pages/post_list/models/posts_model.dart';
-import 'package:team_lead/pages/post_list/widgets/post_list_widget.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_font.dart';
 
@@ -58,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.blue,
                               label: Text("Подключиться через github"),
                               onPressed: () {
-                                Navigator.popAndPushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, Routes.PostList);
                               }),
                         ),

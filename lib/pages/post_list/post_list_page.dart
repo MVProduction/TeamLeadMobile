@@ -21,10 +21,11 @@ class _PostListPageState extends State<PostListPage> {
     return MultiProvider(
         providers: [ChangeNotifierProvider(create: (ctx) => PostsModel())],
         child: DefaultTabController(
-          length: 4,
+          length: 3,
           child: Scaffold(
             backgroundColor: Colors.grey.shade200,
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               title: Row(
                 children: <Widget>[
                   Padding(
@@ -42,7 +43,7 @@ class _PostListPageState extends State<PostListPage> {
                 Tab(icon: Icon(Icons.sms)),
                 Tab(icon: Icon(Icons.favorite)),
                 Tab(icon: Icon(Icons.person)),
-                Tab(icon: Icon(Icons.notifications)),
+                //Tab(icon: Icon(Icons.notifications)),
               ]),
             ),
             body: PostListWidget(),

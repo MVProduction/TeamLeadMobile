@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/pages/login/login_page.dart';
+import 'package:team_lead/pages/post_discussion/post_discussion_page.dart';
 import 'package:team_lead/pages/post_list/post_list_page.dart';
 import 'package:team_lead/routes.dart';
 
@@ -20,6 +21,7 @@ class TeamLeadApp extends StatelessWidget {
       routes: {
         Routes.Login: (_) => LoginPage(),
         Routes.PostList: (_) => PostListPage(),
+        Routes.DiscussPost: (_) => PostDiscussionPage(),
       },
     );
   }

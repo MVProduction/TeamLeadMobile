@@ -1,16 +1,25 @@
-# TeamLead
+# WorkTogether
 
-A new Flutter project.
+Приложение для поиска команды для работы вместе.
 
-## Getting Started
+## Функции MVP (android)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Страница логина:
+- Вход через google
+- Вход через github
+2. Страница постов:
+- Список общих постов
+- Кнопка создания своих постов
+- Фильтр постов на все/мои/избранное
+- Кнопка избранное
+- Количество просмотров поста
+- Переход на информацию поста
+3. Просмотр поста
+- Информация поста: имя пользователя, текстовое описание
+- Кнопка в избранное 
+- Количество просмотров
+- Комментирование
+4. Редактирование поста
+- Заголовок
+- Текстовое описание
+- Закрыть
