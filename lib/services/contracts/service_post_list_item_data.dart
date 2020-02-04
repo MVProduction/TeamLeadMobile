@@ -9,6 +9,9 @@ class ServicePostListItemData {
   /// Заголовок
   final String title;
 
+  /// Время создания поста
+  final DateTime createDate;
+
   /// Короткое описание поста
   final String shortText;
 
@@ -19,6 +22,6 @@ class ServicePostListItemData {
   final bool isFavorite;
 
   /// Конструктор
-  ServicePostListItemData(
-      this.id, this.userName, this.title, this.shortText, this.viewCount, this.isFavorite);
+  ServicePostListItemData(this.id, this.userName, this.title, this.createDate,
+      this.shortText, this.viewCount, this.isFavorite);
 }

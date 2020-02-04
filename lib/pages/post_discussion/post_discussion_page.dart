@@ -33,7 +33,28 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
               Text(post.title)
             ],
           )),
-          body: Text(post.shortText),
+          body: ListView(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Text(post.userName,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Text(post.createDate.toString()),
+                      ),
+                      Text(post.shortText, style: TextStyle(fontSize: 16)),
+                    ],
+                  )),
+              Container(padding: EdgeInsets.all(16), child: Text("Комментарии (11)"))
+            ],
+          ),
         ));
   }
 }

@@ -11,6 +11,9 @@ class PostListItemData {
   /// Заголовок
   final String title;
 
+  /// Время создания поста
+  final DateTime createDate;
+
   /// Короткое описание поста
   final String shortText;
 
@@ -23,11 +26,11 @@ class PostListItemData {
   /// Создаёт из контракта сервиса
   static PostListItemData fromServicePostListItemData(
       ServicePostListItemData data) {
-    return PostListItemData(data.id, data.userName, data.title, data.shortText,
-        data.viewCount, data.isFavorite);
+    return PostListItemData(data.id, data.userName, data.title, data.createDate,
+        data.shortText, data.viewCount, data.isFavorite);
   }
 
   /// Конструктор
-  PostListItemData(this.id, this.userName, this.title, this.shortText,
-      this.viewCount, this.isFavorite);
+  PostListItemData(this.id, this.userName, this.title, this.createDate,
+      this.shortText, this.viewCount, this.isFavorite);
 }
