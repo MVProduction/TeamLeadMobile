@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/pages/post_list/models/post_list_item_data.dart';
+import 'package:team_lead/utils/date_utils.dart';
 
 /// Обработчик нажатия на пост
 typedef void OnPostClickFunc(PostListItemData post);
@@ -20,7 +21,7 @@ class PostItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(bottom: 8, top: 8, right: 24, left: 24),
+        padding: EdgeInsets.only(bottom: 8, top: 8, right: 16, left: 16),
         child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
@@ -28,7 +29,7 @@ class PostItemWidget extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(color: Colors.grey.shade300, offset: Offset(2, 2))
                 ]),
-            height: 180,
+            height: 200,
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -43,7 +44,7 @@ class PostItemWidget extends StatelessWidget {
                             radius: 38,
                             backgroundColor: Colors.red,
                             child:
-                                Icon(Icons.mood, size: 40, color: Colors.white),
+                                ClipOval(child: Image(image: AssetImage("assets/dummy_face.jpg")))
                           )),
                       Expanded(
                           flex: 9,
@@ -76,11 +77,17 @@ class PostItemWidget extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
-                                  child: Text(post.userName,
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: Text(post.createDate.toLocalizedString(),
                                       style: TextStyle(
                                           color: Colors.grey.shade500)),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: Text(post.userName,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade500)),
+                                ),                                
                                 InkWell(
                                   onTap: () => onPostClick(post),
                                   child: Text(
