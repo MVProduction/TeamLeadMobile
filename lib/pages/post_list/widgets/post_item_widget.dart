@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:team_lead/pages/post_list/models/post_list_item_data.dart';
+import 'package:team_lead/models/posts/post_list_item_data.dart';
 import 'package:team_lead/utils/date_utils.dart';
 
 /// Обработчик нажатия на пост

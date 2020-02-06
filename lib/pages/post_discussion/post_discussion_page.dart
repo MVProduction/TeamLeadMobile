@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:team_lead/models/posts/post_list_item_data.dart';
+import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart';
-import 'package:team_lead/pages/post_list/models/post_list_item_data.dart';
-import 'package:team_lead/pages/post_list/models/posts_model.dart';
 import 'package:team_lead/utils/date_utils.dart';
 
 /// Страница с логином
@@ -57,7 +57,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.only(top:4, bottom: 32),
                         child: Align(
                           alignment: Alignment.center,
                           child: CircleAvatar(
@@ -89,7 +89,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                                 maxLines: 4,                                
                                 decoration: new InputDecoration(                                  
                                     contentPadding: EdgeInsets.symmetric(
-                                        vertical: 0.0, horizontal: 8),
+                                        vertical: 8, horizontal: 8),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.blue, width: 1.0),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:team_lead/pages/post_list/models/posts_model.dart';
+import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_font.dart';
 

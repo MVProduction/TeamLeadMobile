@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:team_lead/pages/post_list/models/post_list_item_data.dart';
-import 'package:team_lead/pages/post_list/models/posts_model.dart';
+import 'package:team_lead/models/posts/post_list_item_data.dart';
+import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/pages/post_list/widgets/post_item_widget.dart';
 import 'package:team_lead/routes.dart';
 
