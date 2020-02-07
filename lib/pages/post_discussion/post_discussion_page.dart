@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:team_lead/models/posts/post_list_item_data.dart';
+import 'package:team_lead/models/posts/post_data.dart';
 import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart';
 import 'package:team_lead/utils/date_utils.dart';
@@ -35,7 +35,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    final post = ModalRoute.of(context).settings.arguments as PostListItemData;
+    final post = ModalRoute.of(context).settings.arguments as PostData;
 
     return MultiProvider(
         providers: [ChangeNotifierProvider(create: (ctx) => PostsModel())],

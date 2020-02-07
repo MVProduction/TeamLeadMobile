@@ -67,6 +67,24 @@ class UserSettingsPage extends StatelessWidget {
                       hintText: "Введите электронную почту"),
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 16),
+                  child: Text("Навыки",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+                TextField(
+                  decoration: new InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                      ),
+                      hintMaxLines: 4,
+                      hintText: "Введите Ваши навыки"),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(top: 32),
                   child: Container(
                     height: 48,

@@ -6,9 +6,12 @@ class UserData {
   /// Электронная почта
   final String email;
 
+  /// Навыки
+  final String skills;
+
   /// Фото пользователя
   final String photo;
 
   /// Конструктор
-  UserData(this.name, this.email, this.photo);
+  UserData(this.name, this.email, this.skills, this.photo);
 }

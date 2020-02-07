@@ -1,7 +1,7 @@
 import 'package:team_lead/services/contracts/service_post_list_item_data.dart';
 
 /// Данные поста
-class PostListItemData {
+class PostData {
   /// ID поста
   final String id;
 
@@ -24,13 +24,13 @@ class PostListItemData {
   final bool isFavorite;
 
   /// Создаёт из контракта сервиса
-  static PostListItemData fromServicePostListItemData(
+  static PostData fromServicePostListItemData(
       ServicePostListItemData data) {
-    return PostListItemData(data.id, data.userName, data.title, data.createDate,
+    return PostData(data.id, data.userName, data.title, data.createDate,
         data.shortText, data.viewCount, data.isFavorite);
   }
 
   /// Конструктор
-  PostListItemData(this.id, this.userName, this.title, this.createDate,
+  PostData(this.id, this.userName, this.title, this.createDate,
       this.shortText, this.viewCount, this.isFavorite);
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:team_lead/models/posts/post_list_item_data.dart';
+import 'package:team_lead/models/posts/post_data.dart';
 import 'package:team_lead/models/posts/post_tab_type.dart';
 import 'package:team_lead/services/team_lead_service.dart';
 
 /// Модель для постов
 class PostsModel extends ChangeNotifier {
   /// Посты
-  List<PostListItemData> posts = [];
+  List<PostData> posts = [];
 
   /// Состояние того какие посты отображаются
   PostTabType postTabType = PostTabType.All;
@@ -17,7 +17,7 @@ class PostsModel extends ChangeNotifier {
       case PostTabType.All:
         TeamLeadService().loadPosts().then((res) {
           setPosts(res
-              .map((x) => PostListItemData.fromServicePostListItemData(x))
+              .map((x) => PostData.fromServicePostListItemData(x))
               .toList());
         });
         break;
@@ -31,7 +31,7 @@ class PostsModel extends ChangeNotifier {
   }
 
   /// Устанавливает посты
-  void setPosts(List<PostListItemData> posts) {
+  void setPosts(List<PostData> posts) {
     this.posts = posts;
     notifyListeners();
   }
@@ -40,7 +40,7 @@ class PostsModel extends ChangeNotifier {
   PostsModel() {
     TeamLeadService().loadPosts().then((res) {
       setPosts(res
-          .map((x) => PostListItemData.fromServicePostListItemData(x))
+          .map((x) => PostData.fromServicePostListItemData(x))
           .toList());
     });
   }
