@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:team_lead/models/posts/post_tab_type.dart';
 import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/pages/post_list/widgets/post_list_widget.dart';
+import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
 import 'package:team_lead/routes.dart';
 
 /// Страница с постами поиска команд
@@ -17,6 +18,12 @@ class PostListPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostListPageState extends State<PostListPage> {
+  /// Признак что нужно отображать панель поиска
+  bool _needShowSearchPanel = false;
+
+  /// Признак что нужно отображать кнопку поиска
+  bool _needShowSearchButton = true;
+
   /// Обрабатывает нажатие кнопки добавить пост
   void _onPostAddClick() {
     Navigator.pushNamed(context, Routes.CreatePost);
@@ -27,17 +34,37 @@ class _PostListPageState extends State<PostListPage> {
     Navigator.pushNamed(context, Routes.EditUser);
   }
 
+  /// Обрабатывает нажатие на кнопку поиска
+  void _onSearchClick() {
+    setState(() {
+      _needShowSearchPanel = !_needShowSearchPanel;
+    });
+  }
+
   /// Обрабатывает нажатие на вкладку
   void _onTabClick(int tabIndex) {
+    setState(() {
+      _needShowSearchPanel = false;
+    });
+
     var postsModel = Provider.of<PostsModel>(context, listen: false);
     switch (tabIndex) {
       case 0:
+        setState(() {
+          _needShowSearchButton = true;
+        });
         postsModel.setPostTabType(PostTabType.All);
         break;
       case 1:
+        setState(() {
+          _needShowSearchButton = false;
+        });
         postsModel.setPostTabType(PostTabType.Featured);
         break;
       case 2:
+        setState(() {
+          _needShowSearchButton = false;
+        });
         postsModel.setPostTabType(PostTabType.My);
         break;
     }
@@ -66,7 +93,7 @@ class _PostListPageState extends State<PostListPage> {
                   case PostTabType.Featured:
                     return Text("Избранное");
                   case PostTabType.My:
-                    return Text("Мои посты");                  
+                    return Text("Мои посты");
                 }
 
                 return Text("");
@@ -74,7 +101,19 @@ class _PostListPageState extends State<PostListPage> {
             ],
           ),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.search), onPressed: () {}),
+            if (_needShowSearchButton)
+              if (!_needShowSearchPanel)
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      _onSearchClick();
+                    })
+              else
+                IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      _onSearchClick();
+                    }),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {
@@ -88,7 +127,12 @@ class _PostListPageState extends State<PostListPage> {
             //Tab(icon: Icon(Icons.notifications)),
           ]),
         ),
-        body: PostListWidget(),
+        body: Column(
+          children: <Widget>[
+            if (_needShowSearchPanel) SearchWidget(),
+            Expanded(flex: 9, child: PostListWidget()),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _onPostAddClick();

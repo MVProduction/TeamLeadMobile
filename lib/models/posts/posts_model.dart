@@ -11,6 +11,7 @@ class PostsModel extends ChangeNotifier {
   /// Состояние того какие посты отображаются
   PostTabType postTabType = PostTabType.All;
 
+  /// Устанавливает какие посты просматриваются
   void setPostTabType(PostTabType postTabType) {
     this.postTabType = postTabType;
     switch (postTabType) {
