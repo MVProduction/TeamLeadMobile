@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:team_lead/models/posts/posts_model.dart';
 import 'package:team_lead/pages/login/login_page.dart';
 import 'package:team_lead/pages/post_discussion/post_discussion_page.dart';
 import 'package:team_lead/pages/post_edit/post_edit_page.dart';
@@ -17,33 +15,30 @@ class TeamLeadApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Intl.defaultLocale = 'ru';
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (ctx) => PostsModel())],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en'),
-          const Locale('ru'),
-        ],
-        title: 'Собери команду',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-        ),
-        home: PostListPage(),
-        initialRoute: Routes.Login,
-        routes: {
-          Routes.Login: (_) => LoginPage(),
-          Routes.PostList: (_) => PostListPage(),
-          Routes.DiscussPost: (_) => PostDiscussionPage(),
-          Routes.CreatePost: (_) => PostEditPage(),
-          Routes.EditUser: (_) => UserSettingsPage(),
-        },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('ru'),
+      ],
+      title: 'Собери команду',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
       ),
+      home: PostListPage(),
+      initialRoute: Routes.Login,
+      routes: {
+        Routes.Login: (_) => LoginPage(),
+        Routes.PostList: (_) => PostListPage(),
+        Routes.DiscussPost: (_) => PostDiscussionPage(),
+        Routes.CreatePost: (_) => PostEditPage(),
+        Routes.EditUser: (_) => UserSettingsPage(),
+      },
     );
   }
 }

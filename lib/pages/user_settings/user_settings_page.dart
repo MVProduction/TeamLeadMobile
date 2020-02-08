@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:team_lead/models/users/users_model.dart';
 
 /// Страница редактирования настроек пользователя
 class UserSettingsPage extends StatelessWidget {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [ChangeNotifierProvider(create: (ctx) => UsersModel())],
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
               title: Row(
             children: <Widget>[
@@ -99,6 +95,6 @@ class UserSettingsPage extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        );
   }
 }

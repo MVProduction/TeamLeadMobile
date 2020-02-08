@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:team_lead/team_lead_app_store.dart';
 
 /// Виджет поиска постов
 class SearchWidget extends StatelessWidget {
@@ -42,7 +43,10 @@ class SearchWidget extends StatelessWidget {
                 ),
                 RaisedButton.icon(
                     color: Colors.red.shade700,
-                    onPressed: () {},
+                    onPressed: () {
+                      teamLeadAppStore.postListPageStore
+                          .setNeedShowSearchPanel(false);
+                    },
                     icon: Icon(
                       Icons.clear,
                       color: Colors.white,

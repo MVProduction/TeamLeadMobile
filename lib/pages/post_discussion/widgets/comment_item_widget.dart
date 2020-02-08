@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:team_lead/utils/date_utils.dart';
+import 'package:team_lead/common/date_utils.dart';
 
 /// Комментарий
 class CommentItemWidget extends StatelessWidget {
@@ -30,10 +30,9 @@ class CommentItemWidget extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8),
-          child: Text(text,
-            style: TextStyle(
-              fontSize: 14
-            ),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 14),
           ),
         )
       ],

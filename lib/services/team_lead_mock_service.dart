@@ -1,13 +1,13 @@
-import 'package:team_lead/services/contracts/service_post_list_item_data.dart';
+import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
 
 /// Тестовый сервис
 class TeamLeadMockService implements TeamLeadService {
   /// Загружает посты
   @override
-  Future<List<ServicePostListItemData>> loadPosts() async {
+  Future<List<ServicePostData>> loadPosts() async {
     return [
-      ServicePostListItemData(
+      ServicePostData(
           "1",
           "Зюзя Петрович",
           "Супер идея",
@@ -15,7 +15,7 @@ class TeamLeadMockService implements TeamLeadService {
           "Собираю команду что бы создать приложение создающее приложение в целях создать приложение тем кому нужно приложение...",
           33,
           false),
-      ServicePostListItemData(
+      ServicePostData(
           "2",
           "Галина Зильбермановна",
           "Приложение для снижения веса",
@@ -23,7 +23,7 @@ class TeamLeadMockService implements TeamLeadService {
           "Ищу людей для создания мобильного приложения для контроля над весом. Ничего не знаю. Ничего не умею но хочу. Ищу тех кто умеет и знает и хочет. Пока за бесплатное...",
           12,
           false),
-      ServicePostListItemData(
+      ServicePostData(
           "3",
           "Tegra",
           "Ищем художников и программистов",
@@ -31,7 +31,7 @@ class TeamLeadMockService implements TeamLeadService {
           "Мы - небольшая группа начинающих разработчиков. Ищем в нашу команду художников и программистов С# на Unity. Опыт приветствуется, но не обязателен. Мой телеграмм  P01000",
           2,
           true),
-      ServicePostListItemData(
+      ServicePostData(
           "4",
           "Klifford",
           "Сценарист в Команду!",
@@ -39,7 +39,7 @@ class TeamLeadMockService implements TeamLeadService {
           "Мы - молодая, недавно сформированная команда, состоящая из Программиста, 3д-художника и Композитора.  Похвастаться завершенными проектами не можем. Тем не менее, каждый из нас имеет немалый опыт работы за плечами.",
           40,
           true),
-      ServicePostListItemData(
+      ServicePostData(
           "5",
           "Hzpriezz",
           "Набираю людей в команду - Unity, Mobile",

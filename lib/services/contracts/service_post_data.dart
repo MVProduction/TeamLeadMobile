@@ -1,5 +1,5 @@
 /// Данные поста для списка присылаемые сервисом
-class ServicePostListItemData {
+class ServicePostData {
   /// ID поста
   final String id;
 
@@ -22,6 +22,6 @@ class ServicePostListItemData {
   final bool isFavorite;
 
   /// Конструктор
-  ServicePostListItemData(this.id, this.userName, this.title, this.createDate,
+  ServicePostData(this.id, this.userName, this.title, this.createDate,
       this.shortText, this.viewCount, this.isFavorite);
 }

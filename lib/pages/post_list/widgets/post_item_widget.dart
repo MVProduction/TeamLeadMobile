@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:team_lead/models/posts/post_data.dart';
-import 'package:team_lead/utils/date_utils.dart';
+import 'package:team_lead/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/date_utils.dart';
 
 /// Обработчик нажатия на пост
-typedef void OnPostClickFunc(PostData post);
+typedef void OnPostClickFunc(ServicePostData post);
 
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
   /// Данные поста
-  final PostData post;
+  final ServicePostData post;
 
   /// Обрабатывает нажатие на пост
   final OnPostClickFunc onPostClick;
@@ -41,11 +41,12 @@ class PostItemWidget extends StatelessWidget {
                           padding: EdgeInsets.only(top: 24),
                           width: 100,
                           child: CircleAvatar(
-                            radius: 38,
-                            backgroundColor: Colors.red,
-                            child:
-                                ClipOval(child: Image(image: AssetImage("assets/dummy_face.jpg")))
-                          )),
+                              radius: 38,
+                              backgroundColor: Colors.red,
+                              child: ClipOval(
+                                  child: Image(
+                                      image: AssetImage(
+                                          "assets/dummy_face.jpg"))))),
                       Expanded(
                           flex: 9,
                           child: Padding(
@@ -78,7 +79,8 @@ class PostItemWidget extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 4),
-                                  child: Text(post.createDate.toLocalizedDateString(),
+                                  child: Text(
+                                      post.createDate.toLocalizedDateString(),
                                       style: TextStyle(
                                           color: Colors.grey.shade500)),
                                 ),
@@ -87,7 +89,7 @@ class PostItemWidget extends StatelessWidget {
                                   child: Text(post.userName,
                                       style: TextStyle(
                                           color: Colors.grey.shade500)),
-                                ),                                
+                                ),
                                 InkWell(
                                   onTap: () => onPostClick(post),
                                   child: Text(

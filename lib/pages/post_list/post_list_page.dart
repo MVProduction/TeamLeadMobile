@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:team_lead/models/posts/post_tab_type.dart';
-import 'package:team_lead/models/posts/posts_model.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/pages/post_list/widgets/post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
 import 'package:team_lead/routes.dart';
+import 'package:team_lead/team_lead_app_store.dart';
 
 /// Страница с постами поиска команд
 class PostListPage extends StatefulWidget {
@@ -18,12 +18,6 @@ class PostListPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostListPageState extends State<PostListPage> {
-  /// Признак что нужно отображать панель поиска
-  bool _needShowSearchPanel = false;
-
-  /// Признак что нужно отображать кнопку поиска
-  bool _needShowSearchButton = true;
-
   /// Обрабатывает нажатие кнопки добавить пост
   void _onPostAddClick() {
     Navigator.pushNamed(context, Routes.CreatePost);
@@ -36,38 +30,33 @@ class _PostListPageState extends State<PostListPage> {
 
   /// Обрабатывает нажатие на кнопку поиска
   void _onSearchClick() {
-    setState(() {
-      _needShowSearchPanel = !_needShowSearchPanel;
-    });
+    teamLeadAppStore.postListPageStore.setNeedShowSearchPanel(
+        !teamLeadAppStore.postListPageStore.needShowSearchPanel);
   }
 
   /// Обрабатывает нажатие на вкладку
   void _onTabClick(int tabIndex) {
-    setState(() {
-      _needShowSearchPanel = false;
-    });
+    teamLeadAppStore.postListPageStore.setNeedShowSearchPanel(false);
 
-    var postsModel = Provider.of<PostsModel>(context, listen: false);
     switch (tabIndex) {
       case 0:
-        setState(() {
-          _needShowSearchButton = true;
-        });
-        postsModel.setPostTabType(PostTabType.All);
+        teamLeadAppStore.postListPageStore.setNeedShowSearchButton(true);
+        teamLeadAppStore.postListPageStore.setTab(PostTabType.All);
         break;
       case 1:
-        setState(() {
-          _needShowSearchButton = false;
-        });
-        postsModel.setPostTabType(PostTabType.Featured);
+        teamLeadAppStore.postListPageStore.setNeedShowSearchButton(false);
+        teamLeadAppStore.postListPageStore.setTab(PostTabType.Featured);
         break;
       case 2:
-        setState(() {
-          _needShowSearchButton = false;
-        });
-        postsModel.setPostTabType(PostTabType.My);
+        teamLeadAppStore.postListPageStore.setNeedShowSearchButton(false);
+        teamLeadAppStore.postListPageStore.setTab(PostTabType.My);
         break;
     }
+  }
+
+  /// Конструктор
+  _PostListPageState() {
+    teamLeadAppStore.postListPageStore.setTab(PostTabType.All);
   }
 
   /// Создаёт виджет
@@ -86,8 +75,8 @@ class _PostListPageState extends State<PostListPage> {
                 padding: const EdgeInsets.only(right: 8),
                 child: Icon(Icons.supervised_user_circle, size: 32),
               ),
-              Consumer<PostsModel>(builder: (context, postsModel, child) {
-                switch (postsModel.postTabType) {
+              Observer(builder: (_) {
+                switch (teamLeadAppStore.postListPageStore.tabType) {
                   case PostTabType.All:
                     return Text("Все посты");
                   case PostTabType.Featured:
@@ -101,19 +90,17 @@ class _PostListPageState extends State<PostListPage> {
             ],
           ),
           actions: <Widget>[
-            if (_needShowSearchButton)
-              if (!_needShowSearchPanel)
-                IconButton(
+            Observer(builder: (context) {
+              if (teamLeadAppStore.postListPageStore.needShowSearchButton) {
+                return IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
                       _onSearchClick();
-                    })
-              else
-                IconButton(
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      _onSearchClick();
-                    }),
+                    });
+              }
+
+              return Row();
+            }),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {
@@ -129,7 +116,13 @@ class _PostListPageState extends State<PostListPage> {
         ),
         body: Column(
           children: <Widget>[
-            if (_needShowSearchPanel) SearchWidget(),
+            Observer(
+              builder: (context) {
+                if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
+                  return SearchWidget();
+                return Row();
+              },
+            ),
             Expanded(flex: 9, child: PostListWidget()),
           ],
         ),
