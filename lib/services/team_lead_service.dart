@@ -7,5 +7,5 @@ final teamLeadService = TeamLeadMockService();
 /// Интерфейс сервиса
 abstract class TeamLeadService {
   /// Загружает все посты
-  Future<List<ServicePostData>> loadPosts();
+  Future<List<ServicePostData>> loadPosts(int index, int count);
 }

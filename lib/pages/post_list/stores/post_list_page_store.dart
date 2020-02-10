@@ -27,7 +27,7 @@ abstract class _PostListPageStore with Store {
 
   /// Устанавливает отображать или нет панель поиска
   @action
-  void setNeedShowSearchPanel(bool value) {    
+  void setNeedShowSearchPanel(bool value) {
     needShowSearchPanel = value;
   }
 
@@ -43,6 +43,12 @@ abstract class _PostListPageStore with Store {
     posts.add(post);
   }
 
+  /// Добавляет пост
+  @action
+  void addPosts(List<ServicePostData> posts) {
+    posts.addAll(posts);
+  }
+
   /// Устанавливает посты
   @action
   void setPosts(List<ServicePostData> posts) {
@@ -50,12 +56,28 @@ abstract class _PostListPageStore with Store {
     this.posts.addAll(posts);
   }
 
+  /// Загружает новые посты
+  Future<List<ServicePostData>> loadPosts(int start, int count) async {
+    await Future.delayed(Duration(seconds: 1));
+
+    if (start >= posts.length) {
+      return [];
+    }
+
+    var cnt = count;
+    if (start + count > posts.length) {
+      cnt = posts.length - start;
+    }
+
+    return posts.getRange(start, cnt).toList();
+  }
+
   /// Устанавливает тип вкладки
   @action
   void setTab(PostTabType tabType) {
     switch (tabType) {
       case PostTabType.All:
-        teamLeadService.loadPosts().then((value) {
+        teamLeadService.loadPosts(0, 1).then((value) {
           this.tabType = tabType;
           setPosts(value);
         });
