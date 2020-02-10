@@ -87,9 +87,19 @@ class TeamLeadMockService implements TeamLeadService {
         true)
   ];
 
-  /// Загружает посты из общего списка начиная с [index] в количестве [count]
+  /// Загружает посты из общего списка начиная с [start] в количестве [count]
   @override
-  Future<List<ServicePostData>> loadPosts(int index, int count) async {
-    return _allPosts.getRange(index, count).toList();
+  Future<List<ServicePostData>> loadPosts(int start, int count) async {
+    if (start >= _allPosts.length) {
+      return [];
+    }
+
+    var cnt = count;
+    if (start + count > _allPosts.length) {
+      cnt = _allPosts.length - start;
+    }
+
+    print("$start ${start + cnt}");
+    return _allPosts.getRange(start, start + cnt).toList();
   }
 }

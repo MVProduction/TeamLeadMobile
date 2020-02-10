@@ -6,13 +6,27 @@ import 'package:team_lead/routes.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/team_lead_app_store.dart';
 
-/// Элемент поста
-class PostListWidget extends StatelessWidget {
+/// Состояние списка
+class PostListWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _PostListWidgetState();
+}
+
+/// Состояние списка
+class _PostListWidgetState extends State<PostListWidget> {
+  /// Контроллер обновления
   final _controller = RefreshController();
 
   /// Обрабатывает нажатие на пост
   void _onPostClick(BuildContext context, ServicePostData post) {
     Navigator.pushNamed(context, Routes.DiscussPost, arguments: post);
+  }
+
+  /// Загружает ещё посты
+  void _onLoading() async {
+    await teamLeadAppStore.postListPageStore.loadMore();
+    setState(() {});
+    _controller.loadComplete();
   }
 
   /// Создаёт виджет
@@ -24,6 +38,7 @@ class PostListWidget extends StatelessWidget {
         header: WaterDropHeader(),
         footer: ClassicFooter(),
         controller: _controller,
+        onLoading: _onLoading,
         child: ListView.builder(itemBuilder: (context, index) {
           if (index >= teamLeadAppStore.postListPageStore.posts.length)
             return null;

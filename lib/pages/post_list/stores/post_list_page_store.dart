@@ -46,7 +46,7 @@ abstract class _PostListPageStore with Store {
   /// Добавляет пост
   @action
   void addPosts(List<ServicePostData> posts) {
-    posts.addAll(posts);
+    this.posts.addAll(posts);
   }
 
   /// Устанавливает посты
@@ -56,31 +56,25 @@ abstract class _PostListPageStore with Store {
     this.posts.addAll(posts);
   }
 
+  /// Загружает ещё посты и добавляет в список
+  Future loadMore() async {
+    final newPosts = await loadPosts(posts.length, 3);
+    addPosts(newPosts);
+  }
+
   /// Загружает новые посты
   Future<List<ServicePostData>> loadPosts(int start, int count) async {
     await Future.delayed(Duration(seconds: 1));
-
-    if (start >= posts.length) {
-      return [];
-    }
-
-    var cnt = count;
-    if (start + count > posts.length) {
-      cnt = posts.length - start;
-    }
-
-    return posts.getRange(start, cnt).toList();
+    return teamLeadService.loadPosts(start, count);
   }
 
   /// Устанавливает тип вкладки
   @action
   void setTab(PostTabType tabType) {
+    //this.tabType = tabType;
     switch (tabType) {
       case PostTabType.All:
-        teamLeadService.loadPosts(0, 1).then((value) {
-          this.tabType = tabType;
-          setPosts(value);
-        });
+      //  setPosts([]);
         break;
       case PostTabType.Featured:
         setPosts([]);
