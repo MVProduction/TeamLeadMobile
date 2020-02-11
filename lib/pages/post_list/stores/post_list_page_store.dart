@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
+import 'package:team_lead/team_lead_app_store.dart';
 
 part 'post_list_page_store.g.dart';
 
@@ -71,10 +72,14 @@ abstract class _PostListPageStore with Store {
   /// Устанавливает тип вкладки
   @action
   void setTab(PostTabType tabType) {
-    //this.tabType = tabType;
+    this.tabType = tabType;
     switch (tabType) {
       case PostTabType.All:
-      //  setPosts([]);
+        if (teamLeadAppStore.postListPageStore.posts.length < 1) {
+          teamLeadAppStore.postListPageStore.loadMore();
+        } else {
+          setPosts([]);
+        }
         break;
       case PostTabType.Featured:
         setPosts([]);

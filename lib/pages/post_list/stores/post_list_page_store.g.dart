@@ -117,6 +117,16 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
   }
 
   @override
+  void addPosts(List<ServicePostData> posts) {
+    final _$actionInfo = _$_PostListPageStoreActionController.startAction();
+    try {
+      return super.addPosts(posts);
+    } finally {
+      _$_PostListPageStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setPosts(List<ServicePostData> posts) {
     final _$actionInfo = _$_PostListPageStoreActionController.startAction();
     try {

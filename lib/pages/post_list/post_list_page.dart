@@ -55,9 +55,7 @@ class _PostListPageState extends State<PostListPage> {
   }
 
   /// Конструктор
-  _PostListPageState() {
-    teamLeadAppStore.postListPageStore.setTab(PostTabType.All);
-  }
+  _PostListPageState();  
 
   /// Создаёт виджет
   @override
@@ -107,7 +105,7 @@ class _PostListPageState extends State<PostListPage> {
                   _onSettingsClick();
                 })
           ],
-          bottom: TabBar(onTap: _onTabClick, tabs: [
+          bottom: TabBar(onTap: (ti) => _onTabClick(ti), tabs: [
             Tab(icon: Icon(Icons.sms)),
             Tab(icon: Icon(Icons.favorite)),
             Tab(icon: Icon(Icons.person)),
@@ -123,7 +121,12 @@ class _PostListPageState extends State<PostListPage> {
                 return Row();
               },
             ),
-            Expanded(flex: 9, child: PostListWidget()),
+            Expanded(flex: 9, child: 
+            FutureBuilder(
+              future: teamLeadAppStore.postListPageStore.loadMore(),
+              builder: (context, snapshot) {
+              return PostListWidget();
+            }))            
           ],
         ),
         floatingActionButton: FloatingActionButton(
