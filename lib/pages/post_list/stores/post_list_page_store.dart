@@ -24,7 +24,7 @@ abstract class _PostListPageStore with Store {
 
   /// Посты
   @observable
-  ObservableList<ServicePostData> posts = ObservableList.of([]);
+  ObservableList<ServicePostData> allPosts = ObservableList.of([]);
 
   /// Устанавливает отображать или нет панель поиска
   @action
@@ -38,29 +38,10 @@ abstract class _PostListPageStore with Store {
     needShowSearchButton = value;
   }
 
-  /// Добавляет пост
-  @action
-  void addPost(ServicePostData post) {
-    posts.add(post);
-  }
-
-  /// Добавляет пост
-  @action
-  void addPosts(List<ServicePostData> posts) {
-    this.posts.addAll(posts);
-  }
-
-  /// Устанавливает посты
-  @action
-  void setPosts(List<ServicePostData> posts) {
-    this.posts.clear();
-    this.posts.addAll(posts);
-  }
-
   /// Загружает ещё посты и добавляет в список
   Future loadMore() async {
-    final newPosts = await loadPosts(posts.length, 3);
-    addPosts(newPosts);
+    final newPosts = await loadPosts(allPosts.length, 3);
+    this.allPosts.addAll(newPosts);
   }
 
   /// Загружает новые посты
@@ -75,17 +56,13 @@ abstract class _PostListPageStore with Store {
     this.tabType = tabType;
     switch (tabType) {
       case PostTabType.All:
-        if (teamLeadAppStore.postListPageStore.posts.length < 1) {
+        if (teamLeadAppStore.postListPageStore.allPosts.length < 1) {
           teamLeadAppStore.postListPageStore.loadMore();
-        } else {
-          setPosts([]);
         }
         break;
       case PostTabType.Featured:
-        setPosts([]);
         break;
       case PostTabType.My:
-        setPosts([]);
         break;
     }
   }

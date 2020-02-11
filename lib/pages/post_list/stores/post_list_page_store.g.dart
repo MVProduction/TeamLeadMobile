@@ -66,21 +66,21 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
         name: '${_$needShowSearchButtonAtom.name}_set');
   }
 
-  final _$postsAtom = Atom(name: '_PostListPageStore.posts');
+  final _$allPostsAtom = Atom(name: '_PostListPageStore.allPosts');
 
   @override
-  ObservableList<ServicePostData> get posts {
-    _$postsAtom.context.enforceReadPolicy(_$postsAtom);
-    _$postsAtom.reportObserved();
-    return super.posts;
+  ObservableList<ServicePostData> get allPosts {
+    _$allPostsAtom.context.enforceReadPolicy(_$allPostsAtom);
+    _$allPostsAtom.reportObserved();
+    return super.allPosts;
   }
 
   @override
-  set posts(ObservableList<ServicePostData> value) {
-    _$postsAtom.context.conditionallyRunInAction(() {
-      super.posts = value;
-      _$postsAtom.reportChanged();
-    }, _$postsAtom, name: '${_$postsAtom.name}_set');
+  set allPosts(ObservableList<ServicePostData> value) {
+    _$allPostsAtom.context.conditionallyRunInAction(() {
+      super.allPosts = value;
+      _$allPostsAtom.reportChanged();
+    }, _$allPostsAtom, name: '${_$allPostsAtom.name}_set');
   }
 
   final _$_PostListPageStoreActionController =
@@ -101,36 +101,6 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
     final _$actionInfo = _$_PostListPageStoreActionController.startAction();
     try {
       return super.setNeedShowSearchButton(value);
-    } finally {
-      _$_PostListPageStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addPost(ServicePostData post) {
-    final _$actionInfo = _$_PostListPageStoreActionController.startAction();
-    try {
-      return super.addPost(post);
-    } finally {
-      _$_PostListPageStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addPosts(List<ServicePostData> posts) {
-    final _$actionInfo = _$_PostListPageStoreActionController.startAction();
-    try {
-      return super.addPosts(posts);
-    } finally {
-      _$_PostListPageStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setPosts(List<ServicePostData> posts) {
-    final _$actionInfo = _$_PostListPageStoreActionController.startAction();
-    try {
-      return super.setPosts(posts);
     } finally {
       _$_PostListPageStoreActionController.endAction(_$actionInfo);
     }
