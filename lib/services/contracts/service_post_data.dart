@@ -19,7 +19,7 @@ class ServicePostData {
   final int viewCount;
 
   /// Добавлено ли в избранное
-  final bool isFavorite;
+  bool isFavorite;
 
   /// Конструктор
   ServicePostData(this.id, this.userName, this.title, this.createDate,

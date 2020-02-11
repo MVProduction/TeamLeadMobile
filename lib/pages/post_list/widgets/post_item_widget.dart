@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/common/date_utils.dart';
+import 'package:team_lead/team_lead_app_store.dart';
 
 /// Обработчик нажатия на пост
 typedef void OnPostClickFunc(ServicePostData post);
+
+/// Обработчик нажатия на пост
+typedef void OnFavoriteClickFunc(ServicePostData post);
 
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
@@ -14,8 +18,11 @@ class PostItemWidget extends StatelessWidget {
   /// Обрабатывает нажатие на пост
   final OnPostClickFunc onPostClick;
 
+  /// Обрабатывает нажатие на добавление в избранные
+  final OnFavoriteClickFunc onFavoriteClick;
+
   /// Конструктор
-  PostItemWidget(this.post, this.onPostClick);
+  PostItemWidget(this.post, this.onPostClick, this.onFavoriteClick);
 
   /// Создаёт виджет
   @override
@@ -70,10 +77,18 @@ class PostItemWidget extends StatelessWidget {
                                                   fontWeight: FontWeight.bold)),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.favorite_border),
-                                        onPressed: () {},
-                                      )
+                                      if (post.isFavorite)
+                                        IconButton(
+                                          icon: Icon(Icons.favorite_border),
+                                          onPressed: () =>
+                                              onFavoriteClick(post),
+                                        ),
+                                      if (!post.isFavorite)
+                                        IconButton(
+                                          icon: Icon(Icons.favorite),
+                                          onPressed: () =>
+                                              onFavoriteClick(post),
+                                        ),
                                     ],
                                   ),
                                 ),

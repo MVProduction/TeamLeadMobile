@@ -24,6 +24,13 @@ class _PostListWidgetState extends State<PostListWidget> {
     Navigator.pushNamed(context, Routes.DiscussPost, arguments: post);
   }
 
+  /// Обрабатывает нажатие кнопки избранное
+  void _onFavoriteClick(BuildContext context, ServicePostData post) {
+    setState(() {
+      post.isFavorite = !post.isFavorite;
+    });
+  }
+
   /// Загружает ещё посты
   void _onLoading() async {
     await teamLeadAppStore.postListPageStore.loadMore();
@@ -51,7 +58,8 @@ class _PostListWidgetState extends State<PostListWidget> {
                     return null;
                   final post =
                       teamLeadAppStore.postListPageStore.allPosts[index];
-                  return PostItemWidget(post, (p) => _onPostClick(context, p));
+                  return PostItemWidget(post, (p) => _onPostClick(context, p),
+                      (p) => _onFavoriteClick(context, p));
                 }));
           default:
             break;
