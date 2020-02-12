@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/pages/post_list/stores/main_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
@@ -22,6 +23,9 @@ abstract class _PostListPageStore with Store {
   @observable
   bool needShowSearchButton = true;
 
+  /// Состояние основного списка постов
+  MainPostListStore mainPostListStore = MainPostListStore();
+
   /// Посты
   @observable
   ObservableList<ServicePostData> allPosts = ObservableList.of([]);
@@ -40,21 +44,7 @@ abstract class _PostListPageStore with Store {
   @action
   void setNeedShowSearchButton(bool value) {
     needShowSearchButton = value;
-  }
-
-  /// Загружает последние посты
-  Future loadLast() async {
-    await Future.delayed(Duration(seconds: 1));
-    // final posts = await teamLeadService.loadLast(10);
-    // allPosts.clear();
-    // allPosts.addAll(posts);
-  }
-
-  /// Загружает ещё посты и добавляет в список
-  Future loadMore() async {
-    final newPosts = await loadPosts(allPosts.length, 3);
-    this.allPosts.addAll(newPosts);
-  }
+  }  
 
   /// Загружает новые посты
   Future<List<ServicePostData>> loadPosts(int start, int count) async {
@@ -76,9 +66,7 @@ abstract class _PostListPageStore with Store {
     this.tabType = tabType;
     switch (tabType) {
       case PostTabType.All:
-        if (teamLeadAppStore.postListPageStore.allPosts.length < 1) {
-          teamLeadAppStore.postListPageStore.loadMore();
-        }
+        teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
         break;
       case PostTabType.Favorite:
         teamLeadAppStore.postListPageStore.loadFavorite();

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
-import 'package:team_lead/pages/post_list/widgets/post_list_widget.dart';
+import 'package:team_lead/pages/post_list/widgets/main_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_store.dart';
@@ -55,7 +55,14 @@ class _PostListPageState extends State<PostListPage> {
   }
 
   /// Конструктор
-  _PostListPageState();  
+  _PostListPageState();
+
+  @override
+  void initState() {
+    teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
+
+    super.initState();
+  }
 
   /// Создаёт виджет
   @override
@@ -121,12 +128,21 @@ class _PostListPageState extends State<PostListPage> {
                 return Row();
               },
             ),
-            Expanded(flex: 9, child: 
-            FutureBuilder(
-              future: teamLeadAppStore.postListPageStore.loadMore(),
-              builder: (context, snapshot) {
-              return PostListWidget();
-            }))            
+            Expanded(
+                flex: 9,
+                child: TabBarView(children: <Widget>[
+                  MainPostListWidget(),
+                  ListView(),
+                  ListView()
+                ])
+
+                // FutureBuilder(
+                //   future: teamLeadAppStore.postListPageStore.loadMore(),
+                //   builder: (context, snapshot) {
+                //   return PostListWidget();
+                // })
+
+                )
           ],
         ),
         floatingActionButton: FloatingActionButton(
