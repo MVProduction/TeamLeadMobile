@@ -26,6 +26,10 @@ abstract class _PostListPageStore with Store {
   @observable
   ObservableList<ServicePostData> allPosts = ObservableList.of([]);
 
+  /// Избранные посты
+  @observable
+  ObservableList<ServicePostData> favoritePosts = ObservableList.of([]);
+
   /// Устанавливает отображать или нет панель поиска
   @action
   void setNeedShowSearchPanel(bool value) {
@@ -36,6 +40,14 @@ abstract class _PostListPageStore with Store {
   @action
   void setNeedShowSearchButton(bool value) {
     needShowSearchButton = value;
+  }
+
+  /// Загружает последние посты
+  Future loadLast() async {
+    await Future.delayed(Duration(seconds: 1));
+    // final posts = await teamLeadService.loadLast(10);
+    // allPosts.clear();
+    // allPosts.addAll(posts);
   }
 
   /// Загружает ещё посты и добавляет в список
@@ -50,6 +62,14 @@ abstract class _PostListPageStore with Store {
     return teamLeadService.loadPosts(start, count);
   }
 
+  /// Загружает избранные посты
+  void loadFavorite() async {
+    await Future.delayed(Duration(seconds: 1));
+    final posts = await teamLeadService.loadFavorite();
+    favoritePosts.clear();
+    favoritePosts.addAll(posts);
+  }
+
   /// Устанавливает тип вкладки
   @action
   void setTab(PostTabType tabType) {
@@ -60,7 +80,8 @@ abstract class _PostListPageStore with Store {
           teamLeadAppStore.postListPageStore.loadMore();
         }
         break;
-      case PostTabType.Featured:
+      case PostTabType.Favorite:
+        teamLeadAppStore.postListPageStore.loadFavorite();
         break;
       case PostTabType.My:
         break;

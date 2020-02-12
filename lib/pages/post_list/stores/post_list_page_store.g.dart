@@ -83,6 +83,23 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
     }, _$allPostsAtom, name: '${_$allPostsAtom.name}_set');
   }
 
+  final _$favoritePostsAtom = Atom(name: '_PostListPageStore.favoritePosts');
+
+  @override
+  ObservableList<ServicePostData> get favoritePosts {
+    _$favoritePostsAtom.context.enforceReadPolicy(_$favoritePostsAtom);
+    _$favoritePostsAtom.reportObserved();
+    return super.favoritePosts;
+  }
+
+  @override
+  set favoritePosts(ObservableList<ServicePostData> value) {
+    _$favoritePostsAtom.context.conditionallyRunInAction(() {
+      super.favoritePosts = value;
+      _$favoritePostsAtom.reportChanged();
+    }, _$favoritePostsAtom, name: '${_$favoritePostsAtom.name}_set');
+  }
+
   final _$_PostListPageStoreActionController =
       ActionController(name: '_PostListPageStore');
 

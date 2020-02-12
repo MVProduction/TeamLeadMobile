@@ -61,6 +61,16 @@ class _PostListWidgetState extends State<PostListWidget> {
                   return PostItemWidget(post, (p) => _onPostClick(context, p),
                       (p) => _onFavoriteClick(context, p));
                 }));
+          case PostTabType.Favorite:
+            return ListView.builder(itemBuilder: (context, index) {
+              if (index >=
+                  teamLeadAppStore.postListPageStore.favoritePosts.length)
+                return null;
+              final post =
+                  teamLeadAppStore.postListPageStore.favoritePosts[index];
+              return PostItemWidget(post, (p) => _onPostClick(context, p),
+                  (p) => _onFavoriteClick(context, p));
+            });
           default:
             break;
         }

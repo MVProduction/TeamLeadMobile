@@ -79,13 +79,13 @@ class PostItemWidget extends StatelessWidget {
                                       ),
                                       if (post.isFavorite)
                                         IconButton(
-                                          icon: Icon(Icons.favorite_border),
+                                          icon: Icon(Icons.favorite),
                                           onPressed: () =>
                                               onFavoriteClick(post),
                                         ),
                                       if (!post.isFavorite)
                                         IconButton(
-                                          icon: Icon(Icons.favorite),
+                                          icon: Icon(Icons.favorite_border),
                                           onPressed: () =>
                                               onFavoriteClick(post),
                                         ),

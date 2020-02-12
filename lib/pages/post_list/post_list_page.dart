@@ -45,7 +45,7 @@ class _PostListPageState extends State<PostListPage> {
         break;
       case 1:
         teamLeadAppStore.postListPageStore.setNeedShowSearchButton(false);
-        teamLeadAppStore.postListPageStore.setTab(PostTabType.Featured);
+        teamLeadAppStore.postListPageStore.setTab(PostTabType.Favorite);
         break;
       case 2:
         teamLeadAppStore.postListPageStore.setNeedShowSearchButton(false);
@@ -77,7 +77,7 @@ class _PostListPageState extends State<PostListPage> {
                 switch (teamLeadAppStore.postListPageStore.tabType) {
                   case PostTabType.All:
                     return Text("Все посты");
-                  case PostTabType.Featured:
+                  case PostTabType.Favorite:
                     return Text("Избранное");
                   case PostTabType.My:
                     return Text("Мои посты");

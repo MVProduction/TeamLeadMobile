@@ -8,4 +8,7 @@ final teamLeadService = TeamLeadMockService();
 abstract class TeamLeadService {
   /// Загружает все посты
   Future<List<ServicePostData>> loadPosts(int index, int count);
+
+  /// Загружает избранное
+  Future<List<ServicePostData>> loadFavorite();
 }

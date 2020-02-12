@@ -1,2 +1,2 @@
 /// Тип выбранных постов
-enum PostTabType { All, Featured, My }
+enum PostTabType { All, Favorite, My }

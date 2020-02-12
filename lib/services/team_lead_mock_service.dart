@@ -102,4 +102,10 @@ class TeamLeadMockService implements TeamLeadService {
     print("$start ${start + cnt}");
     return _allPosts.getRange(start, start + cnt).toList();
   }
+
+  /// Возвращает избранное
+  @override
+  Future<List<ServicePostData>> loadFavorite() async {
+    return _allPosts.where((x) => x.isFavorite).toList();
+  }
 }
