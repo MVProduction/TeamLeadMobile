@@ -1,7 +1,7 @@
 /// Данные поста для списка присылаемые сервисом
 class ServicePostData {
   /// ID поста
-  final String id;
+  final int id;
 
   /// Имя пользователя
   final String userName;

@@ -5,6 +5,7 @@ import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/pages/post_list/widgets/favorite_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/main_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
+import 'package:team_lead/pages/post_list/widgets/user_post_list_widget.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_store.dart';
 
@@ -134,16 +135,8 @@ class _PostListPageState extends State<PostListPage> {
                 child: TabBarView(children: <Widget>[
                   MainPostListWidget(),
                   FavoritePostListWidget(),
-                  ListView()
-                ])
-
-                // FutureBuilder(
-                //   future: teamLeadAppStore.postListPageStore.loadMore(),
-                //   builder: (context, snapshot) {
-                //   return PostListWidget();
-                // })
-
-                )
+                  UserPostListWidget()
+                ]))
           ],
         ),
         floatingActionButton: FloatingActionButton(

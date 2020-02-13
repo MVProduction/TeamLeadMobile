@@ -6,14 +6,14 @@ import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
 import 'package:team_lead/pages/post_list/widgets/post_item_widget.dart';
 import 'package:team_lead/team_lead_app_store.dart';
 
-/// Список избранных постов
-class FavoritePostListWidget extends StatelessWidget {
+/// Список постов пользователя
+class UserPostListWidget extends StatelessWidget {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       final future =
-          teamLeadAppStore.postListPageStore.favoritePostListStore.allPosts;
+          teamLeadAppStore.postListPageStore.userPostListStore.allPosts;
 
       switch (future.status) {
         case FutureStatus.fulfilled:

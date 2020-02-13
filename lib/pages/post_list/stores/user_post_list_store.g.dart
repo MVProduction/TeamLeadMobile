@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'favorite_post_list_store.dart';
+part of 'user_post_list_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'favorite_post_list_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$FavoritePostListStore on _FavoritePostListStore, Store {
-  final _$allPostsAtom = Atom(name: '_FavoritePostListStore.allPosts');
+mixin _$UserPostListStore on _UserPostListStore, Store {
+  final _$allPostsAtom = Atom(name: '_UserPostListStore.allPosts');
 
   @override
   ObservableFuture<List<ServicePostData>> get allPosts {
@@ -31,18 +31,5 @@ mixin _$FavoritePostListStore on _FavoritePostListStore, Store {
   @override
   Future<dynamic> fetchPosts() {
     return _$fetchPostsAsyncAction.run(() => super.fetchPosts());
-  }
-
-  final _$_FavoritePostListStoreActionController =
-      ActionController(name: '_FavoritePostListStore');
-
-  @override
-  void removePost(int postId) {
-    final _$actionInfo = _$_FavoritePostListStoreActionController.startAction();
-    try {
-      return super.removePost(postId);
-    } finally {
-      _$_FavoritePostListStoreActionController.endAction(_$actionInfo);
-    }
   }
 }

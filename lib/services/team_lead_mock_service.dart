@@ -6,7 +6,7 @@ class TeamLeadMockService implements TeamLeadService {
   /// Все посты
   final _allPosts = [
     ServicePostData(
-        "1",
+        1,
         "Зюзя Петрович",
         "Супер идея",
         DateTime(2020, 3, 11),
@@ -14,7 +14,7 @@ class TeamLeadMockService implements TeamLeadService {
         33,
         false),
     ServicePostData(
-        "2",
+        2,
         "Галина Зильбермановна",
         "Приложение для снижения веса",
         DateTime(2020, 3, 14),
@@ -22,7 +22,7 @@ class TeamLeadMockService implements TeamLeadService {
         12,
         false),
     ServicePostData(
-        "3",
+        3,
         "Tegra",
         "Ищем художников и программистов",
         DateTime(2020, 3, 21),
@@ -30,7 +30,7 @@ class TeamLeadMockService implements TeamLeadService {
         2,
         false),
     ServicePostData(
-        "4",
+        4,
         "Klifford",
         "Сценарист в Команду!",
         DateTime(2020, 3, 23),
@@ -38,7 +38,7 @@ class TeamLeadMockService implements TeamLeadService {
         40,
         false),
     ServicePostData(
-        "5",
+        5,
         "Hzpriezz",
         "Набираю людей в команду - Unity, Mobile",
         DateTime(2020, 3, 24),
@@ -46,7 +46,7 @@ class TeamLeadMockService implements TeamLeadService {
         26,
         true),
     ServicePostData(
-        "6",
+        6,
         "Elis",
         "[Аркадия] Набор в команду [18+, 3D Unreal, Симулятор]",
         DateTime(2020, 3, 13),
@@ -54,7 +54,7 @@ class TeamLeadMockService implements TeamLeadService {
         16,
         true),
     ServicePostData(
-        "7",
+        7,
         "Alexander210483",
         "Groovy Movie Ищем сценариста.(Тема закрыта)",
         DateTime(2020, 3, 9),
@@ -62,7 +62,7 @@ class TeamLeadMockService implements TeamLeadService {
         21,
         false),
     ServicePostData(
-        "8",
+        8,
         "EGSP",
         "Ищу художника/аниматора 2d",
         DateTime(2020, 3, 2),
@@ -70,7 +70,7 @@ class TeamLeadMockService implements TeamLeadService {
         54,
         false),
     ServicePostData(
-        "9",
+        9,
         "pytachok",
         "Всем привет! Ищу художника/аниматора 2d для работы над играми. Сейчас в процессе разработки игра на Unity, под мобилы и браузеры.",
         DateTime(2020, 3, 1),
@@ -78,7 +78,7 @@ class TeamLeadMockService implements TeamLeadService {
         45,
         false),
     ServicePostData(
-        "10",
+        10,
         "pytachok",
         "Ищу художника в стиле фоллаут1",
         DateTime(2020, 3, 7),
@@ -107,5 +107,25 @@ class TeamLeadMockService implements TeamLeadService {
   @override
   Future<List<ServicePostData>> loadFavorite() async {
     return _allPosts.where((x) => x.isFavorite).toList();
+  }
+
+  /// Загружает посты пользователя
+  @override
+  Future<List<ServicePostData>> loadUserPosts() async {
+    return _allPosts.where((x) => x.userName == "pytachok").toList();
+  }
+
+  /// Добавляет в избранное
+  @override
+  Future addToFavorite(int postId) async {
+    final post = _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
+    post?.isFavorite = true;
+  }
+
+  /// Удаляет из избранного
+  @override
+  Future removeFromFavorite(int postId) async {
+    final post = _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
+    post?.isFavorite = false;
   }
 }

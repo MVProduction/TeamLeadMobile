@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
+import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
+import 'package:team_lead/routes.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/common/date_utils.dart';
-import 'package:team_lead/team_lead_app_store.dart';
-
-/// Обработчик нажатия на пост
-typedef void OnPostClickFunc(ServicePostData post);
-
-/// Обработчик нажатия на пост
-typedef void OnFavoriteClickFunc(ServicePostData post);
 
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
   /// Данные поста
-  final ServicePostData post;
+  final PostItemStore postStore;
+
+  ServicePostData get post => postStore.post;
 
   /// Обрабатывает нажатие на пост
-  final OnPostClickFunc onPostClick;
+  void _onPostClick(BuildContext context, ServicePostData post) {
+    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post);
+  }
 
-  /// Обрабатывает нажатие на добавление в избранные
-  final OnFavoriteClickFunc onFavoriteClick;
+  /// Обрабатывает нажатие удалить из избранного
+  void _onRemoveFromFavorite(BuildContext context, ServicePostData post) {
+    postStore.removeFavorite();
+  }
+
+  /// Обрабатывает нажатие добавить в избранное
+  void _onAddToFavorite(BuildContext context, ServicePostData post) {
+    postStore.addToFavorite();
+  }
 
   /// Конструктор
-  PostItemWidget(this.post, this.onPostClick, this.onFavoriteClick);
+  PostItemWidget(this.postStore);
 
   /// Создаёт виджет
   @override
@@ -70,25 +78,64 @@ class PostItemWidget extends StatelessWidget {
                                       Expanded(
                                         flex: 9,
                                         child: InkWell(
-                                          onTap: () => onPostClick(post),
+                                          onTap: () =>
+                                              _onPostClick(context, post),
                                           child: Text(post.title,
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold)),
                                         ),
                                       ),
-                                      if (post.isFavorite)
-                                        IconButton(
-                                          icon: Icon(Icons.favorite),
-                                          onPressed: () =>
-                                              onFavoriteClick(post),
-                                        ),
-                                      if (!post.isFavorite)
-                                        IconButton(
-                                          icon: Icon(Icons.favorite_border),
-                                          onPressed: () =>
-                                              onFavoriteClick(post),
-                                        ),
+                                      if (post.userName != "pytachok")
+                                        Observer(builder: (ctx) {
+                                          final future = postStore.isFavorite;
+                                          switch (future.status) {
+                                            case FutureStatus.fulfilled:
+                                              final value = future.value;
+                                              if (value) {
+                                                return Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 8, right: 8),
+                                                  width: 32,
+                                                  height: 32,
+                                                  child: IconButton(
+                                                    padding: EdgeInsets.all(0),
+                                                    icon: Icon(Icons.favorite,
+                                                        color: Colors.red),
+                                                    onPressed: () =>
+                                                        _onRemoveFromFavorite(
+                                                            context, post),
+                                                  ),
+                                                );
+                                              } else {
+                                                return Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 8, right: 8),
+                                                  width: 32,
+                                                  height: 32,
+                                                  child: IconButton(
+                                                    padding: EdgeInsets.all(0),
+                                                    icon: Icon(
+                                                        Icons.favorite_border),
+                                                    onPressed: () =>
+                                                        _onAddToFavorite(
+                                                            context, post),
+                                                  ),
+                                                );
+                                              }
+                                              break;
+                                            default:
+                                              break;
+                                          }
+
+                                          return Container(
+                                            padding: EdgeInsets.only(
+                                                top: 8, right: 8),
+                                            width: 32,
+                                            height: 32,
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        })
                                     ],
                                   ),
                                 ),
@@ -106,7 +153,7 @@ class PostItemWidget extends StatelessWidget {
                                           color: Colors.grey.shade500)),
                                 ),
                                 InkWell(
-                                  onTap: () => onPostClick(post),
+                                  onTap: () => _onPostClick(context, post),
                                   child: Text(
                                     post.shortText,
                                     overflow: TextOverflow.ellipsis,
