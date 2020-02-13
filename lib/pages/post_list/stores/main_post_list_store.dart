@@ -29,12 +29,12 @@ abstract class _MainPostListStore with Store {
 
   /// Загружает старые посты
   Future fetchOld() async {
-    allPosts = ObservableFuture(Future(() async {
+    final allFuture = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
       final newPosts = await teamLeadService.loadPosts(_postCache.length, 3);
       _postCache.addAll(newPosts);
       return _postCache;
     }));
-    return allPosts;
+    return allFuture;
   }
 }
