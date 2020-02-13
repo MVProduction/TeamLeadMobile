@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/pages/post_list/stores/favorite_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/main_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
@@ -26,13 +27,8 @@ abstract class _PostListPageStore with Store {
   /// Состояние основного списка постов
   MainPostListStore mainPostListStore = MainPostListStore();
 
-  /// Посты
-  @observable
-  ObservableList<ServicePostData> allPosts = ObservableList.of([]);
-
-  /// Избранные посты
-  @observable
-  ObservableList<ServicePostData> favoritePosts = ObservableList.of([]);
+  /// Состояние списка избранных постов
+  FavoritePostListStore favoritePostListStore = FavoritePostListStore();
 
   /// Устанавливает отображать или нет панель поиска
   @action
@@ -44,20 +40,6 @@ abstract class _PostListPageStore with Store {
   @action
   void setNeedShowSearchButton(bool value) {
     needShowSearchButton = value;
-  }  
-
-  /// Загружает новые посты
-  Future<List<ServicePostData>> loadPosts(int start, int count) async {
-    await Future.delayed(Duration(seconds: 1));
-    return teamLeadService.loadPosts(start, count);
-  }
-
-  /// Загружает избранные посты
-  void loadFavorite() async {
-    await Future.delayed(Duration(seconds: 1));
-    final posts = await teamLeadService.loadFavorite();
-    favoritePosts.clear();
-    favoritePosts.addAll(posts);
   }
 
   /// Устанавливает тип вкладки
@@ -69,7 +51,7 @@ abstract class _PostListPageStore with Store {
         teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
         break;
       case PostTabType.Favorite:
-        teamLeadAppStore.postListPageStore.loadFavorite();
+        teamLeadAppStore.postListPageStore.favoritePostListStore.fetchPosts();
         break;
       case PostTabType.My:
         break;

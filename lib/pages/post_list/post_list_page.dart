@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
+import 'package:team_lead/pages/post_list/widgets/favorite_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/main_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
 import 'package:team_lead/routes.dart';
@@ -132,7 +133,7 @@ class _PostListPageState extends State<PostListPage> {
                 flex: 9,
                 child: TabBarView(children: <Widget>[
                   MainPostListWidget(),
-                  ListView(),
+                  FavoritePostListWidget(),
                   ListView()
                 ])
 

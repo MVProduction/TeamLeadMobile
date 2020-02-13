@@ -66,40 +66,6 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
         name: '${_$needShowSearchButtonAtom.name}_set');
   }
 
-  final _$allPostsAtom = Atom(name: '_PostListPageStore.allPosts');
-
-  @override
-  ObservableList<ServicePostData> get allPosts {
-    _$allPostsAtom.context.enforceReadPolicy(_$allPostsAtom);
-    _$allPostsAtom.reportObserved();
-    return super.allPosts;
-  }
-
-  @override
-  set allPosts(ObservableList<ServicePostData> value) {
-    _$allPostsAtom.context.conditionallyRunInAction(() {
-      super.allPosts = value;
-      _$allPostsAtom.reportChanged();
-    }, _$allPostsAtom, name: '${_$allPostsAtom.name}_set');
-  }
-
-  final _$favoritePostsAtom = Atom(name: '_PostListPageStore.favoritePosts');
-
-  @override
-  ObservableList<ServicePostData> get favoritePosts {
-    _$favoritePostsAtom.context.enforceReadPolicy(_$favoritePostsAtom);
-    _$favoritePostsAtom.reportObserved();
-    return super.favoritePosts;
-  }
-
-  @override
-  set favoritePosts(ObservableList<ServicePostData> value) {
-    _$favoritePostsAtom.context.conditionallyRunInAction(() {
-      super.favoritePosts = value;
-      _$favoritePostsAtom.reportChanged();
-    }, _$favoritePostsAtom, name: '${_$favoritePostsAtom.name}_set');
-  }
-
   final _$_PostListPageStoreActionController =
       ActionController(name: '_PostListPageStore');
 

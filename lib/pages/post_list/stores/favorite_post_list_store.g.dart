@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'main_post_list_store.dart';
+part of 'favorite_post_list_store.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'main_post_list_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$MainPostListStore on _MainPostListStore, Store {
-  final _$allPostsAtom = Atom(name: '_MainPostListStore.allPosts');
+mixin _$FavoritePostListStore on _FavoritePostListStore, Store {
+  final _$allPostsAtom = Atom(name: '_FavoritePostListStore.allPosts');
 
   @override
   ObservableFuture<List<ServicePostData>> get allPosts {
