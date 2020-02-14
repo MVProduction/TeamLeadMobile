@@ -118,14 +118,22 @@ class TeamLeadMockService implements TeamLeadService {
   /// Добавляет в избранное
   @override
   Future addToFavorite(int postId) async {
-    final post = _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
+    final post =
+        _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
     post?.isFavorite = true;
   }
 
   /// Удаляет из избранного
   @override
   Future removeFromFavorite(int postId) async {
-    final post = _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
+    final post =
+        _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
     post?.isFavorite = false;
+  }
+
+  /// Загружает пост
+  @override
+  Future loadPost(int postId) async {
+    return _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
   }
 }

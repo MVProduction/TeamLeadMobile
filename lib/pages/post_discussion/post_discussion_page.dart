@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart';
 import 'package:team_lead/common/date_utils.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
+import 'package:team_lead/team_lead_app_store.dart';
 
 /// Страница с логином
 class PostDiscussionPage extends StatefulWidget {
@@ -34,6 +35,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   @override
   Widget build(BuildContext context) {
     final post = ModalRoute.of(context).settings.arguments as ServicePostData;
+    //teamLeadAppStore.postDiscussionPageStore
 
     return Scaffold(
       appBar: AppBar(

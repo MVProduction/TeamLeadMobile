@@ -15,6 +15,9 @@ abstract class TeamLeadService {
   /// Загружает посты пользователя
   Future<List<ServicePostData>> loadUserPosts();
 
+  /// Загружает пост
+  Future loadPost(int postId);
+
   /// Добавляет в избранное
   Future addToFavorite(int postId);
 
