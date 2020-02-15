@@ -133,7 +133,7 @@ class TeamLeadMockService implements TeamLeadService {
 
   /// Загружает пост
   @override
-  Future loadPost(int postId) async {
+  Future<ServicePostData> loadPost(int postId) async {
     return _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
   }
 }

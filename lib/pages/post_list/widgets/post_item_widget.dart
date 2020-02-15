@@ -16,7 +16,7 @@ class PostItemWidget extends StatelessWidget {
 
   /// Обрабатывает нажатие на пост
   void _onPostClick(BuildContext context, ServicePostData post) {
-    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post);
+    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post.id);
   }
 
   /// Обрабатывает нажатие удалить из избранного

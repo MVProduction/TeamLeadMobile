@@ -24,4 +24,16 @@ class ServicePostData {
   /// Конструктор
   ServicePostData(this.id, this.userName, this.title, this.createDate,
       this.shortText, this.viewCount, this.isFavorite);
+
+  @override
+  String toString() {    
+    return """id: $id 
+    userName: $userName 
+    title: $title 
+    createDate: $createDate 
+    shortText: $shortText 
+    viewCount: $viewCount
+    isFavorite: $isFavorite
+    """;
+  }
 }
