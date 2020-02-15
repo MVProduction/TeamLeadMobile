@@ -18,34 +18,139 @@ class PostDiscussionPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostDiscussionPageState extends State<PostDiscussionPage> {
-  /// Возвращает комментарии
-  Widget getComments() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        for (var i = 0; i < 20; i++)
+  /// Возвращает вид с заголовком и заданным телом без вкладок
+  Widget getScafoldView(String title, Widget body) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Row(
+        children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child:
-                CommentItemWidget("Ata $i", DateTime.now(), "Комментарий $i"),
-          )
+            padding: const EdgeInsets.only(right: 8),
+          ),
+          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
+        ],
+      )),
+      body: body,
+    );
+  }
+
+  /// Возвращает вид с заголовком и заданным телом с владками
+  Widget getScafoldViewWithTabs(String title, Widget body) {
+    return DefaultTabController(
+        initialIndex: 0,
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+                title: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                ),
+                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
+              ],
+            )),
+            body: body,
+            bottomNavigationBar: new TabBar(
+                unselectedLabelColor: Colors.black,
+                indicator: BoxDecoration(color: Colors.indigo),
+                tabs: [
+                  Tab(
+                    child: Container(child: Text("Пост")),
+                    icon: new Icon(Icons.local_post_office),
+                  ),
+                  Tab(
+                    child: Text("Комментарии"),
+                    icon: new Icon(Icons.message),
+                  )
+                ])));
+  }
+
+  /// Возвращает вид с постом
+  Widget getPostView(ServicePostData post) {
+    return ListView(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 32),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 56,
+                        child: ClipOval(
+                          child:
+                              Image(image: AssetImage("assets/dummy_face.jpg")),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(post.userName,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Text(post.createDate.toLocalizedDateString()),
+                  ),
+                  Text(post.shortText, style: TextStyle(fontSize: 18))
+                ])),
       ],
     );
   }
 
-  /// Возвращает вид с заголовком и заданным телом
-  Widget getMainView(String title, Widget body) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-            ),
-            Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
-          ],
-        )),
-        body: body);
+  /// Возвращает вид с комментариями
+  Widget getCommentView(ServicePostData post) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 9,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
+            child: ListView(children: <Widget>[
+              for (var i = 0; i < 20; i++)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: CommentItemWidget(
+                      "Ata $i", DateTime.now(), "Комментарий $i"),
+                )
+            ]),
+          ),
+        ),
+        Container(
+          height: 70,
+          color: Colors.grey.shade100,
+          padding: EdgeInsets.only(left: 8, top: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                  flex: 9,
+                  child: TextField(
+                    decoration:
+                        InputDecoration(hintText: "Введите комментарий"),
+                  )),
+              Container(
+                  width: 40,
+                  child: IconButton(
+                      icon: Icon(Icons.send, color: Colors.indigo),
+                      onPressed: () {}))
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  /// Возвращает основной вид с постами и комментариями
+  Widget getMainView(ServicePostData post) {
+    return TabBarView(children: <Widget>[
+      getPostView(post),
+      getCommentView(post),
+    ]);
   }
 
   /// Создаёт виджет
@@ -61,87 +166,12 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
           final post = future.value;
           if (post == null) return Text('NO DATA');
 
-          return getMainView(
+          return getScafoldViewWithTabs(
             post.title,
-            ListView(
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, bottom: 32),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: CircleAvatar(
-                              radius: 56,
-                              child: ClipOval(
-                                child: Image(
-                                    image: AssetImage("assets/dummy_face.jpg")),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text(post.userName,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(post.createDate.toLocalizedDateString()),
-                        ),
-                        Text(post.shortText, style: TextStyle(fontSize: 18)),
-                        Padding(
-                          padding: EdgeInsets.only(top: 42, bottom: 32),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: TextField(
-                                  maxLines: 4,
-                                  decoration: new InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blue, width: 1.0),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                      ),
-                                      hintMaxLines: 4,
-                                      hintText: "Добавить комментарий"),
-                                ),
-                              ),
-                              Container(
-                                width: 32,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.send,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Text("Комментарии (11)",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        getComments()
-                      ],
-                    )),
-              ],
-            ),
+            getMainView(post),
           );
         default:
-          return getMainView(
+          return getScafoldView(
               'Загружается', Center(child: CircularProgressIndicator()));
       }
     });
