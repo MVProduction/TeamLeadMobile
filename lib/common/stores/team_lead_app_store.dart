@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/stores/users_store.dart';
 import 'package:team_lead/pages/post_discussion/stores/post_discussion_page_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_list_page_store.dart';
 
@@ -11,6 +12,9 @@ class TeamLeadAppStore = _TeamLeadAppStore with _$TeamLeadAppStore;
 
 /// Основаная модель приложения
 abstract class _TeamLeadAppStore with Store {
+  /// Модель для получения информации пользователей
+  final UsersStore usersStore = UsersStore();
+
   /// Модель для страницы с постами
   final PostListPageStore postListPageStore = PostListPageStore();
 

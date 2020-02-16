@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
 
@@ -11,14 +12,16 @@ class PostDiscussionPageStore = _PostDiscussionPageStore
 abstract class _PostDiscussionPageStore with Store {
   /// Для загрузки поста
   @observable
-  ObservableFuture<ServicePostData> post;
+  ObservableFuture<PostWithUserData> post;
 
   /// Загружает данные поста
   @action
   Future fetchPost(int postId) {
     post = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      return await teamLeadService.loadPost(postId);
+      final post = await teamLeadService.loadPost(postId);
+      final user = await teamLeadService.getUserInfo(post.userName);
+      return PostWithUserData(user, post);
     }));
 
     return post;

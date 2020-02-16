@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/pages/post_list/widgets/favorite_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/main_post_list_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/search_widget.dart';
 import 'package:team_lead/pages/post_list/widgets/user_post_list_widget.dart';
 import 'package:team_lead/routes.dart';
-import 'package:team_lead/team_lead_app_store.dart';
 
 /// Страница с постами поиска команд
 class PostListPage extends StatefulWidget {

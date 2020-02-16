@@ -12,14 +12,14 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
   final _$postAtom = Atom(name: '_PostDiscussionPageStore.post');
 
   @override
-  ObservableFuture<ServicePostData> get post {
+  ObservableFuture<PostWithUserData> get post {
     _$postAtom.context.enforceReadPolicy(_$postAtom);
     _$postAtom.reportObserved();
     return super.post;
   }
 
   @override
-  set post(ObservableFuture<ServicePostData> value) {
+  set post(ObservableFuture<PostWithUserData> value) {
     _$postAtom.context.conditionallyRunInAction(() {
       super.post = value;
       _$postAtom.reportChanged();

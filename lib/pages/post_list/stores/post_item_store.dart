@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
-import 'package:team_lead/team_lead_app_store.dart';
 
 part 'post_item_store.g.dart';
 
@@ -26,7 +26,7 @@ abstract class _PostItemStore with Store {
   Future addToFavorite() {
     isFavorite = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      await teamLeadService.addToFavorite(post.id);
+      await teamLeadService.addPostToFavorite(post.id);
       return true;
     }));
 
@@ -38,8 +38,9 @@ abstract class _PostItemStore with Store {
   Future removeFavorite() {
     isFavorite = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      await teamLeadService.removeFromFavorite(post.id);
-      teamLeadAppStore.postListPageStore.favoritePostListStore.removePost(post.id);
+      await teamLeadService.removePostFromFavorite(post.id);
+      teamLeadAppStore.postListPageStore.favoritePostListStore
+          .removePost(post.id);
       return false;
     }));
 

@@ -1,4 +1,4 @@
-/// Данные поста для списка присылаемые сервисом
+/// Данные поста
 class ServicePostData {
   /// ID поста
   final int id;
@@ -12,8 +12,8 @@ class ServicePostData {
   /// Время создания поста
   final DateTime createDate;
 
-  /// Короткое описание поста
-  final String shortText;
+  /// Описание поста
+  final String text;
 
   /// Количество просмотров
   final int viewCount;
@@ -23,7 +23,7 @@ class ServicePostData {
 
   /// Конструктор
   ServicePostData(this.id, this.userName, this.title, this.createDate,
-      this.shortText, this.viewCount, this.isFavorite);
+      this.text, this.viewCount, this.isFavorite);
 
   @override
   String toString() {    
@@ -31,7 +31,7 @@ class ServicePostData {
     userName: $userName 
     title: $title 
     createDate: $createDate 
-    shortText: $shortText 
+    shortText: $text 
     viewCount: $viewCount
     isFavorite: $isFavorite
     """;

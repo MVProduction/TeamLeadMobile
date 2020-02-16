@@ -27,9 +27,10 @@ abstract class _FavoritePostListStore with Store {
   @action
   Future fetchPosts() async {
     allPosts = ObservableFuture(Future(() async {
+      final user = teamLeadService.getLoginUser();
       await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
-      _postCache.addAll(await teamLeadService.loadFavorite());
+      _postCache.addAll(await teamLeadService.loadUserFavoritePosts(user.name));
       return _postCache;
     }));
     return allPosts;

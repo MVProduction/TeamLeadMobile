@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:team_lead/team_lead_app_store.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
 
 /// Виджет поиска постов
 class SearchWidget extends StatelessWidget {

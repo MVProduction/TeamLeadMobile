@@ -155,7 +155,7 @@ class PostItemWidget extends StatelessWidget {
                                 InkWell(
                                   onTap: () => _onPostClick(context, post),
                                   child: Text(
-                                    post.shortText,
+                                    post.text,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 4,
                                   ),

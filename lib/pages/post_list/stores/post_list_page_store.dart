@@ -1,11 +1,9 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/favorite_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/main_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_tab_type.dart';
 import 'package:team_lead/pages/post_list/stores/user_post_list_store.dart';
-import 'package:team_lead/services/contracts/service_post_data.dart';
-import 'package:team_lead/services/team_lead_service.dart';
-import 'package:team_lead/team_lead_app_store.dart';
 
 part 'post_list_page_store.g.dart';
 

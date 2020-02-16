@@ -1,8 +1,17 @@
+import 'package:team_lead/services/contracts/service_comment_data.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
+import 'package:team_lead/services/contracts/service_user_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
 
 /// Тестовый сервис
 class TeamLeadMockService implements TeamLeadService {
+  /// Все пользователи
+  final _allUsers = [
+    ServiceUserData('Klifford', 'klifford@mail.ru', ''),
+    ServiceUserData('Elis', 'elis@mail.ru', ''),
+    ServiceUserData('Hzpriezz', 'hzpriezz@gmail.ru', ''),
+  ];
+
   /// Все посты
   final _allPosts = [
     ServicePostData(
@@ -87,37 +96,46 @@ class TeamLeadMockService implements TeamLeadService {
         false)
   ];
 
-  /// Загружает посты из общего списка начиная с [start] в количестве [count]
+  /// Комментарии к посту с идентификатором 1
+  final _comments = [
+    ServiceCommentData(
+        'EGSP', DateTime(2020, 4, 12), "Идея неплохая, но не доработанная"),
+    ServiceCommentData('Elis', DateTime(2020, 5, 13), "Где то я это уже видел"),
+    ServiceCommentData(
+        'Alexander210483', DateTime(2020, 5, 14), "Написал на почту")
+  ];
+
+  /// Загружает посты из общего списка начиная с [firstId] в количестве [count]
   @override
-  Future<List<ServicePostData>> loadPosts(int start, int count) async {
-    if (start >= _allPosts.length) {
+  Future<List<ServicePostData>> loadPosts(int firstId, int count) async {
+    if (firstId >= _allPosts.length) {
       return [];
     }
 
     var cnt = count;
-    if (start + count > _allPosts.length) {
-      cnt = _allPosts.length - start;
+    if (firstId + count > _allPosts.length) {
+      cnt = _allPosts.length - firstId;
     }
 
-    print("$start ${start + cnt}");
-    return _allPosts.getRange(start, start + cnt).toList();
+    print("loadPosts: $firstId ${firstId + cnt}");
+    return _allPosts.getRange(firstId, firstId + cnt).toList();
   }
 
   /// Возвращает избранное
   @override
-  Future<List<ServicePostData>> loadFavorite() async {
+  Future<List<ServicePostData>> loadUserFavoritePosts(String userName) async {
     return _allPosts.where((x) => x.isFavorite).toList();
   }
 
   /// Загружает посты пользователя
   @override
-  Future<List<ServicePostData>> loadUserPosts() async {
-    return _allPosts.where((x) => x.userName == "pytachok").toList();
+  Future<List<ServicePostData>> loadUserPosts(String userName) async {
+    return _allPosts.where((x) => x.userName == userName).toList();
   }
 
   /// Добавляет в избранное
   @override
-  Future addToFavorite(int postId) async {
+  Future addPostToFavorite(int postId) async {
     final post =
         _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
     post?.isFavorite = true;
@@ -125,7 +143,7 @@ class TeamLeadMockService implements TeamLeadService {
 
   /// Удаляет из избранного
   @override
-  Future removeFromFavorite(int postId) async {
+  Future removePostFromFavorite(int postId) async {
     final post =
         _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
     post?.isFavorite = false;
@@ -135,5 +153,28 @@ class TeamLeadMockService implements TeamLeadService {
   @override
   Future<ServicePostData> loadPost(int postId) async {
     return _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
+  }
+
+  /// Возвращает вошедшего пользователя
+  @override
+  ServiceUserData getLoginUser() {
+    return ServiceUserData("pytachok", "pytachock@gmail.com", "");
+  }
+
+  /// Возвращает информацию пользователя по имени
+  @override
+  Future<ServiceUserData> getUserInfo(String userName) async {
+    return _allUsers.firstWhere((x) => x.name == userName, orElse: () => null);
+  }
+
+  /// Загружает комментарии для поста [postId] начиная с индекса [firstId] в количестве [count]
+  @override
+  Future<List<ServiceCommentData>> loadPostComments(
+      int postId, int firstId, int count) async {
+    if (postId == 1) {
+      return _comments;
+    }
+
+    return [];
   }
 }

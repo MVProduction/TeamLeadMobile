@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
+import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart';
 import 'package:team_lead/common/date_utils.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
-import 'package:team_lead/team_lead_app_store.dart';
 
 /// Страница с логином
 class PostDiscussionPage extends StatefulWidget {
@@ -66,7 +67,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   }
 
   /// Возвращает вид с постом
-  Widget getPostView(ServicePostData post) {
+  Widget getPostView(PostWithUserData post) {
     return ListView(
       children: <Widget>[
         Container(
@@ -89,21 +90,26 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(post.userName,
+                    child: Text(post.post.userName,
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: Text(post.createDate.toLocalizedDateString()),
+                    child: Text(post.post.createDate.toLocalizedDateString()),
                   ),
-                  Text(post.shortText, style: TextStyle(fontSize: 18))
+                  if (post.user != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(post.user.email),
+                    ),
+                  Text(post.post.text, style: TextStyle(fontSize: 18))
                 ])),
       ],
     );
   }
 
   /// Возвращает вид с комментариями
-  Widget getCommentView(ServicePostData post) {
+  Widget getCommentView(PostWithUserData post) {
     return Column(
       children: [
         Expanded(
@@ -146,7 +152,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   }
 
   /// Возвращает основной вид с постами и комментариями
-  Widget getMainView(ServicePostData post) {
+  Widget getMainView(PostWithUserData post) {
     return TabBarView(children: <Widget>[
       getPostView(post),
       getCommentView(post),
@@ -167,7 +173,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
           if (post == null) return Text('NO DATA');
 
           return getScafoldViewWithTabs(
-            post.title,
+            post.post.title,
             getMainView(post),
           );
         default:
