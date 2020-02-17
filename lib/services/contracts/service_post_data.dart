@@ -4,7 +4,7 @@ class ServicePostData {
   final int id;
 
   /// Имя пользователя
-  final String userName;
+  final String userName;  
 
   /// Заголовок
   final String title;

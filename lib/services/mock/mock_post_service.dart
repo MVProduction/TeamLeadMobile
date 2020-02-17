@@ -1,17 +1,8 @@
-import 'package:team_lead/services/contracts/service_comment_data.dart';
 import 'package:team_lead/services/contracts/service_post_data.dart';
-import 'package:team_lead/services/contracts/service_user_data.dart';
-import 'package:team_lead/services/team_lead_service.dart';
+import 'package:team_lead/services/post_service.dart';
 
-/// Тестовый сервис
-class TeamLeadMockService implements TeamLeadService {
-  /// Все пользователи
-  final _allUsers = [
-    ServiceUserData('Klifford', 'klifford@mail.ru', ''),
-    ServiceUserData('Elis', 'elis@mail.ru', ''),
-    ServiceUserData('Hzpriezz', 'hzpriezz@gmail.ru', ''),
-  ];
-
+/// Тестовый сервис для работы с постами
+class MockPostService extends PostService {
   /// Все посты
   final _allPosts = [
     ServicePostData(
@@ -96,15 +87,6 @@ class TeamLeadMockService implements TeamLeadService {
         false)
   ];
 
-  /// Комментарии к посту с идентификатором 1
-  final _comments = [
-    ServiceCommentData(
-        'EGSP', DateTime(2020, 4, 12), "Идея неплохая, но не доработанная"),
-    ServiceCommentData('Elis', DateTime(2020, 5, 13), "Где то я это уже видел"),
-    ServiceCommentData(
-        'Alexander210483', DateTime(2020, 5, 14), "Написал на почту")
-  ];
-
   /// Загружает посты из общего списка начиная с [firstId] в количестве [count]
   @override
   Future<List<ServicePostData>> loadPosts(int firstId, int count) async {
@@ -155,26 +137,4 @@ class TeamLeadMockService implements TeamLeadService {
     return _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
   }
 
-  /// Возвращает вошедшего пользователя
-  @override
-  ServiceUserData getLoginUser() {
-    return ServiceUserData("pytachok", "pytachock@gmail.com", "");
-  }
-
-  /// Возвращает информацию пользователя по имени
-  @override
-  Future<ServiceUserData> getUserInfo(String userName) async {
-    return _allUsers.firstWhere((x) => x.name == userName, orElse: () => null);
-  }
-
-  /// Загружает комментарии для поста [postId] начиная с индекса [firstId] в количестве [count]
-  @override
-  Future<List<ServiceCommentData>> loadPostComments(
-      int postId, int firstId, int count) async {
-    if (postId == 1) {
-      return _comments;
-    }
-
-    return [];
-  }
 }

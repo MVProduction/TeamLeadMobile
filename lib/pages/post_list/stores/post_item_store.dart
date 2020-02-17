@@ -26,7 +26,7 @@ abstract class _PostItemStore with Store {
   Future addToFavorite() {
     isFavorite = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      await teamLeadService.addPostToFavorite(post.id);
+      await teamLeadService.postService.addPostToFavorite(post.id);
       return true;
     }));
 
@@ -38,7 +38,7 @@ abstract class _PostItemStore with Store {
   Future removeFavorite() {
     isFavorite = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      await teamLeadService.removePostFromFavorite(post.id);
+      await teamLeadService.postService.removePostFromFavorite(post.id);
       teamLeadAppStore.postListPageStore.favoritePostListStore
           .removePost(post.id);
       return false;

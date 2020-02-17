@@ -9,6 +9,6 @@ class UsersStore = _UsersStore with _$UsersStore;
 /// Модель пользователей
 abstract class _UsersStore with Store {
   ServiceUserData getLoginUser() {
-    return teamLeadService.getLoginUser();
+    return teamLeadService.userService.getLoginUser();
   }
 }

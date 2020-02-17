@@ -1,5 +1,8 @@
 /// Информация о комментарии
 class ServiceCommentData {
+  /// Идентификатор комментария
+  final int id;
+
   /// Имя пользователя сделавшего пост
   final String userName;
 
@@ -10,5 +13,5 @@ class ServiceCommentData {
   final String text;
 
   /// Конструктор
-  ServiceCommentData(this.userName, this.dateTime, this.text);
+  ServiceCommentData(this.id, this.userName, this.dateTime, this.text);
 }

@@ -21,7 +21,7 @@ abstract class _MainPostListStore with Store {
     allPosts = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
-      _postCache.addAll(await teamLeadService.loadPosts(0, 5));
+      _postCache.addAll(await teamLeadService.postService.loadPosts(0, 5));
       return _postCache;
     }));
     return allPosts;
@@ -31,7 +31,7 @@ abstract class _MainPostListStore with Store {
   Future fetchOld() async {
     final allFuture = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      final newPosts = await teamLeadService.loadPosts(_postCache.length, 3);
+      final newPosts = await teamLeadService.postService.loadPosts(_postCache.length, 3);
       _postCache.addAll(newPosts);
       return _postCache;
     }));

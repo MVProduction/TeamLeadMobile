@@ -19,10 +19,11 @@ abstract class _UserPostListStore with Store {
   @action
   Future fetchPosts() async {
     allPosts = ObservableFuture(Future(() async {
-      final user = teamLeadService.getLoginUser();
+      final user = teamLeadService.userService.getLoginUser();
       await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
-      _postCache.addAll(await teamLeadService.loadUserPosts(user.name));
+      _postCache
+          .addAll(await teamLeadService.postService.loadUserPosts(user.name));
       return _postCache;
     }));
     return allPosts;
