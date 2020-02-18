@@ -23,4 +23,11 @@ class MockCommentService extends CommentService {
 
     return [];
   }
+
+  /// Отправляет комментарий
+  @override
+  Future sendComment(int postId, String userName, String text) async {
+    _comments
+        .add(ServiceCommentData(postId, userName, '', DateTime.now(), text));
+  }
 }

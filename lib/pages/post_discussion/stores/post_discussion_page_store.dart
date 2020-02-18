@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
 import 'package:team_lead/services/contracts/service_comment_data.dart';
 import 'package:team_lead/services/team_lead_service.dart';
@@ -27,6 +28,13 @@ abstract class _PostDiscussionPageStore with Store {
   /// Устанавливает идентификатор поста
   void setPostId(int postId) {
     _postId = postId;
+  }
+
+  /// Отправляет комментарий
+  Future sendComment(String text) async {
+    final user = teamLeadAppStore.usersStore.getLoginUser();
+    await teamLeadService.commentService.sendComment(_postId, user.name, text);
+    fetchComments();
   }
 
   /// Загружает данные поста

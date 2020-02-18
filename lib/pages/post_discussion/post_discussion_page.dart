@@ -18,6 +18,10 @@ class PostDiscussionPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostDiscussionPageState extends State<PostDiscussionPage> {
+  /// Контроллер текста ввода комментария
+  TextEditingController _commentTextController = TextEditingController();
+
+  /// Обрабатывает изменение вкладки
   void _onTabChange(int tabIndex) {
     switch (tabIndex) {
       case 0:
@@ -27,6 +31,14 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
         teamLeadAppStore.postDiscussionPageStore.fetchComments();
         break;
     }
+  }
+
+  /// Обрабатывает отправку комментария
+  void _onCommentSend() {
+    final text = _commentTextController.text;
+    if (text.isEmpty) return;
+    teamLeadAppStore.postDiscussionPageStore.sendComment(text);
+    _commentTextController.text = "";
   }
 
   /// Возвращает вид с заголовком и заданным телом с владками
@@ -124,6 +136,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
               Expanded(
                   flex: 9,
                   child: TextField(
+                    controller: _commentTextController,
                     decoration:
                         InputDecoration(hintText: "Введите комментарий"),
                   )),
@@ -131,7 +144,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   width: 40,
                   child: IconButton(
                       icon: Icon(Icons.send, color: Colors.indigo),
-                      onPressed: () {}))
+                      onPressed: _onCommentSend))
             ],
           ),
         )
