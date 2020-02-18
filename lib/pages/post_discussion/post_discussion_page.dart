@@ -4,9 +4,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
-import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart';
 import 'package:team_lead/common/date_utils.dart';
-import 'package:team_lead/services/contracts/service_post_data.dart';
+import 'package:team_lead/pages/post_discussion/widgets/comment_list_widget.dart';
 
 /// Страница с логином
 class PostDiscussionPage extends StatefulWidget {
@@ -19,20 +18,15 @@ class PostDiscussionPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostDiscussionPageState extends State<PostDiscussionPage> {
-  /// Возвращает вид с заголовком и заданным телом без вкладок
-  Widget getScafoldView(String title, Widget body) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-          ),
-          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
-        ],
-      )),
-      body: body,
-    );
+  void _onTabChange(int tabIndex) {
+    switch (tabIndex) {
+      case 0:
+        teamLeadAppStore.postDiscussionPageStore.fetchPost();
+        break;
+      case 1:
+        teamLeadAppStore.postDiscussionPageStore.fetchComments();
+        break;
+    }
   }
 
   /// Возвращает вид с заголовком и заданным телом с владками
@@ -52,6 +46,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             )),
             body: body,
             bottomNavigationBar: new TabBar(
+                onTap: _onTabChange,
                 unselectedLabelColor: Colors.black,
                 indicator: BoxDecoration(color: Colors.indigo),
                 tabs: [
@@ -116,14 +111,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
           flex: 9,
           child: Padding(
             padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
-            child: ListView(children: <Widget>[
-              for (var i = 0; i < 20; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: CommentItemWidget(
-                      "Ata $i", DateTime.now(), "Комментарий $i"),
-                )
-            ]),
+            child: CommentListWidget(),
           ),
         ),
         Container(
@@ -163,7 +151,8 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   @override
   Widget build(BuildContext context) {
     final postId = (ModalRoute.of(context).settings.arguments as int) ?? 1;
-    teamLeadAppStore.postDiscussionPageStore.fetchPost(postId);
+    teamLeadAppStore.postDiscussionPageStore.setPostId(postId);
+    teamLeadAppStore.postDiscussionPageStore.fetchPost();
     return Observer(builder: (context) {
       final future = teamLeadAppStore.postDiscussionPageStore.post;
 
@@ -177,7 +166,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             getMainView(post),
           );
         default:
-          return getScafoldView(
+          return getScafoldViewWithTabs(
               'Загружается', Center(child: CircularProgressIndicator()));
       }
     });

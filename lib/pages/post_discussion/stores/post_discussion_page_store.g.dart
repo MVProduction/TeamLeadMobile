@@ -26,15 +26,43 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
     }, _$postAtom, name: '${_$postAtom.name}_set');
   }
 
+  final _$commentsAtom = Atom(name: '_PostDiscussionPageStore.comments');
+
+  @override
+  ObservableFuture<List<ServiceCommentData>> get comments {
+    _$commentsAtom.context.enforceReadPolicy(_$commentsAtom);
+    _$commentsAtom.reportObserved();
+    return super.comments;
+  }
+
+  @override
+  set comments(ObservableFuture<List<ServiceCommentData>> value) {
+    _$commentsAtom.context.conditionallyRunInAction(() {
+      super.comments = value;
+      _$commentsAtom.reportChanged();
+    }, _$commentsAtom, name: '${_$commentsAtom.name}_set');
+  }
+
   final _$_PostDiscussionPageStoreActionController =
       ActionController(name: '_PostDiscussionPageStore');
 
   @override
-  Future<dynamic> fetchPost(int postId) {
+  Future<dynamic> fetchPost() {
     final _$actionInfo =
         _$_PostDiscussionPageStoreActionController.startAction();
     try {
-      return super.fetchPost(postId);
+      return super.fetchPost();
+    } finally {
+      _$_PostDiscussionPageStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<dynamic> fetchComments() {
+    final _$actionInfo =
+        _$_PostDiscussionPageStoreActionController.startAction();
+    try {
+      return super.fetchComments();
     } finally {
       _$_PostDiscussionPageStoreActionController.endAction(_$actionInfo);
     }

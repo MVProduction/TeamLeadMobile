@@ -6,6 +6,9 @@ class ServiceCommentData {
   /// Имя пользователя сделавшего пост
   final String userName;
 
+  /// URL фотографии пользователя
+  final String userPhotoUrl;
+
   /// Дата и время комментария
   final DateTime dateTime;
 
@@ -13,5 +16,6 @@ class ServiceCommentData {
   final String text;
 
   /// Конструктор
-  ServiceCommentData(this.id, this.userName, this.dateTime, this.text);
+  ServiceCommentData(
+      this.id, this.userName, this.userPhotoUrl, this.dateTime, this.text);
 }

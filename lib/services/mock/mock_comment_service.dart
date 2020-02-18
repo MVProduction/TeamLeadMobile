@@ -5,12 +5,12 @@ import 'package:team_lead/services/contracts/service_comment_data.dart';
 class MockCommentService extends CommentService {
   /// Комментарии к посту с идентификатором 1
   final _comments = [
+    ServiceCommentData(1, 'EGSP', '', DateTime(2020, 4, 12),
+        "Идея неплохая, но не доработанная"),
     ServiceCommentData(
-        1, 'EGSP', DateTime(2020, 4, 12), "Идея неплохая, но не доработанная"),
+        2, 'Elis', '', DateTime(2020, 5, 13), "Где то я это уже видел"),
     ServiceCommentData(
-        2, 'Elis', DateTime(2020, 5, 13), "Где то я это уже видел"),
-    ServiceCommentData(
-        3, 'Alexander210483', DateTime(2020, 5, 14), "Написал на почту")
+        3, 'Alexander210483', '', DateTime(2020, 5, 14), "Написал на почту")
   ];
 
   /// Загружает комментарии для поста [postId] начиная с индекса [firstId] в количестве [count]
