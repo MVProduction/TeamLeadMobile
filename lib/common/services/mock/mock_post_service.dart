@@ -1,5 +1,5 @@
-import 'package:team_lead/services/contracts/service_post_data.dart';
-import 'package:team_lead/services/post_service.dart';
+import 'package:team_lead/common/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/services/post_service.dart';
 
 /// Тестовый сервис для работы с постами
 class MockPostService extends PostService {
@@ -137,4 +137,10 @@ class MockPostService extends PostService {
     return _allPosts.firstWhere((x) => x.id == postId, orElse: () => null);
   }
 
+  /// Создаёт пост
+  @override
+  Future createPost(String user, String title, String text) async {
+    _allPosts.add(ServicePostData(
+        _allPosts.length, user, title, DateTime.now(), text, 0, false));
+  }
 }

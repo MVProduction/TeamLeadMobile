@@ -1,5 +1,5 @@
-import 'package:team_lead/services/comment_service.dart';
-import 'package:team_lead/services/contracts/service_comment_data.dart';
+import 'package:team_lead/common/services/comment_service.dart';
+import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 
 /// Тестовый сервис для работы с комментариями
 class MockCommentService extends CommentService {

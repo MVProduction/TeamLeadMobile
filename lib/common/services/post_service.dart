@@ -1,4 +1,4 @@
-import 'package:team_lead/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/services/contracts/service_post_data.dart';
 
 /// Сервис работы с постами
 abstract class PostService {
@@ -19,4 +19,7 @@ abstract class PostService {
 
   /// Удаляет из избранного
   Future removePostFromFavorite(int postId);
+
+  /// Создаёт пост
+  Future createPost(String user, String title, String text);
 }

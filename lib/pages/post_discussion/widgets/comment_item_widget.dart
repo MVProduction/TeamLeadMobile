@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/common/date_utils.dart';
-import 'package:team_lead/services/contracts/service_comment_data.dart';
+import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 
 /// Комментарий
 class CommentItemWidget extends StatelessWidget {

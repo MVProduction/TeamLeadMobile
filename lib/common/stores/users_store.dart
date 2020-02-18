@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
-import 'package:team_lead/services/contracts/service_user_data.dart';
-import 'package:team_lead/services/team_lead_service.dart';
+import 'package:team_lead/common/services/contracts/service_user_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 
 part 'users_store.g.dart';
 

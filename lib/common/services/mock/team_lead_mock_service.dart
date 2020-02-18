@@ -1,9 +1,9 @@
-import 'package:team_lead/services/mock/mock_comment_service.dart';
-import 'package:team_lead/services/mock/mock_post_service.dart';
-import 'package:team_lead/services/mock/mock_user_service.dart';
-import 'package:team_lead/services/post_service.dart';
-import 'package:team_lead/services/team_lead_service.dart';
-import 'package:team_lead/services/user_service.dart';
+import 'package:team_lead/common/services/mock/mock_comment_service.dart';
+import 'package:team_lead/common/services/mock/mock_post_service.dart';
+import 'package:team_lead/common/services/mock/mock_user_service.dart';
+import 'package:team_lead/common/services/post_service.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
+import 'package:team_lead/common/services/user_service.dart';
 
 /// Тестовый сервис
 class TeamLeadMockService implements TeamLeadService {

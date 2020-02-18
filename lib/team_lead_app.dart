@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:team_lead/pages/login/login_page.dart';
 import 'package:team_lead/pages/post_discussion/post_discussion_page.dart';
+import 'package:team_lead/pages/post_edit/post_create_page.dart';
 import 'package:team_lead/pages/post_edit/post_edit_page.dart';
 import 'package:team_lead/pages/post_list/post_list_page.dart';
 import 'package:team_lead/pages/user_settings/user_settings_page.dart';
@@ -36,7 +37,8 @@ class TeamLeadApp extends StatelessWidget {
         Routes.Login: (_) => LoginPage(),
         Routes.PostList: (_) => PostListPage(),
         Routes.DiscussPost: (_) => PostDiscussionPage(),
-        Routes.CreatePost: (_) => PostEditPage(),
+        Routes.CreatePost: (_) => PostCreatePage(),
+        Routes.EditPost: (_) => PostEditPage(),
         Routes.EditUser: (_) => UserSettingsPage(),
       },
     );

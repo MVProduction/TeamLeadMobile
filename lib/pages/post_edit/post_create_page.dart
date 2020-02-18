@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
-/// Страница с редактированием поста
-class PostEditPage extends StatefulWidget {
+/// Страница с созданием поста
+class PostCreatePage extends StatefulWidget {
   /// Конструктор
-  PostEditPage({Key key}) : super(key: key);
+  PostCreatePage({Key key}) : super(key: key);
 
   @override
-  _PostEditPageState createState() => _PostEditPageState();
+  _PostCreatePageState createState() => _PostCreatePageState();
 }
 
 /// Состояние страницы
-class _PostEditPageState extends State<PostEditPage> {
+class _PostCreatePageState extends State<PostCreatePage> {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Observer(builder: (context) {
+      
+    });
+    
+    Scaffold(
       appBar: AppBar(
           title: Row(
         children: <Widget>[
