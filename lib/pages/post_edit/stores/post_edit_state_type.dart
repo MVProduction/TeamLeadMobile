@@ -4,5 +4,11 @@ enum PostEditStateType {
   Edit,
 
   /// Ожидание сохраниения
-  PendingSave
+  PendingSave,
+
+  /// Сохранено
+  Saved,
+
+  /// Возникла ошибка
+  Error
 }

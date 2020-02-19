@@ -13,8 +13,12 @@ abstract class _PostCreatePageStore with Store {
   PostEditStateType state = PostEditStateType.Edit;
 
   /// Создаёт пост
+  @action
   Future createPost(String title, String text) async {
+    state = PostEditStateType.PendingSave;
+    await Future.delayed(Duration(seconds: 2));
     final user = teamLeadService.userService.getLoginUser();
     await teamLeadService.postService.createPost(user.name, title, text);
+    state = PostEditStateType.Saved;
   }
 }
