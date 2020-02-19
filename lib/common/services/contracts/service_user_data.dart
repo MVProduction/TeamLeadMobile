@@ -4,12 +4,14 @@ class ServiceUserData {
   final String name;
 
   /// Электронная почта
-  /// TODO: контакты
-  final String email;
+  final String contacts;
 
   /// Url для фото пользователя
   final String photoUrl;
 
+  /// Навыки
+  final String skills;
+
   /// Конструктор
-  ServiceUserData(this.name, this.email, this.photoUrl);  
+  ServiceUserData(this.name, this.contacts, this.skills, this.photoUrl);
 }

@@ -25,28 +25,38 @@ class _PostCreatePageState extends State<PostCreatePage> {
   void _onCommitClick() {
     final title = _titleController.text;
     final text = _textController.text;
+    if (title.isEmpty || text.isEmpty) return;
     teamLeadAppStore.postCreatePageStore.createPost(title, text);
+  }
+
+  /// Возвращает вид с заголовками и телом [body]
+  Widget getScaffold(String title, Widget body) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+          ),
+          Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
+        ],
+      )),
+      body: body,
+    );
   }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
+    teamLeadAppStore.postCreatePageStore.state = PostEditStateType.Edit;
+
     return Observer(builder: (context) {
       final state = teamLeadAppStore.postCreatePageStore.state;
       switch (state) {
         case PostEditStateType.Edit:
-          return Scaffold(
-            appBar: AppBar(
-                title: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                ),
-                Text("Создать объявление",
-                    maxLines: 1, overflow: TextOverflow.ellipsis)
-              ],
-            )),
-            body: Padding(
+          return getScaffold(
+            'Создать объявление',
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView(
                 children: <Widget>[
@@ -56,6 +66,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   TextField(
+                    controller: _titleController,
                     decoration: new InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
@@ -76,6 +87,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   TextField(
+                    controller: _textController,
                     maxLines: 10,
                     decoration: new InputDecoration(
                         contentPadding:
@@ -108,13 +120,45 @@ class _PostCreatePageState extends State<PostCreatePage> {
             ),
           );
         case PostEditStateType.PendingSave:
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return getScaffold(
+              'Идёт создание',
+              Center(
+                child: CircularProgressIndicator(),
+              ));
         case PostEditStateType.Saved:
-          return Center(
-            child: Text("Сохранено"),
-          );
+          return getScaffold(
+              'Сохранено',
+              Center(
+                  child: Container(
+                child: Container(
+                  height: 300,
+                  child: Column(
+                    children: <Widget>[
+                      Text('Создание поста завершено',
+                          style: TextStyle(fontSize: 16)),
+                      Container(
+                        padding: EdgeInsets.only(top: 32),
+                        width: 200,
+                        child: RaisedButton(
+                          child: Text("Создать ещё"),
+                          color: Colors.blue,
+                          onPressed: () => teamLeadAppStore.postCreatePageStore
+                              .state = PostEditStateType.Edit,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 16),
+                        width: 200,
+                        child: RaisedButton(
+                          color: Colors.green,
+                          child: Text("Вернуться к постам"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )));
         case PostEditStateType.Error:
           break;
       }

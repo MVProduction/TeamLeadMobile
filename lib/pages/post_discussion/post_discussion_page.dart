@@ -107,7 +107,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   if (post.user != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(post.user.email),
+                      child: Text(post.user.contacts),
                     ),
                   Text(post.post.text, style: TextStyle(fontSize: 18))
                 ])),

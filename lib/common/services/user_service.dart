@@ -7,4 +7,7 @@ abstract class UserService {
 
   /// Возвращает информацию пользователя по имени
   Future<ServiceUserData> getUserInfo(String userName);
+
+  /// Сохраняет информацию пользователя
+  Future saveUser(String name, String contact, String skill);
 }

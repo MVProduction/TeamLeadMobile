@@ -87,6 +87,9 @@ class MockPostService extends PostService {
         false)
   ];
 
+  /// Возвращает следующий id поста
+  int get nextId => _allPosts.last.id + 1;
+
   /// Загружает посты из общего списка начиная с [firstId] в количестве [count]
   @override
   Future<List<ServicePostData>> loadPosts(int firstId, int count) async {
@@ -140,7 +143,7 @@ class MockPostService extends PostService {
   /// Создаёт пост
   @override
   Future createPost(String user, String title, String text) async {
-    _allPosts.add(ServicePostData(
-        _allPosts.length, user, title, DateTime.now(), text, 0, false));
+    _allPosts.add(
+        ServicePostData(nextId, user, title, DateTime.now(), text, 0, false));
   }
 }
