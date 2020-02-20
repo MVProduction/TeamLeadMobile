@@ -6,6 +6,19 @@ import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
 import 'package:team_lead/common/date_utils.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_list_widget.dart';
+import 'package:team_lead/routes.dart';
+
+/// Опции редактирования
+class EditOptions {
+  /// Можно редактировать
+  final bool canEdit;
+
+  /// Идентификатор поста
+  final int postId;
+
+  /// Конструктор
+  EditOptions(this.canEdit, this.postId);
+}
 
 /// Страница с логином
 class PostDiscussionPage extends StatefulWidget {
@@ -33,6 +46,12 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
     }
   }
 
+  /// Обрабатывает нажатие кнопки редактирования
+  void _onEditClick(int postId) {
+    Navigator.pop(context);
+    Navigator.pushNamed(context, Routes.EditPost, arguments: postId);
+  }
+
   /// Обрабатывает отправку комментария
   void _onCommentSend() {
     final text = _commentTextController.text;
@@ -42,20 +61,20 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   }
 
   /// Возвращает вид с заголовком и заданным телом с владками
-  Widget getScafoldViewWithTabs(String title, Widget body) {
+  Widget getScafoldViewWithTabs(
+      String title, EditOptions editOptions, Widget body) {
     return DefaultTabController(
         initialIndex: 0,
         length: 2,
         child: Scaffold(
             appBar: AppBar(
-                title: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                ),
-                Text(title, maxLines: 1, overflow: TextOverflow.ellipsis)
-              ],
-            )),
+                title: Text(title, overflow: TextOverflow.ellipsis),
+                actions: <Widget>[
+                  if (editOptions?.canEdit == true)
+                    IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => _onEditClick(editOptions.postId))
+                ]),
             body: body,
             bottomNavigationBar: new TabBar(
                 onTap: _onTabChange,
@@ -163,7 +182,8 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    final postId = (ModalRoute.of(context).settings.arguments as int) ?? 1;
+    final postId = ModalRoute.of(context).settings.arguments as int;
+
     teamLeadAppStore.postDiscussionPageStore.setPostId(postId);
     teamLeadAppStore.postDiscussionPageStore.fetchPost();
     return Observer(builder: (context) {
@@ -173,14 +193,21 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
         case FutureStatus.fulfilled:
           final post = future.value;
           if (post == null) return Text('NO DATA');
+          final user = teamLeadAppStore.usersStore.getLoginUser();
+          EditOptions editOptions;
+
+          if (post.user != null && user.name == post.user.name) {
+            editOptions = EditOptions(true, post.post.id);
+          }
 
           return getScafoldViewWithTabs(
             post.post.title,
+            editOptions,
             getMainView(post),
           );
         default:
           return getScafoldViewWithTabs(
-              'Загружается', Center(child: CircularProgressIndicator()));
+              'Загружается', null, Center(child: CircularProgressIndicator()));
       }
     });
   }

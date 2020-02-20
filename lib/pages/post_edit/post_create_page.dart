@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
+import 'package:team_lead/pages/post_edit/stores/post_create_state_type.dart';
 import 'package:team_lead/pages/post_edit/stores/post_edit_state_type.dart';
 
 /// Страница с созданием поста
@@ -26,6 +27,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     final title = _titleController.text;
     final text = _textController.text;
     if (title.isEmpty || text.isEmpty) return;
+
     teamLeadAppStore.postCreatePageStore.createPost(title, text);
   }
 
@@ -48,14 +50,14 @@ class _PostCreatePageState extends State<PostCreatePage> {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    teamLeadAppStore.postCreatePageStore.state = PostEditStateType.Edit;
+    teamLeadAppStore.postCreatePageStore.state = PostCreateStateType.Edit;
 
     return Observer(builder: (context) {
       final state = teamLeadAppStore.postCreatePageStore.state;
       switch (state) {
-        case PostEditStateType.Edit:
+        case PostCreateStateType.Edit:
           return getScaffold(
-            'Создать объявление',
+            'Создание объявления',
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView(
@@ -110,7 +112,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                       child: RaisedButton.icon(
                           color: Colors.green.shade700,
                           icon: Icon(Icons.check, color: Colors.white),
-                          label: Text("Создать",
+                          label: Text('Создать',
                               style: TextStyle(color: Colors.white)),
                           onPressed: _onCommitClick),
                     ),
@@ -119,13 +121,13 @@ class _PostCreatePageState extends State<PostCreatePage> {
               ),
             ),
           );
-        case PostEditStateType.PendingSave:
+        case PostCreateStateType.PendingSave:
           return getScaffold(
-              'Идёт создание',
+              'Идёт сохранение',
               Center(
                 child: CircularProgressIndicator(),
               ));
-        case PostEditStateType.Saved:
+        case PostCreateStateType.Created:
           return getScaffold(
               'Сохранено',
               Center(
@@ -134,7 +136,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                   height: 300,
                   child: Column(
                     children: <Widget>[
-                      Text('Создание поста завершено',
+                      Text('Сохранение поста завершено',
                           style: TextStyle(fontSize: 16)),
                       Container(
                         padding: EdgeInsets.only(top: 32),
@@ -143,7 +145,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                           child: Text("Создать ещё"),
                           color: Colors.blue,
                           onPressed: () => teamLeadAppStore.postCreatePageStore
-                              .state = PostEditStateType.Edit,
+                              .state = PostCreateStateType.Edit,
                         ),
                       ),
                       Container(
@@ -159,7 +161,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
                   ),
                 ),
               )));
-        case PostEditStateType.Error:
+        case PostCreateStateType.Error:
           break;
       }
 

@@ -26,16 +26,11 @@ mixin _$UserSettingsPageStore on _UserSettingsPageStore, Store {
     }, _$stateAtom, name: '${_$stateAtom.name}_set');
   }
 
-  final _$_UserSettingsPageStoreActionController =
-      ActionController(name: '_UserSettingsPageStore');
+  final _$saveUserAsyncAction = AsyncAction('saveUser');
 
   @override
   Future<dynamic> saveUser(String name, String contact, String skill) {
-    final _$actionInfo = _$_UserSettingsPageStoreActionController.startAction();
-    try {
-      return super.saveUser(name, contact, skill);
-    } finally {
-      _$_UserSettingsPageStoreActionController.endAction(_$actionInfo);
-    }
+    return _$saveUserAsyncAction
+        .run(() => super.saveUser(name, contact, skill));
   }
 }

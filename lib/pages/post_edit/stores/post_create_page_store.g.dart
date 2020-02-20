@@ -12,14 +12,14 @@ mixin _$PostCreatePageStore on _PostCreatePageStore, Store {
   final _$stateAtom = Atom(name: '_PostCreatePageStore.state');
 
   @override
-  PostEditStateType get state {
+  PostCreateStateType get state {
     _$stateAtom.context.enforceReadPolicy(_$stateAtom);
     _$stateAtom.reportObserved();
     return super.state;
   }
 
   @override
-  set state(PostEditStateType value) {
+  set state(PostCreateStateType value) {
     _$stateAtom.context.conditionallyRunInAction(() {
       super.state = value;
       _$stateAtom.reportChanged();

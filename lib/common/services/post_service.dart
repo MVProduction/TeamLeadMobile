@@ -22,4 +22,7 @@ abstract class PostService {
 
   /// Создаёт пост
   Future createPost(String user, String title, String text);
+
+  /// Редактирует пост
+  Future editPost(int postId, String title, String text);
 }

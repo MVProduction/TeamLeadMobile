@@ -12,6 +12,7 @@ class MockUserService extends UserService {
     ServiceUserData('Klifford', 'klifford@mail.ru', '', ''),
     ServiceUserData('Elis', 'elis@mail.ru', '', ''),
     ServiceUserData('Hzpriezz', 'hzpriezz@gmail.ru', '', ''),
+    ServiceUserData("pytachok", "pytachock@gmail.com", 'php, python', '')
   ];
 
   /// Возвращает вошедшего пользователя

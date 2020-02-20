@@ -7,13 +7,13 @@ class ServicePostData {
   final String userName;  
 
   /// Заголовок
-  final String title;
+  String title;
 
   /// Время создания поста
   final DateTime createDate;
 
   /// Описание поста
-  final String text;
+  String text;
 
   /// Количество просмотров
   final int viewCount;

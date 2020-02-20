@@ -1,10 +1,13 @@
-/// Состояние редактирования поста
-enum PostEditStateType {
+/// Состояние создания поста
+enum PostCreateStateType {
   /// Режим редактирования
   Edit,
 
   /// Ожидание сохраниения
-  PendingSave,  
+  PendingSave,
+
+  /// Пост создан
+  Created,
 
   /// Возникла ошибка
   Error

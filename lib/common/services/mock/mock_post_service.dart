@@ -146,4 +146,12 @@ class MockPostService extends PostService {
     _allPosts.add(
         ServicePostData(nextId, user, title, DateTime.now(), text, 0, false));
   }
+
+    /// Редактирует пост
+  @override
+  Future editPost(int postId, String title, String text) async {
+    final post = await loadPost(postId);    
+    post.title = title;
+    post.text = text;
+  }
 }
