@@ -11,21 +11,19 @@ class PostEditPageStore = _PostEditPageStore with _$PostEditPageStore;
 abstract class _PostEditPageStore with Store {
   /// Загружаемый пост
   @observable
-  ObservableFuture<ServicePostData> post = ObservableFuture.value(null);
+  ServicePostData post;
 
   /// Состояние страницы
   @observable
-  PostEditStateType state = PostEditStateType.Edit;
+  PostEditStateType state = PostEditStateType.Load;
 
   /// Получает пост по id
   @action
-  Future fetchPost(int postId) {
-    post = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
-      return await teamLeadService.postService.loadPost(postId);
-    }));
-
-    return post;
+  Future fetchPost(int postId) async {
+    state = PostEditStateType.Load;
+    await Future.delayed(Duration(seconds: 2));
+    post = await teamLeadService.postService.loadPost(postId);
+    state = PostEditStateType.Edit;
   }
 
   /// Редактирует пост
@@ -34,6 +32,7 @@ abstract class _PostEditPageStore with Store {
     state = PostEditStateType.PendingSave;
     await Future.delayed(Duration(seconds: 2));
     await teamLeadService.postService.editPost(postId, title, text);
+    post = await teamLeadService.postService.loadPost(postId);
     state = PostEditStateType.Edit;
   }
 }

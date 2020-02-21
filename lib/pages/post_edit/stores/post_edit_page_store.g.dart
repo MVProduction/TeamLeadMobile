@@ -12,14 +12,14 @@ mixin _$PostEditPageStore on _PostEditPageStore, Store {
   final _$postAtom = Atom(name: '_PostEditPageStore.post');
 
   @override
-  ObservableFuture<ServicePostData> get post {
+  ServicePostData get post {
     _$postAtom.context.enforceReadPolicy(_$postAtom);
     _$postAtom.reportObserved();
     return super.post;
   }
 
   @override
-  set post(ObservableFuture<ServicePostData> value) {
+  set post(ServicePostData value) {
     _$postAtom.context.conditionallyRunInAction(() {
       super.post = value;
       _$postAtom.reportChanged();
@@ -43,23 +43,17 @@ mixin _$PostEditPageStore on _PostEditPageStore, Store {
     }, _$stateAtom, name: '${_$stateAtom.name}_set');
   }
 
+  final _$fetchPostAsyncAction = AsyncAction('fetchPost');
+
+  @override
+  Future<dynamic> fetchPost(int postId) {
+    return _$fetchPostAsyncAction.run(() => super.fetchPost(postId));
+  }
+
   final _$editPostAsyncAction = AsyncAction('editPost');
 
   @override
   Future<dynamic> editPost(int postId, String title, String text) {
     return _$editPostAsyncAction.run(() => super.editPost(postId, title, text));
-  }
-
-  final _$_PostEditPageStoreActionController =
-      ActionController(name: '_PostEditPageStore');
-
-  @override
-  Future<dynamic> fetchPost(int postId) {
-    final _$actionInfo = _$_PostEditPageStoreActionController.startAction();
-    try {
-      return super.fetchPost(postId);
-    } finally {
-      _$_PostEditPageStoreActionController.endAction(_$actionInfo);
-    }
   }
 }
