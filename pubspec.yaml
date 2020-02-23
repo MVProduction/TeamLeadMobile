@@ -23,6 +23,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  firebase_core: ^0.4.4
+  firebase_auth: ^0.15.4
+  google_sign_in: ^4.1.4
+
   intl: ^0.16.1
   mobx:
   flutter_mobx:

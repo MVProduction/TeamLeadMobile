@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "617349475916",
+    "firebase_url": "https://teamlead-55f74.firebaseio.com",
+    "project_id": "teamlead-55f74",
+    "storage_bucket": "teamlead-55f74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617349475916:android:ae4282e63afb40dd998ee9",
+        "android_client_info": {
+          "package_name": "com.rapidfingers.TeamLead"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617349475916-8o78ushkuurcgl3fhao54h88l68f0s4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rapidfingers.TeamLead",
+            "certificate_hash": "710d27b5c4536e108464b8d8cc2abd37a679dc1a"
+          }
+        },
+        {
+          "client_id": "617349475916-am9aj5k9rtmgo6rca3rso07ej533ort6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuHTJCYD2Y-lC-qJ3uH56OnT-KqnGV2oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617349475916-am9aj5k9rtmgo6rca3rso07ej533ort6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

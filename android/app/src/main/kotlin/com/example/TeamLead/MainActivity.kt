@@ -1,4 +1,4 @@
-package com.example.TeamLead
+package com.rapidfingers.TeamLead
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
