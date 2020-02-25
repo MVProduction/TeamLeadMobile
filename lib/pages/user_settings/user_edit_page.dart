@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
-import 'package:team_lead/pages/user_settings/stores/user_settings_page_state_type.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
 
 /// Страница редактирования настроек пользователя
-class UserSettingsPage extends StatelessWidget {
+class UserEditPage extends StatelessWidget {
   /// Контроллер ввода имени
   final _nameController = TextEditingController();
 
@@ -46,7 +46,7 @@ class UserSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     teamLeadAppStore.userSettingsPageStore.state =
-        UserSettingsPageStateType.Edit;
+        UserEditPageStateType.Edit;
 
     final user = teamLeadAppStore.usersStore.getLoginUser();
     _nameController.text = user.name;
@@ -56,7 +56,7 @@ class UserSettingsPage extends StatelessWidget {
     return Observer(builder: (context) {
       final state = teamLeadAppStore.userSettingsPageStore.state;
       switch (state) {
-        case UserSettingsPageStateType.Edit:
+        case UserEditPageStateType.Edit:
           return getScaffold(
             'Пользователь',
             Padding(
@@ -148,13 +148,13 @@ class UserSettingsPage extends StatelessWidget {
               ),
             ),
           );
-        case UserSettingsPageStateType.Saving:
+        case UserEditPageStateType.Saving:
           return getScaffold(
               'Идёт сохранение',
               Center(
                 child: CircularProgressIndicator(),
               ));
-        case UserSettingsPageStateType.Error:
+        case UserEditPageStateType.Error:
           break;
       }
 

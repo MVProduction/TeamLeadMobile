@@ -43,7 +43,7 @@ abstract class _PostDiscussionPageStore with Store {
     post = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
       final post = await teamLeadService.postService.loadPost(_postId);
-      final user = await teamLeadService.userService.getUserInfo(post.userName);
+      final user = await teamLeadService.userService.getUserInfoByName(post.userName);
       return PostWithUserData(user, post);
     }));
 

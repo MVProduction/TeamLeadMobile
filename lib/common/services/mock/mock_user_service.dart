@@ -1,3 +1,4 @@
+import 'package:team_lead/common/services/contracts/auth_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/user_service.dart';
 
@@ -23,12 +24,24 @@ class MockUserService extends UserService {
 
   /// Возвращает информацию пользователя по имени
   @override
-  Future<ServiceUserData> getUserInfo(String userName) async {
+  Future<ServiceUserData> getUserInfoByName(String userName) async {
     return _allUsers.firstWhere((x) => x.name == userName, orElse: () => null);
   }
 
   /// Сохраняет информацию пользователя
   Future saveUser(String name, String contact, String skill) async {
     _loginUser = ServiceUserData(name, contact, skill, '');
+  }
+
+  /// Возвращает информацию пользователя по идентификатору
+  @override
+  Future<ServiceUserData> getUserInfoById(String id) {
+    return null;
+  }
+
+  /// Подключается через гугл и возвращает информацию пользователя
+  @override
+  Future<AuthUserData> loginGoogle() async {
+    return AuthUserData("1234567890", "pytachok", "pytachok@gmail.com", "");
   }
 }

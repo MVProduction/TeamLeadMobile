@@ -15,6 +15,9 @@ class Routes {
   /// Страница с редактированием поста
   static const EditPost = "/edit_post";
 
+  /// Страница с созданием данных пользователя
+  static const CreateUser = "/create_user";
+
   /// Страница с редактированием данных пользователя
   static const EditUser = "/edit_user";
 }

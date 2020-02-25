@@ -6,7 +6,8 @@ import 'package:team_lead/pages/post_discussion/post_discussion_page.dart';
 import 'package:team_lead/pages/post_edit/post_create_page.dart';
 import 'package:team_lead/pages/post_edit/post_edit_page.dart';
 import 'package:team_lead/pages/post_list/post_list_page.dart';
-import 'package:team_lead/pages/user_settings/user_settings_page.dart';
+import 'package:team_lead/pages/user_settings/user_create_page.dart';
+import 'package:team_lead/pages/user_settings/user_edit_page.dart';
 import 'package:team_lead/routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -39,7 +40,8 @@ class TeamLeadApp extends StatelessWidget {
         Routes.DiscussPost: (_) => PostDiscussionPage(),
         Routes.CreatePost: (_) => PostCreatePage(),
         Routes.EditPost: (_) => PostEditPage(),
-        Routes.EditUser: (_) => UserSettingsPage(),
+        Routes.EditUser: (_) => UserEditPage(),
+        Routes.CreateUser: (_) => UserCreatePage(),
       },
     );
   }

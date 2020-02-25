@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_font.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,33 +17,18 @@ class LoginPage extends StatefulWidget {
 
 /// Состояние страницы
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   /// Подключается с помощью google
   void _signWithGoogle() async {
-    print(1);
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    print(googleUser.displayName);
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    print(3);
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    print(4);
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
-    print(5);
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    print(6);
-    final FirebaseUser currentUser = await _auth.currentUser();
-    print(currentUser.displayName);
+    final googleUser = await teamLeadService.userService.loginGoogle();
+    final user =
+        await teamLeadService.userService.getUserInfoById(googleUser.id);
+    if (user == null) {
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routes.CreateUser);
+    } else {
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routes.PostList);
+    }
   }
 
   /// Создаёт виджет
