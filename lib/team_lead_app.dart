@@ -32,7 +32,6 @@ class TeamLeadApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: PostListPage(),
       initialRoute: Routes.Login,
       routes: {
         Routes.Login: (_) => LoginPage(),

@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
         await teamLeadService.userService.getUserInfoById(googleUser.id);
     if (user == null) {
       Navigator.pop(context);
-      Navigator.pushNamed(context, Routes.CreateUser);
+      Navigator.pushNamed(context, Routes.CreateUser, arguments: googleUser);
     } else {
       Navigator.pop(context);
       Navigator.pushNamed(context, Routes.PostList);

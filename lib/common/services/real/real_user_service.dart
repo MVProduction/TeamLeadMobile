@@ -14,20 +14,17 @@ class RealUserService extends UserService {
 
   @override
   ServiceUserData getLoginUser() {
-    // TODO: implement getLoginUser
-    throw UnimplementedError();
+    return null;
   }
 
   @override
-  Future<ServiceUserData> getUserInfoById(String id) {
-    // TODO: implement getUserInfoById
-    throw UnimplementedError();
+  Future<ServiceUserData> getUserInfoById(String id) async {
+    return null;
   }
 
   @override
-  Future<ServiceUserData> getUserInfoByName(String userName) {
-    // TODO: implement getUserInfoByName
-    throw UnimplementedError();
+  Future<ServiceUserData> getUserInfoByName(String userName) async {
+    return null;
   }
 
   /// Авторизируется через google
