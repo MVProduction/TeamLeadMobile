@@ -18,7 +18,7 @@ abstract class _UserSettingsPageStore with Store {
     state = UserEditPageStateType.Saving;
 
     await Future.delayed(Duration(seconds: 2));
-    teamLeadService.userService.saveUser(name, contact, skill);
+    teamLeadService.userService.updateUser(name, contact, skill);
     state = UserEditPageStateType.Edit;
   }
 }

@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/user_service.dart';
+import 'package:uuid/uuid.dart';
 
 /// Реальный сервис пользователя
 class RealUserService extends UserService {
@@ -13,18 +14,43 @@ class RealUserService extends UserService {
   /// Для аутентификации через гугл
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  /// Вошедший пользователь
+  ServiceUserData _loginUser;
+
   @override
   ServiceUserData getLoginUser() {
-    return null;
+    return _loginUser;
   }
 
   @override
   Future<ServiceUserData> getUserInfoById(String id) async {
-    return null;
+    final userData =
+        await Firestore.instance.collection('users').document(id).get();
+
+    if (!userData.exists) {
+      return null;
+    }
+
+    return ServiceUserData(id, userData.data["name"], userData.data["contacts"],
+        userData.data["skills"], "");
   }
 
+  /// Возвращает пользователя по имени
   @override
   Future<ServiceUserData> getUserInfoByName(String userName) async {
+    await for (var item in Firestore.instance
+        .collection('users')
+        .where("name", isEqualTo: userName)
+        .limit(1)
+        .snapshots()) {
+      if (item.documents.length < 1) {
+        return null;
+      }
+      final document = item.documents[0];
+      return ServiceUserData(document.documentID, document.data["name"],
+          document.data["contacts"], document.data["skills"], "");
+    }
+
     return null;
   }
 
@@ -46,12 +72,33 @@ class RealUserService extends UserService {
 
   /// Сохраняет пользователя
   @override
-  Future saveUser(String name, String contact, String skill) async {
+  Future updateUser(String name, String contacts, String skills) async {
     final id = getLoginUser().id;
 
     await Firestore.instance
         .collection('users')
-        .document()
-        .setData({'id': id, 'name': name, 'contact': contact, 'skill': skill});
+        .document(id)
+        .updateData({'name': name, 'contacts': contacts, 'skills': skills});
+
+    _loginUser = ServiceUserData(_loginUser.id, name, contacts, skills, "");
+  }
+
+  /// Создаёт пользователя
+  @override
+  Future<ServiceUserData> createUser(
+      String id, String name, String contacts, String skills) async {
+    await Firestore.instance
+        .collection('users')
+        .document(id)
+        .setData({'name': name, 'contacts': contacts, 'skills': skills});
+
+    return ServiceUserData(id, name, contacts, skills, "");
+  }
+
+  /// Подключается к приложению
+  @override
+  Future<ServiceUserData> login(String id) async {
+    _loginUser = await getUserInfoById(id);
+    return _loginUser;
   }
 }

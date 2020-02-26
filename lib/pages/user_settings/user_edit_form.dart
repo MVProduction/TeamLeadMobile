@@ -7,6 +7,9 @@ typedef OnUserDataChangeFunc(ServiceUserData user);
 
 /// Форма редактирования пользователя
 class UserEditForm extends StatelessWidget {
+  /// Пользователь
+  final ServiceUserData _editUser;
+
   /// Контроллер ввода имени
   final _nameController = TextEditingController();
 
@@ -21,13 +24,13 @@ class UserEditForm extends StatelessWidget {
 
   /// Обрабатывает нажатие на кнопку сохранение
   void _onCommitClick() {
-    _onChange(ServiceUserData(_nameController.text, _contactController.text,
-        _skillController.text, ""));
+    _onChange(ServiceUserData(_editUser.id, _nameController.text,
+        _contactController.text, _skillController.text, ""));
   }
 
-  UserEditForm(ServiceUserData user, this._onChange) {
-    _nameController.text = user.name;
-    _contactController.text = user.contacts;
+  UserEditForm(this._editUser, this._onChange) {
+    _nameController.text = _editUser.name;
+    _contactController.text = _editUser.contacts;
   }
 
   /// Создаёт виджет

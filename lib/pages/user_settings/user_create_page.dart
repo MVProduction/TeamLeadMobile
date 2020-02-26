@@ -26,8 +26,10 @@ class UserCreatePage extends StatelessWidget {
 
   /// Обрабатывает изменения данных пользователя
   void _onChange(ServiceUserData data, BuildContext context) async {
-    await teamLeadService.userService
-        .saveUser(data.name, data.contacts, data.skills);
+    final user = await teamLeadService.userService
+        .createUser(data.id, data.name, data.contacts, data.skills);
+
+    await teamLeadService.userService.login(user.id);
     Navigator.pushNamed(context, Routes.PostList);
   }
 
@@ -40,8 +42,9 @@ class UserCreatePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: UserEditForm(
-              ServiceUserData(user.name, user.email, "", user.photoUrl),
-              _onChange),
+              ServiceUserData(
+                  user.id, user.name, user.email, "", user.photoUrl),
+              (d) => _onChange(d, context)),
         ));
   }
 }
