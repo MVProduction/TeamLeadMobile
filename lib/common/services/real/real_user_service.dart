@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
@@ -43,9 +44,14 @@ class RealUserService extends UserService {
     return AuthUserData(user.uid, user.displayName, user.email, user.photoUrl);
   }
 
+  /// Сохраняет пользователя
   @override
-  Future saveUser(String name, String contact, String skill) {
-    // TODO: implement saveUser
-    throw UnimplementedError();
+  Future saveUser(String name, String contact, String skill) async {
+    final id = getLoginUser().id;
+
+    await Firestore.instance
+        .collection('users')
+        .document()
+        .setData({'id': id, 'name': name, 'contact': contact, 'skill': skill});
   }
 }

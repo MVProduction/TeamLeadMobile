@@ -1,5 +1,8 @@
 /// Данные пользователя
 class ServiceUserData {
+  /// Идентификатор
+  final String id;
+
   /// Имя пользователя
   final String name;
 
@@ -13,5 +16,6 @@ class ServiceUserData {
   final String skills;
 
   /// Конструктор
-  ServiceUserData(this.name, this.contacts, this.skills, this.photoUrl);
+  ServiceUserData(
+      this.id, this.name, this.contacts, this.skills, this.photoUrl);
 }

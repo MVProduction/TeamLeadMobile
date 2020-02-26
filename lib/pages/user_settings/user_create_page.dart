@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/pages/user_settings/user_edit_form.dart';
+import 'package:team_lead/routes.dart';
 
 /// Страница создания настроек пользователя
 class UserCreatePage extends StatelessWidget {
@@ -23,7 +25,11 @@ class UserCreatePage extends StatelessWidget {
   }
 
   /// Обрабатывает изменения данных пользователя
-  void _onChange(ServiceUserData data) {}
+  void _onChange(ServiceUserData data, BuildContext context) async {
+    await teamLeadService.userService
+        .saveUser(data.name, data.contacts, data.skills);
+    Navigator.pushNamed(context, Routes.PostList);
+  }
 
   /// Создаёт виджет
   @override
