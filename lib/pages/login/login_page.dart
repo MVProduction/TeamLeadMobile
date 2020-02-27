@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/pages/login/stores/login_page_state_type.dart';
 import 'package:team_lead/pages/login/stores/login_page_store.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/team_lead_app_font.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 /// Страница с логином
 class LoginPage extends StatefulWidget {

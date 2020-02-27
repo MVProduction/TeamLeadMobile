@@ -14,11 +14,10 @@ abstract class _UserSettingsPageStore with Store {
 
   /// Сохраняет пользователя
   @action
-  Future saveUser(String name, String contact, String skill) async {
+  Future updateUser(String name, String contact, String skill) async {
     state = UserEditPageStateType.Saving;
 
-    await Future.delayed(Duration(seconds: 2));
-    teamLeadService.userService.updateUser(name, contact, skill);
+    await teamLeadService.userService.updateUser(name, contact, skill);
     state = UserEditPageStateType.Edit;
   }
 }

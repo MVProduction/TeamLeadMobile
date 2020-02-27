@@ -15,6 +15,7 @@ abstract class _LoginPageStore with Store {
   LoginPageStateType state = LoginPageStateType.Input;
 
   /// Проводит подключение через
+  @action
   Future loginGoogle(BuildContext context) async {
     state = LoginPageStateType.Login;
     final googleUser = await teamLeadService.userService.loginGoogle();
