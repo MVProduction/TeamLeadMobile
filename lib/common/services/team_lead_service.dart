@@ -1,10 +1,10 @@
 import 'package:team_lead/common/services/comment_service.dart';
+import 'package:team_lead/common/services/firebase/team_lead_firebase_service.dart';
 import 'package:team_lead/common/services/post_service.dart';
-import 'package:team_lead/common/services/real/team_lead_real_service.dart';
 import 'package:team_lead/common/services/user_service.dart';
 
 /// Экземпляр сервиса
-final teamLeadService = TeamLeadRealService();
+final teamLeadService = TeamLeadFirebaseService();
 
 /// Интерфейс сервиса
 abstract class TeamLeadService {

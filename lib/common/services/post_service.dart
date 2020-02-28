@@ -2,6 +2,9 @@ import 'package:team_lead/common/services/contracts/service_post_data.dart';
 
 /// Сервис работы с постами
 abstract class PostService {
+  /// Возвращает идентификатор последнего поста
+  Future<int> getLastPostId();
+
   /// Загружает посты с [firstId] в количестве
   Future<List<ServicePostData>> loadPosts(int firstId, int count);
 

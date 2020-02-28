@@ -4,10 +4,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/user_service.dart';
-import 'package:uuid/uuid.dart';
 
-/// Реальный сервис пользователя
-class RealUserService extends UserService {
+/// Сервис пользователя на основе Firebase
+class FirebaseUserService extends UserService {
   /// Для аутентификации через FireBase
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

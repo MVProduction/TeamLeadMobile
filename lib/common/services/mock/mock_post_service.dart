@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:team_lead/common/services/contracts/service_post_data.dart';
 import 'package:team_lead/common/services/post_service.dart';
 
@@ -147,11 +148,18 @@ class MockPostService extends PostService {
         ServicePostData(nextId, user, title, DateTime.now(), text, 0, false));
   }
 
-    /// Редактирует пост
+  /// Редактирует пост
   @override
   Future editPost(int postId, String title, String text) async {
-    final post = await loadPost(postId);    
+    final post = await loadPost(postId);
     post.title = title;
     post.text = text;
+  }
+
+  @override
+  Future<int> getLastPostId() async {
+    final maxPost =
+        _allPosts.reduce((value, element) => math.max(value.id, element.id));
+    return maxPost.id;
   }
 }
