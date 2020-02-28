@@ -37,20 +37,19 @@ class FirebaseUserService extends UserService {
   /// Возвращает пользователя по имени
   @override
   Future<ServiceUserData> getUserInfoByName(String userName) async {
-    await for (var item in Firestore.instance
+    final userDocs = await Firestore.instance
         .collection('users')
         .where("name", isEqualTo: userName)
         .limit(1)
-        .snapshots()) {
-      if (item.documents.length < 1) {
-        return null;
-      }
-      final document = item.documents[0];
-      return ServiceUserData(document.documentID, document.data["name"],
-          document.data["contacts"], document.data["skills"], "");
-    }
+        .getDocuments();
 
-    return null;
+    if (userDocs.documents.length < 1) {
+      return null;
+    }
+    
+    final document = userDocs.documents[0];
+    return ServiceUserData(document.documentID, document.data["name"],
+        document.data["contacts"], document.data["skills"], "");
   }
 
   /// Авторизируется через google

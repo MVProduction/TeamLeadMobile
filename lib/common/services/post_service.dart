@@ -24,7 +24,7 @@ abstract class PostService {
   Future removePostFromFavorite(int postId);
 
   /// Создаёт пост
-  Future createPost(String user, String title, String text);
+  Future createPost(String userName, String title, String text);
 
   /// Редактирует пост
   Future editPost(int postId, String title, String text);

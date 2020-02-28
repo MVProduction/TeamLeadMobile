@@ -8,6 +8,9 @@ class MainPostListStore = _MainPostListStore with _$MainPostListStore;
 
 /// Состояние основного списка постов
 abstract class _MainPostListStore with Store {
+  /// Максимальное количество постов в запросе
+  static const MaxPostPerRequest = 5;
+
   /// Кэш всех постов
   final _postCache = List<ServicePostData>();
 
@@ -21,7 +24,9 @@ abstract class _MainPostListStore with Store {
     allPosts = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
-      _postCache.addAll(await teamLeadService.postService.loadPosts(0, 5));
+      final lastId = await teamLeadService.postService.getLastPostId();
+      _postCache.addAll(await teamLeadService.postService
+          .loadPosts(lastId, MaxPostPerRequest));
       return _postCache;
     }));
     return allPosts;
@@ -31,7 +36,8 @@ abstract class _MainPostListStore with Store {
   Future fetchOld() async {
     final allFuture = ObservableFuture(Future(() async {
       await Future.delayed(Duration(seconds: 2));
-      final newPosts = await teamLeadService.postService.loadPosts(_postCache.length, 3);
+      final newPosts = await teamLeadService.postService
+          .loadPosts(_postCache.first.id - 1, MaxPostPerRequest);
       _postCache.addAll(newPosts);
       return _postCache;
     }));
