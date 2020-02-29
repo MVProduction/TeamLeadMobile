@@ -2,6 +2,9 @@ import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 
 /// Сервис для работы с комментариями
 abstract class CommentService {
+  /// Возвращает идентификатор последнего последний
+  Future<int> getLastCommentId(int postId);
+
   /// Загружает комментарии для поста [postId] начиная с индекса [firstId] в количестве [count]
   Future<List<ServiceCommentData>> loadPostComments(
       int postId, int firstId, int count);
