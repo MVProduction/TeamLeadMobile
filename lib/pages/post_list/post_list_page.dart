@@ -59,93 +59,142 @@ class _PostListPageState extends State<PostListPage> {
   /// Конструктор
   _PostListPageState();
 
-  @override
-  void initState() {
-    teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
+  // @override
+  // void didUpdateWidget(PostListPage oldWidget) {
+  //   print("GOOD 2");
 
-    super.initState();
-  }
+  //   final tabName = ModalRoute.of(context).settings.arguments as String;
+
+  //   print("GOOD 3");
+  //   switch (tabName) {
+  //     case "my":
+  //       teamLeadAppStore.postListPageStore.tabType = PostTabType.My;
+  //       break;
+  //   }
+
+  //   print("GOOD 4");
+
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: Icon(Icons.supervised_user_circle, size: 32),
+    final tabName = ModalRoute.of(context).settings.arguments as String;
+    print("GOOD 1");
+    print(tabName);
+
+    return FutureBuilder(
+      future: Future(() async {
+        print("GOOD 2");
+        print(tabName);
+        switch (tabName) {
+          case "my":
+            print("GOOD 3");
+            teamLeadAppStore.postListPageStore.tabType = PostTabType.My;
+            break;
+        }
+
+        await teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
+      }),
+      builder: (context, snapshot) => Observer(
+        builder: (context) {
+          var pageIndex = 0;
+          switch (teamLeadAppStore.postListPageStore.tabType) {
+            case PostTabType.All:
+              pageIndex = 0;
+              break;
+            case PostTabType.Favorite:
+              pageIndex = 1;
+              break;
+            case PostTabType.My:
+              pageIndex = 2;
+              break;
+          }
+
+          print(pageIndex);
+
+          return DefaultTabController(
+            initialIndex: pageIndex,
+            length: 3,
+            child: Scaffold(
+              backgroundColor: Colors.grey.shade200,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Icon(Icons.supervised_user_circle, size: 32),
+                    ),
+                    Observer(builder: (_) {
+                      switch (teamLeadAppStore.postListPageStore.tabType) {
+                        case PostTabType.All:
+                          return Text("Все посты");
+                        case PostTabType.Favorite:
+                          return Text("Избранное");
+                        case PostTabType.My:
+                          return Text("Мои посты");
+                      }
+
+                      return Text("");
+                    })
+                  ],
+                ),
+                actions: <Widget>[
+                  Observer(builder: (context) {
+                    if (teamLeadAppStore
+                        .postListPageStore.needShowSearchButton) {
+                      return IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () {
+                            _onSearchClick();
+                          });
+                    }
+
+                    return Row();
+                  }),
+                  IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        _onSettingsClick();
+                      })
+                ],
+                bottom: TabBar(onTap: (ti) => _onTabClick(ti), tabs: [
+                  Tab(icon: Icon(Icons.sms)),
+                  Tab(icon: Icon(Icons.favorite)),
+                  Tab(icon: Icon(Icons.person)),
+                  //Tab(icon: Icon(Icons.notifications)),
+                ]),
               ),
-              Observer(builder: (_) {
-                switch (teamLeadAppStore.postListPageStore.tabType) {
-                  case PostTabType.All:
-                    return Text("Все посты");
-                  case PostTabType.Favorite:
-                    return Text("Избранное");
-                  case PostTabType.My:
-                    return Text("Мои посты");
-                }
-
-                return Text("");
-              })
-            ],
-          ),
-          actions: <Widget>[
-            Observer(builder: (context) {
-              if (teamLeadAppStore.postListPageStore.needShowSearchButton) {
-                return IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      _onSearchClick();
-                    });
-              }
-
-              return Row();
-            }),
-            IconButton(
-                icon: Icon(Icons.settings),
+              body: Column(
+                children: <Widget>[
+                  Observer(
+                    builder: (context) {
+                      if (teamLeadAppStore.postListPageStore
+                          .needShowSearchPanel) return SearchWidget();
+                      return Row();
+                    },
+                  ),
+                  Expanded(
+                      flex: 9,
+                      child: TabBarView(children: <Widget>[
+                        MainPostListWidget(),
+                        FavoritePostListWidget(),
+                        UserPostListWidget()
+                      ]))
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  _onSettingsClick();
-                })
-          ],
-          bottom: TabBar(onTap: (ti) => _onTabClick(ti), tabs: [
-            Tab(icon: Icon(Icons.sms)),
-            Tab(icon: Icon(Icons.favorite)),
-            Tab(icon: Icon(Icons.person)),
-            //Tab(icon: Icon(Icons.notifications)),
-          ]),
-        ),
-        body: Column(
-          children: <Widget>[
-            Observer(
-              builder: (context) {
-                if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
-                  return SearchWidget();
-                return Row();
-              },
+                  _onPostAddClick();
+                },
+                tooltip: 'Добавить',
+                child: Icon(Icons.add),
+              ),
             ),
-            Expanded(
-                flex: 9,
-                child: TabBarView(children: <Widget>[
-                  MainPostListWidget(),
-                  FavoritePostListWidget(),
-                  UserPostListWidget()
-                ]))
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _onPostAddClick();
-          },
-          tooltip: 'Добавить',
-          child: Icon(Icons.add),
-        ),
+          );
+        },
       ),
     );
   }

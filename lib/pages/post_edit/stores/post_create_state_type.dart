@@ -4,10 +4,7 @@ enum PostCreateStateType {
   Edit,
 
   /// Ожидание сохраниения
-  PendingSave,
-
-  /// Пост создан
-  Created,
+  PendingSave,  
 
   /// Возникла ошибка
   Error

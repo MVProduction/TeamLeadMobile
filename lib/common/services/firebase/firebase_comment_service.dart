@@ -48,10 +48,10 @@ class FirebaseCommentService extends CommentService {
       int postId, int firstId, int count) async {
     final commentDocs = await Firestore.instance
         .collection('comments')
-        .where("postId", isLessThanOrEqualTo: postId)
+        .where("postId", isEqualTo: postId)
         .getDocuments();
 
-    print("postDocs.documents: ${commentDocs.documents.length}");
+    print("commentDocs.documents: ${commentDocs.documents.length}");
     return commentDocs.documents
         .where((x) => x.exists)
         .map((e) => documentToComment(e.data))
@@ -70,6 +70,6 @@ class FirebaseCommentService extends CommentService {
     await Firestore.instance
         .collection('posts')
         .document(postId.toString())
-        .setData({"lastCommentId": id});
+        .updateData({"lastCommentId": id});
   }
 }

@@ -24,6 +24,6 @@ abstract class _UserCreatePageStore with Store {
         .createUser(id, name, contacts, skills);
 
     await teamLeadService.userService.login(user.id);
-    Navigator.pushNamed(context, Routes.PostList);
+    Navigator.popAndPushNamed(context, Routes.PostList);
   }
 }

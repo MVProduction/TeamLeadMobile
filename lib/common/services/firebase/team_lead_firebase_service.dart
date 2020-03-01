@@ -1,6 +1,6 @@
+import 'package:team_lead/common/services/firebase/firebase_comment_service.dart';
 import 'package:team_lead/common/services/firebase/firebase_post_service.dart';
 import 'package:team_lead/common/services/firebase/firebase_user_service.dart';
-import 'package:team_lead/common/services/mock/mock_comment_service.dart';
 import 'package:team_lead/common/services/post_service.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/services/user_service.dart';
@@ -14,7 +14,7 @@ class TeamLeadFirebaseService implements TeamLeadService {
   final _postService = FirebasePostService();
 
   /// Сервис комментариев
-  final _commentService = MockCommentService();
+  final _commentService = FirebaseCommentService();
 
   @override
   get commentService => _commentService;

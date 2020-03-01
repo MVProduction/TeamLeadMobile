@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_edit/stores/post_create_state_type.dart';
 import 'package:team_lead/pages/post_edit/stores/post_edit_state_type.dart';
+import 'package:team_lead/routes.dart';
 
 /// Страница с созданием поста
 class PostCreatePage extends StatefulWidget {
@@ -23,12 +24,13 @@ class _PostCreatePageState extends State<PostCreatePage> {
   final _textController = TextEditingController();
 
   /// Обрабатывает нажатие на кнопку сохранение
-  void _onCommitClick() {
+  void _onCommitClick() async {
     final title = _titleController.text;
     final text = _textController.text;
     if (title.isEmpty || text.isEmpty) return;
 
-    teamLeadAppStore.postCreatePageStore.createPost(title, text);
+    await teamLeadAppStore.postCreatePageStore.createPost(title, text);
+    Navigator.popAndPushNamed(context, Routes.PostList, arguments: "my");
   }
 
   /// Возвращает вид с заголовками и телом [body]
@@ -127,40 +129,6 @@ class _PostCreatePageState extends State<PostCreatePage> {
               Center(
                 child: CircularProgressIndicator(),
               ));
-        case PostCreateStateType.Created:
-          return getScaffold(
-              'Сохранено',
-              Center(
-                  child: Container(
-                child: Container(
-                  height: 300,
-                  child: Column(
-                    children: <Widget>[
-                      Text('Сохранение поста завершено',
-                          style: TextStyle(fontSize: 16)),
-                      Container(
-                        padding: EdgeInsets.only(top: 32),
-                        width: 200,
-                        child: RaisedButton(
-                          child: Text("Создать ещё"),
-                          color: Colors.blue,
-                          onPressed: () => teamLeadAppStore.postCreatePageStore
-                              .state = PostCreateStateType.Edit,
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 16),
-                        width: 200,
-                        child: RaisedButton(
-                          color: Colors.green,
-                          child: Text("Вернуться к постам"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )));
         case PostCreateStateType.Error:
           break;
       }
