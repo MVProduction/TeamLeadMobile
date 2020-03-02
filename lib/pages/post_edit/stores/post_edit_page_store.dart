@@ -20,8 +20,7 @@ abstract class _PostEditPageStore with Store {
   /// Получает пост по id
   @action
   Future fetchPost(int postId) async {
-    state = PostEditStateType.Load;
-    await Future.delayed(Duration(seconds: 2));
+    state = PostEditStateType.Load;    
     post = await teamLeadService.postService.loadPost(postId);
     state = PostEditStateType.Edit;
   }
@@ -29,8 +28,7 @@ abstract class _PostEditPageStore with Store {
   /// Редактирует пост
   @action
   Future editPost(int postId, String title, String text) async {
-    state = PostEditStateType.PendingSave;
-    await Future.delayed(Duration(seconds: 2));
+    state = PostEditStateType.PendingSave;    
     await teamLeadService.postService.editPost(postId, title, text);
     post = await teamLeadService.postService.loadPost(postId);
     state = PostEditStateType.Edit;

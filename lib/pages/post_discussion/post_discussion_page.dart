@@ -48,8 +48,10 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
 
   /// Обрабатывает нажатие кнопки редактирования
   void _onEditClick(int postId) {
-    Navigator.pop(context);
-    Navigator.pushNamed(context, Routes.EditPost, arguments: postId);
+    Navigator.pushNamed(context, Routes.EditPost, arguments: postId)
+        .then((value) {
+      teamLeadAppStore.postDiscussionPageStore.fetchPost();
+    });
   }
 
   /// Обрабатывает отправку комментария

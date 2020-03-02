@@ -18,9 +18,9 @@ abstract class _UserPostListStore with Store {
   /// Загружает избранные посты если есть
   @action
   Future fetchPosts() async {
+    print("_UserPostListStore fetchPosts");
     allPosts = ObservableFuture(Future(() async {
       final user = teamLeadService.userService.getLoginUser();
-      await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
       _postCache
           .addAll(await teamLeadService.postService.loadUserPosts(user.name));

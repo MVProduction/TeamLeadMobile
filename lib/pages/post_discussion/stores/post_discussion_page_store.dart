@@ -40,8 +40,7 @@ abstract class _PostDiscussionPageStore with Store {
   /// Загружает данные поста
   @action
   Future fetchPost() {
-    post = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
+    post = ObservableFuture(Future(() async {      
       final post = await teamLeadService.postService.loadPost(_postId);
       final user = await teamLeadService.userService.getUserInfoByName(post.userName);
       return PostWithUserData(user, post);
@@ -53,8 +52,7 @@ abstract class _PostDiscussionPageStore with Store {
   /// Загружает данные поста
   @action
   Future fetchComments() {
-    comments = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
+    comments = ObservableFuture(Future(() async {      
       _commentsCache.clear();
       _commentsCache.addAll(
           await teamLeadService.commentService.loadPostComments(_postId, 0, 5));
@@ -65,8 +63,7 @@ abstract class _PostDiscussionPageStore with Store {
 
   /// Загружает старые посты
   Future fetchOldComments() async {
-    final comments = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
+    final comments = ObservableFuture(Future(() async {      
       final newPosts = await teamLeadService.commentService
           .loadPostComments(_postId, _commentsCache.length, 3);
       _commentsCache.clear();

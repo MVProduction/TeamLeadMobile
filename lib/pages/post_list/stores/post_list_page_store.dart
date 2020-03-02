@@ -51,10 +51,12 @@ abstract class _PostListPageStore with Store {
   /// Устанавливает тип вкладки
   @action
   void setTab(PostTabType tabType) {
+    print("setTab");
     this.tabType = tabType;
+    print(tabType);
     switch (tabType) {
       case PostTabType.All:
-        pageTitle = "Все объявления";
+        pageTitle = "Все объявления";        
         teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
         break;
       case PostTabType.Favorite:

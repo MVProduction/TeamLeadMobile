@@ -27,6 +27,7 @@ class _MainPostListWidgetState extends State<MainPostListWidget> {
 
   /// Обновляет посты
   void _onRefresh() async {
+    print("_onRefresh");
     await teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
     setState(() {});
     _controller.refreshCompleted();

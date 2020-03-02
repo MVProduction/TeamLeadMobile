@@ -15,8 +15,7 @@ abstract class _PostCreatePageStore with Store {
   /// Создаёт пост
   @action
   Future createPost(String title, String text) async {
-    state = PostCreateStateType.PendingSave;
-    await Future.delayed(Duration(seconds: 2));
+    state = PostCreateStateType.PendingSave;    
     final user = teamLeadService.userService.getLoginUser();
     await teamLeadService.postService.createPost(user.name, title, text);    
   }

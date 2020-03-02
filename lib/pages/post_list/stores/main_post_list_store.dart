@@ -21,8 +21,8 @@ abstract class _MainPostListStore with Store {
   /// Загружает новые посты если есть
   @action
   Future fetchPosts() async {
+    print("_MainPostListStore fetchPosts");
     allPosts = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
       _postCache.clear();
       final lastId = await teamLeadService.postService.getLastPostId();
       _postCache.addAll(await teamLeadService.postService
@@ -34,8 +34,8 @@ abstract class _MainPostListStore with Store {
 
   /// Загружает старые посты
   Future fetchOld() async {
-    final allFuture = ObservableFuture(Future(() async {
-      await Future.delayed(Duration(seconds: 2));
+    print("fetchOld");
+    final allFuture = ObservableFuture(Future(() async {      
       final newPosts = await teamLeadService.postService
           .loadPosts(_postCache.first.id - 1, MaxPostPerRequest);
       _postCache.addAll(newPosts);

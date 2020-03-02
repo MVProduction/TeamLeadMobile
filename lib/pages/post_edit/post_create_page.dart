@@ -30,7 +30,7 @@ class _PostCreatePageState extends State<PostCreatePage> {
     if (title.isEmpty || text.isEmpty) return;
 
     await teamLeadAppStore.postCreatePageStore.createPost(title, text);
-    Navigator.popAndPushNamed(context, Routes.PostList, arguments: "my");
+    Navigator.pop(context, "my");
   }
 
   /// Возвращает вид с заголовками и телом [body]

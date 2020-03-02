@@ -33,12 +33,20 @@ class _PostListPageState extends State<PostListPage>
 
   /// Обрабатывает нажатие кнопки добавить пост
   void _onPostAddClick() {
-    Navigator.pushNamed(context, Routes.CreatePost);
+    Navigator.pushNamed(context, Routes.CreatePost).then((value) {
+      if (value == "my") {
+        teamLeadAppStore.postListPageStore.setTab(PostTabType.My);
+      } else {
+        teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
+      }
+    });
   }
 
   /// Обрабатывает нажатие кнопки настроек пользователя
   void _onSettingsClick() {
-    Navigator.pushNamed(context, Routes.EditUser);
+    Navigator.pushNamed(context, Routes.EditUser).then((value) {
+      teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
+    });
   }
 
   /// Обрабатывает нажатие на кнопку поиска
@@ -49,6 +57,7 @@ class _PostListPageState extends State<PostListPage>
 
   /// Обрабатывает нажатие на вкладку
   void _onTabClick(int tabIndex) {
+    print("_onTabClick");
     teamLeadAppStore.postListPageStore.setNeedShowSearchPanel(false);
 
     switch (tabIndex) {
@@ -75,86 +84,76 @@ class _PostListPageState extends State<PostListPage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: _tabs.length);
+    teamLeadAppStore.postListPageStore.setTab(PostTabType.All);
   }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    final tabName = ModalRoute.of(context).settings.arguments as String;
-
-    return FutureBuilder(
-      future: Future(() async {
-        switch (tabName) {
-          case "my":
-            teamLeadAppStore.postListPageStore.setTab(PostTabType.My);
-            _tabController.index = PostTabType.My.index;
-            break;
-          default:
-            _tabController.index = 0;
-        }
-
-        await teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
-      }),
-      builder: (context, snapshot) => Observer(
-        builder: (context) {
-          return DefaultTabController(
-            initialIndex: 0,
-            length: _tabs.length,
-            child: Scaffold(
-              backgroundColor: Colors.grey.shade200,
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Icon(Icons.supervised_user_circle, size: 32),
-                    ),
-                    Text(teamLeadAppStore.postListPageStore.pageTitle)
-                  ],
-                ),
-                actions: <Widget>[
-                  if (teamLeadAppStore.postListPageStore.needShowSearchButton)
-                    IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () {
-                          _onSearchClick();
-                        }),
-                  IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: () {
-                        _onSettingsClick();
-                      })
-                ],
-                bottom: TabBar(
-                    controller: _tabController,
-                    onTap: (ti) => _onTabClick(ti),
-                    tabs: _tabs),
-              ),
-              body: Column(
+    print("BUUUUUILD");
+    return Observer(
+      builder: (context) {
+        print("REBUUUUUILD");
+        _tabController.index = teamLeadAppStore.postListPageStore.tabType.index;
+        return DefaultTabController(
+          initialIndex: 0,
+          length: _tabs.length,
+          child: Scaffold(
+            backgroundColor: Colors.grey.shade200,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              title: Row(
                 children: <Widget>[
-                  if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
-                    SearchWidget(),
-                  Expanded(
-                      flex: 9,
-                      child: TabBarView(children: <Widget>[
-                        MainPostListWidget(),
-                        FavoritePostListWidget(),
-                        UserPostListWidget()
-                      ]))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Icon(Icons.supervised_user_circle, size: 32),
+                  ),
+                  Text(teamLeadAppStore.postListPageStore.pageTitle)
                 ],
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  _onPostAddClick();
-                },
-                tooltip: 'Добавить',
-                child: Icon(Icons.add),
-              ),
+              actions: <Widget>[
+                if (teamLeadAppStore.postListPageStore.needShowSearchButton)
+                  IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        _onSearchClick();
+                      }),
+                IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () {
+                      _onSettingsClick();
+                    })
+              ],
+              bottom: TabBar(
+                  controller: _tabController,
+                  onTap: (ti) => _onTabClick(ti),
+                  tabs: _tabs),
             ),
-          );
-        },
-      ),
+            body: Column(
+              children: <Widget>[
+                if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
+                  SearchWidget(),
+                Expanded(
+                    flex: 9,
+                    child: TabBarView(
+                        controller: _tabController,
+                        children: <Widget>[
+                          MainPostListWidget(),
+                          FavoritePostListWidget(),
+                          UserPostListWidget()
+                        ]))
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                _onPostAddClick();
+              },
+              tooltip: 'Добавить',
+              child: Icon(Icons.add),
+            ),
+          ),
+        );
+      },
     );
   }
 }
