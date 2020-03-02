@@ -19,12 +19,17 @@ class PostListPage extends StatefulWidget {
 }
 
 /// Состояние страницы
-class _PostListPageState extends State<PostListPage> {
+class _PostListPageState extends State<PostListPage>
+    with SingleTickerProviderStateMixin {
+  /// Страницы
+  final _tabs = [
+    Tab(icon: Icon(Icons.sms)),
+    Tab(icon: Icon(Icons.favorite)),
+    Tab(icon: Icon(Icons.person)),
+  ];
+
   /// Контроллер страниц
-  TabController _tabController = TabController(
-    length: 3,
-    vsync: null    
-  );
+  TabController _tabController;
 
   /// Обрабатывает нажатие кнопки добавить пост
   void _onPostAddClick() {
@@ -65,40 +70,24 @@ class _PostListPageState extends State<PostListPage> {
   /// Конструктор
   _PostListPageState();
 
-  // @override
-  // void didUpdateWidget(PostListPage oldWidget) {
-  //   print("GOOD 2");
-
-  //   final tabName = ModalRoute.of(context).settings.arguments as String;
-
-  //   print("GOOD 3");
-  //   switch (tabName) {
-  //     case "my":
-  //       teamLeadAppStore.postListPageStore.tabType = PostTabType.My;
-  //       break;
-  //   }
-
-  //   print("GOOD 4");
-
-  //   super.didUpdateWidget(oldWidget);
-  // }
+  /// Инициализирует состояние
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: _tabs.length);
+  }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
     final tabName = ModalRoute.of(context).settings.arguments as String;
-    print("GOOD 1");
-    print(tabName);
 
     return FutureBuilder(
       future: Future(() async {
-        print("GOOD 2");
-        print(tabName);
         switch (tabName) {
           case "my":
-            print("GOOD 3");
             teamLeadAppStore.postListPageStore.setTab(PostTabType.My);
-            _tabController.index = 2;
+            _tabController.index = PostTabType.My.index;
             break;
           default:
             _tabController.index = 0;
@@ -110,7 +99,7 @@ class _PostListPageState extends State<PostListPage> {
         builder: (context) {
           return DefaultTabController(
             initialIndex: 0,
-            length: 3,
+            length: _tabs.length,
             child: Scaffold(
               backgroundColor: Colors.grey.shade200,
               appBar: AppBar(
@@ -138,12 +127,9 @@ class _PostListPageState extends State<PostListPage> {
                       })
                 ],
                 bottom: TabBar(
-                  controller: _tabController,
-                  onTap: (ti) => _onTabClick(ti), tabs: [
-                  Tab(icon: Icon(Icons.sms)),
-                  Tab(icon: Icon(Icons.favorite)),
-                  Tab(icon: Icon(Icons.person)),
-                ]),
+                    controller: _tabController,
+                    onTap: (ti) => _onTabClick(ti),
+                    tabs: _tabs),
               ),
               body: Column(
                 children: <Widget>[
