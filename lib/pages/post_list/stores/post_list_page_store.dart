@@ -15,6 +15,10 @@ abstract class _PostListPageStore with Store {
   @observable
   PostTabType tabType = PostTabType.All;
 
+  /// Заголовок страницы
+  @observable
+  String pageTitle = "Все объявления";
+
   /// Необходимо отображать панель поиска
   @observable
   bool needShowSearchPanel = false;
@@ -50,12 +54,15 @@ abstract class _PostListPageStore with Store {
     this.tabType = tabType;
     switch (tabType) {
       case PostTabType.All:
+        pageTitle = "Все объявления";
         teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
         break;
       case PostTabType.Favorite:
+        pageTitle = "Избранные объявления";
         teamLeadAppStore.postListPageStore.favoritePostListStore.fetchPosts();
         break;
       case PostTabType.My:
+        pageTitle = "Мои объявления";
         teamLeadAppStore.postListPageStore.userPostListStore.fetchPosts();
         break;
     }

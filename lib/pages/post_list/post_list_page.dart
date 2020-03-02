@@ -20,6 +20,12 @@ class PostListPage extends StatefulWidget {
 
 /// Состояние страницы
 class _PostListPageState extends State<PostListPage> {
+  /// Контроллер страниц
+  TabController _tabController = TabController(
+    length: 3,
+    vsync: null    
+  );
+
   /// Обрабатывает нажатие кнопки добавить пост
   void _onPostAddClick() {
     Navigator.pushNamed(context, Routes.CreatePost);
@@ -91,31 +97,19 @@ class _PostListPageState extends State<PostListPage> {
         switch (tabName) {
           case "my":
             print("GOOD 3");
-            teamLeadAppStore.postListPageStore.tabType = PostTabType.My;
+            teamLeadAppStore.postListPageStore.setTab(PostTabType.My);
+            _tabController.index = 2;
             break;
+          default:
+            _tabController.index = 0;
         }
 
         await teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
       }),
       builder: (context, snapshot) => Observer(
         builder: (context) {
-          var pageIndex = 0;
-          switch (teamLeadAppStore.postListPageStore.tabType) {
-            case PostTabType.All:
-              pageIndex = 0;
-              break;
-            case PostTabType.Favorite:
-              pageIndex = 1;
-              break;
-            case PostTabType.My:
-              pageIndex = 2;
-              break;
-          }
-
-          print(pageIndex);
-
           return DefaultTabController(
-            initialIndex: pageIndex,
+            initialIndex: 0,
             length: 3,
             child: Scaffold(
               backgroundColor: Colors.grey.shade200,
@@ -127,55 +121,34 @@ class _PostListPageState extends State<PostListPage> {
                       padding: const EdgeInsets.only(right: 8),
                       child: Icon(Icons.supervised_user_circle, size: 32),
                     ),
-                    Observer(builder: (_) {
-                      switch (teamLeadAppStore.postListPageStore.tabType) {
-                        case PostTabType.All:
-                          return Text("Все посты");
-                        case PostTabType.Favorite:
-                          return Text("Избранное");
-                        case PostTabType.My:
-                          return Text("Мои посты");
-                      }
-
-                      return Text("");
-                    })
+                    Text(teamLeadAppStore.postListPageStore.pageTitle)
                   ],
                 ),
                 actions: <Widget>[
-                  Observer(builder: (context) {
-                    if (teamLeadAppStore
-                        .postListPageStore.needShowSearchButton) {
-                      return IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () {
-                            _onSearchClick();
-                          });
-                    }
-
-                    return Row();
-                  }),
+                  if (teamLeadAppStore.postListPageStore.needShowSearchButton)
+                    IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          _onSearchClick();
+                        }),
                   IconButton(
                       icon: Icon(Icons.settings),
                       onPressed: () {
                         _onSettingsClick();
                       })
                 ],
-                bottom: TabBar(onTap: (ti) => _onTabClick(ti), tabs: [
+                bottom: TabBar(
+                  controller: _tabController,
+                  onTap: (ti) => _onTabClick(ti), tabs: [
                   Tab(icon: Icon(Icons.sms)),
                   Tab(icon: Icon(Icons.favorite)),
                   Tab(icon: Icon(Icons.person)),
-                  //Tab(icon: Icon(Icons.notifications)),
                 ]),
               ),
               body: Column(
                 children: <Widget>[
-                  Observer(
-                    builder: (context) {
-                      if (teamLeadAppStore.postListPageStore
-                          .needShowSearchPanel) return SearchWidget();
-                      return Row();
-                    },
-                  ),
+                  if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
+                    SearchWidget(),
                   Expanded(
                       flex: 9,
                       child: TabBarView(children: <Widget>[
