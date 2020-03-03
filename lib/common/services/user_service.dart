@@ -11,6 +11,11 @@ abstract class UserService {
   /// Или создать нового пользователя
   Future<AuthUserData> loginGoogle();
 
+  /// Подключается к github и возвращает информацию пользователя
+  /// Которую можно использовать для логина в приложение
+  /// Или создать нового пользователя
+  Future<AuthUserData> loginGithub(int code);
+
   /// Входит в приложение используя информацию полученную из провайдера
   /// Например гугл или github
   Future<ServiceUserData> login(String id);

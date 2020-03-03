@@ -57,4 +57,9 @@ class MockUserService extends UserService {
   Future<ServiceUserData> login(String id) async {
     return _loginUser;
   }
+
+  @override
+  Future<AuthUserData> loginGithub(int code) async {
+    return AuthUserData("1234567890", "pytachok", "pytachok@gmail.com", "");
+  }
 }
