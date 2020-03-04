@@ -59,7 +59,7 @@ class MockUserService extends UserService {
   }
 
   @override
-  Future<AuthUserData> loginGithub(int code) async {
+  Future<AuthUserData> loginGithub(String code) async {
     return AuthUserData("1234567890", "pytachok", "pytachok@gmail.com", "");
   }
 }

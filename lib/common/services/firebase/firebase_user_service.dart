@@ -9,13 +9,7 @@ import 'package:team_lead/common/services/user_service.dart';
 import 'package:http/http.dart' as http;
 
 /// Сервис пользователя на основе Firebase
-class FirebaseUserService extends UserService {
-  /// Идентификатор клиента
-  static const ClientId = "faba0c43bad7ca29524c";
-
-  /// Секрет клиента
-  static const ClientSecret = "7cf504a993afbf78f494318d4ce53b5fc6cba355";
-
+class FirebaseUserService extends UserService {  
   /// Для аутентификации через FireBase
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -79,7 +73,7 @@ class FirebaseUserService extends UserService {
 
   /// Авторизируется через github
   @override
-  Future<AuthUserData> loginGithub(int code) async {
+  Future<AuthUserData> loginGithub(String code) async {
     final response = await http.post(
       "https://github.com/login/oauth/access_token",
       headers: {
@@ -87,9 +81,9 @@ class FirebaseUserService extends UserService {
         "Accept": "application/json"
       },
       body: {
-        "client_id": ClientId,
-        "client_secret": ClientSecret,
-        "code": code,
+        "client_id": UserService.GithubClientId,
+        "client_secret": UserService.GithubClientSecret,
+        "code": code
       },
     );
 

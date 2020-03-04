@@ -3,6 +3,12 @@ import 'package:team_lead/common/services/contracts/service_user_data.dart';
 
 /// Сервис работы с пользователями
 abstract class UserService {
+  /// Идентификатор клиента github
+  static const GithubClientId = "faba0c43bad7ca29524c";
+
+  /// Секрет клиента github
+  static const GithubClientSecret = "7cf504a993afbf78f494318d4ce53b5fc6cba355";
+
   /// Возвращает вошедшого пользователя
   ServiceUserData getLoginUser();
 
@@ -14,7 +20,7 @@ abstract class UserService {
   /// Подключается к github и возвращает информацию пользователя
   /// Которую можно использовать для логина в приложение
   /// Или создать нового пользователя
-  Future<AuthUserData> loginGithub(int code);
+  Future<AuthUserData> loginGithub(String code);
 
   /// Входит в приложение используя информацию полученную из провайдера
   /// Например гугл или github
