@@ -57,7 +57,6 @@ class _PostListPageState extends State<PostListPage>
 
   /// Обрабатывает нажатие на вкладку
   void _onTabClick(int tabIndex) {
-    print("_onTabClick");
     teamLeadAppStore.postListPageStore.setNeedShowSearchPanel(false);
 
     switch (tabIndex) {
@@ -90,10 +89,8 @@ class _PostListPageState extends State<PostListPage>
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    print("BUUUUUILD");
     return Observer(
       builder: (context) {
-        print("REBUUUUUILD");
         _tabController.index = teamLeadAppStore.postListPageStore.tabType.index;
         return DefaultTabController(
           initialIndex: 0,

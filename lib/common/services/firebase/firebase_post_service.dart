@@ -97,6 +97,7 @@ class FirebasePostService extends PostService {
     final postDocs = await Firestore.instance
         .collection('posts')
         .where("id", isLessThanOrEqualTo: firstId)
+        .orderBy("id", descending: true)
         .limit(count)
         .getDocuments();
 
@@ -114,6 +115,7 @@ class FirebasePostService extends PostService {
         .collection('posts')
         .where("userName", isEqualTo: userName)
         .where("isFavorite", isEqualTo: true)
+        .orderBy("id", descending: true)
         .getDocuments();
     
     print("postDocs.documents: ${postDocs.documents.length}");
@@ -129,6 +131,7 @@ class FirebasePostService extends PostService {
     final postDocs = await Firestore.instance
         .collection('posts')
         .where("userName", isEqualTo: userName)
+        .orderBy("id", descending: true)
         .getDocuments();
     
     print("postDocs.documents: ${postDocs.documents.length}");

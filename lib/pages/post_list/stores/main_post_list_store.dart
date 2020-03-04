@@ -37,7 +37,7 @@ abstract class _MainPostListStore with Store {
     print("fetchOld");
     final allFuture = ObservableFuture(Future(() async {      
       final newPosts = await teamLeadService.postService
-          .loadPosts(_postCache.first.id - 1, MaxPostPerRequest);
+          .loadPosts(_postCache.last.id - 1, MaxPostPerRequest);
       _postCache.addAll(newPosts);
       return _postCache;
     }));
