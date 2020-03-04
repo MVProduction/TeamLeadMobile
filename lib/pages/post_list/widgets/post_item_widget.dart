@@ -95,7 +95,9 @@ class PostItemWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 4),
                                     child: Text(
-                                        post.createDate.toLocalizedDateString(),
+                                        post.createDate
+                                            .toLocalizedDateTimeStringFromDate(
+                                                DateTime.now()),
                                         style: TextStyle(
                                             color: Colors.grey.shade500)),
                                   ),

@@ -123,7 +123,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: Text(post.post.createDate.toLocalizedDateString()),
+                    child: Text(post.post.createDate.toLocalizedDateTimeString()),
                   ),
                   if (post.user != null)
                     Padding(
