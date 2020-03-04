@@ -46,7 +46,7 @@ class _MainPostListWidgetState extends State<MainPostListWidget> {
               enablePullDown: true,
               enablePullUp: true,
               header: WaterDropHeader(),
-              footer: ClassicFooter(),
+              footer: ClassicFooter(loadingText: "Загружается", canLoadingText: "Нужно больше объявлений"),
               controller: _controller,
               onLoading: _onLoading,
               onRefresh: _onRefresh,

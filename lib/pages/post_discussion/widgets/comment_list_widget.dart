@@ -44,7 +44,9 @@ class CommentListWidgetState extends State<CommentListWidget> {
               enablePullDown: true,
               enablePullUp: true,
               header: WaterDropHeader(),
-              footer: ClassicFooter(),
+              footer: ClassicFooter(
+                  loadingText: "Загружается",
+                  canLoadingText: "Нужно больше комментариев"),
               controller: _controller,
               onLoading: _onLoading,
               onRefresh: _onRefresh,
