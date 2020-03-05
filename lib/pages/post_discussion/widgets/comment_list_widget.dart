@@ -38,8 +38,11 @@ class CommentListWidgetState extends State<CommentListWidget> {
     return Observer(builder: (ctx) {
       final future = teamLeadAppStore.postDiscussionPageStore.comments;
 
-      switch (future.status) {
+      switch (future.status) {        
         case FutureStatus.fulfilled:
+          final values = future.value;
+
+          if (values.isNotEmpty) {
           return SmartRefresher(
               enablePullDown: true,
               enablePullUp: true,
@@ -50,12 +53,14 @@ class CommentListWidgetState extends State<CommentListWidget> {
               controller: _controller,
               onLoading: _onLoading,
               onRefresh: _onRefresh,
-              child: ListView.builder(itemBuilder: (context, index) {
-                final values = future.value;
+              child: ListView.builder(itemBuilder: (context, index) {                
                 if (index >= values.length) return null;
                 final post = values[index];
                 return CommentItemWidget(post);
               }));
+          }
+
+          return Center(child: Text("Добавьте комментарий")); 
         default:
           break;
       }

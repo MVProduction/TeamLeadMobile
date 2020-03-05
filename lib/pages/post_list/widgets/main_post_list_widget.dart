@@ -42,21 +42,27 @@ class _MainPostListWidgetState extends State<MainPostListWidget> {
 
       switch (future.status) {
         case FutureStatus.fulfilled:
-          return SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropHeader(),
-              footer: ClassicFooter(loadingText: "Загружается", canLoadingText: "Нужно больше объявлений"),
-              controller: _controller,
-              onLoading: _onLoading,
-              onRefresh: _onRefresh,
-              child: ListView.builder(itemBuilder: (context, index) {
-                final values = future.value;
-                if (index >= values.length) return null;
-                final post = values[index];
-                return PostItemWidget(PostItemStore(post));
-              }));
-          break;
+          final values = future.value;
+
+          if (values.isNotEmpty) {
+            return SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: WaterDropHeader(),
+                footer: ClassicFooter(
+                    loadingText: "Загружается",
+                    canLoadingText: "Нужно больше объявлений"),
+                controller: _controller,
+                onLoading: _onLoading,
+                onRefresh: _onRefresh,
+                child: ListView.builder(itemBuilder: (context, index) {
+                  if (index >= values.length) return null;
+                  final post = values[index];
+                  return PostItemWidget(PostItemStore(post));
+                }));
+          }
+
+          return Center(child: Text("Нет объявлений"));
         default:
           return Center(
             child: CircularProgressIndicator(),

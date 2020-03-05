@@ -17,13 +17,17 @@ class FavoritePostListWidget extends StatelessWidget {
 
       switch (future.status) {
         case FutureStatus.fulfilled:
-          return ListView.builder(itemBuilder: (context, index) {
-            final values = future.value;
-            if (index >= values.length) return null;
-            final post = values[index];
-            return PostItemWidget(PostItemStore(post));
-          });
-          break;
+          final values = future.value;
+
+          if (values.isNotEmpty) {
+            return ListView.builder(itemBuilder: (context, index) {
+              if (index >= values.length) return null;
+              final post = values[index];
+              return PostItemWidget(PostItemStore(post));
+            });
+          }
+
+          return Center(child: Text("Добавьте объявление в избранное"));
         default:
           return Center(
             child: CircularProgressIndicator(),

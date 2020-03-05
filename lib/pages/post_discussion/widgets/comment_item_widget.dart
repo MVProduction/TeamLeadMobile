@@ -35,7 +35,8 @@ class CommentItemWidget extends StatelessWidget {
               Text(comment.userName,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               Text(
-                comment.dateTime.toLocalizedDateTimeString(),
+                comment.dateTime
+                    .toLocalizedDateTimeStringFromDate(DateTime.now()),
                 style: TextStyle(color: Colors.grey),
               ),
               Padding(
