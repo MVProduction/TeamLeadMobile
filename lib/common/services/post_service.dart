@@ -17,6 +17,9 @@ abstract class PostService {
   /// Загружает полные данные поста с информацией пользователя
   Future<ServicePostData> loadPost(int postId);
 
+  /// Отмечает что пост [postId] просмотрен пользователем [userId]
+  Future viewPost(int postId, String userId);
+
   /// Добавляет пост в избранное
   Future addPostToFavorite(int postId);
 

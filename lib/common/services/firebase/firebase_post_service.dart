@@ -5,7 +5,7 @@ import 'package:team_lead/common/services/post_service.dart';
 /// Сервис постов на основе Firebase
 class FirebasePostService extends PostService {
   /// Создаёт Post из документа Firebird
-  ServicePostData documentToPost(Map<String, dynamic> data) {
+  ServicePostData _documentToPost(Map<String, dynamic> data) {
     return ServicePostData(
         data["id"],
         data["userName"],
@@ -13,11 +13,12 @@ class FirebasePostService extends PostService {
         (data["createDate"] as Timestamp).toDate(),
         data["text"],
         data["viewCount"],
+        data["lastCommentId"],
         data["isFavorite"]);
   }
 
   /// Преобразует Post в документ
-  Map<String, dynamic> postToDocument(ServicePostData data) {
+  Map<String, dynamic> _postToDocument(ServicePostData data) {
     return {
       "id": data.id,
       "userName": data.userName,
@@ -25,6 +26,7 @@ class FirebasePostService extends PostService {
       "createDate": data.createDate,
       "text": data.text,
       "viewCount": data.viewCount,
+      "commentCount": data.commentCount,
       "isFavorite": data.isFavorite,
     };
   }
@@ -33,8 +35,8 @@ class FirebasePostService extends PostService {
   @override
   Future createPost(String userName, String title, String text) async {
     final id = await getLastPostId() + 1;
-    final data = postToDocument(
-        ServicePostData(id, userName, title, DateTime.now(), text, 0, false));
+    final data = _postToDocument(ServicePostData(
+        id, userName, title, DateTime.now(), text, 0, 0, false));
 
     await Firestore.instance
         .collection('posts')
@@ -87,7 +89,35 @@ class FirebasePostService extends PostService {
       return null;
     }
 
-    return documentToPost(postDoc.data);
+    return _documentToPost(postDoc.data);
+  }
+
+  /// Отмечает что пост [postId] просмотрен пользователем [userId]
+  Future viewPost(int postId, String userId) async {
+    final post = await loadPost(postId);
+    if (post == null) {
+      return;
+    }
+
+    final viewerDoc = await Firestore.instance
+        .collection('post_viewers')
+        .where("postId", isEqualTo: postId)
+        .where("userId", isEqualTo: userId)
+        .limit(1)
+        .getDocuments();
+
+    // Отмечает просмотр
+    if (viewerDoc.documents.isEmpty) {
+      await Firestore.instance
+          .collection("posts")
+          .document(postId.toString())
+          .updateData({"viewCount": post.viewCount + 1});
+
+      await Firestore.instance
+          .collection('post_viewers')
+          .document()
+          .setData({"postId": postId, "userId": userId});
+    }
   }
 
   @override
@@ -104,7 +134,7 @@ class FirebasePostService extends PostService {
     print("postDocs.documents: ${postDocs.documents.length}");
     return postDocs.documents
         .where((x) => x.exists)
-        .map((e) => documentToPost(e.data))
+        .map((e) => _documentToPost(e.data))
         .toList();
   }
 
@@ -117,11 +147,11 @@ class FirebasePostService extends PostService {
         .where("isFavorite", isEqualTo: true)
         .orderBy("id", descending: true)
         .getDocuments();
-    
+
     print("postDocs.documents: ${postDocs.documents.length}");
     return postDocs.documents
         .where((x) => x.exists)
-        .map((e) => documentToPost(e.data))
+        .map((e) => _documentToPost(e.data))
         .toList();
   }
 
@@ -133,11 +163,11 @@ class FirebasePostService extends PostService {
         .where("userName", isEqualTo: userName)
         .orderBy("id", descending: true)
         .getDocuments();
-    
+
     print("postDocs.documents: ${postDocs.documents.length}");
     return postDocs.documents
         .where((x) => x.exists)
-        .map((e) => documentToPost(e.data))
+        .map((e) => _documentToPost(e.data))
         .toList();
   }
 

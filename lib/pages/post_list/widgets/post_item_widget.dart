@@ -17,7 +17,11 @@ class PostItemWidget extends StatelessWidget {
 
   /// Обрабатывает нажатие на пост
   void _onPostClick(BuildContext context, ServicePostData post) {
-    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post.id);
+    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post.id)
+        .then((value) {
+      teamLeadAppStore.postListPageStore
+          .setTab(teamLeadAppStore.postListPageStore.tabType);
+    });
   }
 
   /// Обрабатывает нажатие удалить из избранного
@@ -135,7 +139,7 @@ class PostItemWidget extends StatelessWidget {
                                       child: Icon(Icons.remove_red_eye,
                                           size: 24, color: Colors.grey),
                                     ),
-                                    Text(post.viewCount.toString())
+                                    Text((post.viewCount ?? 0).toString())
                                   ],
                                 )),
                           ),
@@ -150,7 +154,7 @@ class PostItemWidget extends StatelessWidget {
                                       child: Icon(Icons.message,
                                           size: 24, color: Colors.grey),
                                     ),
-                                    Text(post.viewCount.toString())
+                                    Text((post.commentCount ?? 0).toString())
                                   ],
                                 )),
                           ),

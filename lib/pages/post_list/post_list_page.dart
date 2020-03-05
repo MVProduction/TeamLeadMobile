@@ -109,12 +109,12 @@ class _PostListPageState extends State<PostListPage>
                 ],
               ),
               actions: <Widget>[
-                if (teamLeadAppStore.postListPageStore.needShowSearchButton)
-                  IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        _onSearchClick();
-                      }),
+                // if (teamLeadAppStore.postListPageStore.needShowSearchButton)
+                //   IconButton(
+                //       icon: Icon(Icons.search),
+                //       onPressed: () {
+                //         _onSearchClick();
+                //       }),
                 IconButton(
                     icon: Icon(Icons.settings),
                     onPressed: () {

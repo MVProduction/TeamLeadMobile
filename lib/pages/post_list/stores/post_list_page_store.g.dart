@@ -26,6 +26,23 @@ mixin _$PostListPageStore on _PostListPageStore, Store {
     }, _$tabTypeAtom, name: '${_$tabTypeAtom.name}_set');
   }
 
+  final _$pageTitleAtom = Atom(name: '_PostListPageStore.pageTitle');
+
+  @override
+  String get pageTitle {
+    _$pageTitleAtom.context.enforceReadPolicy(_$pageTitleAtom);
+    _$pageTitleAtom.reportObserved();
+    return super.pageTitle;
+  }
+
+  @override
+  set pageTitle(String value) {
+    _$pageTitleAtom.context.conditionallyRunInAction(() {
+      super.pageTitle = value;
+      _$pageTitleAtom.reportChanged();
+    }, _$pageTitleAtom, name: '${_$pageTitleAtom.name}_set');
+  }
+
   final _$needShowSearchPanelAtom =
       Atom(name: '_PostListPageStore.needShowSearchPanel');
 

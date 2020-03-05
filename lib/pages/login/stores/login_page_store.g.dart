@@ -32,4 +32,11 @@ mixin _$LoginPageStore on _LoginPageStore, Store {
   Future<dynamic> loginGoogle(BuildContext context) {
     return _$loginGoogleAsyncAction.run(() => super.loginGoogle(context));
   }
+
+  final _$startLoginGithubAsyncAction = AsyncAction('startLoginGithub');
+
+  @override
+  Future<dynamic> startLoginGithub() {
+    return _$startLoginGithubAsyncAction.run(() => super.startLoginGithub());
+  }
 }

@@ -21,6 +21,10 @@ abstract class _PostDiscussionPageStore with Store {
   @observable
   ObservableFuture<PostWithUserData> post;
 
+  /// Количество постов
+  @computed
+  int get commentCount => post.value.post.commentCount;
+
   /// Комментарии
   @observable
   ObservableFuture<List<ServiceCommentData>> comments;
@@ -34,15 +38,18 @@ abstract class _PostDiscussionPageStore with Store {
   Future sendComment(String text) async {
     final user = teamLeadAppStore.usersStore.getLoginUser();
     await teamLeadService.commentService.sendComment(_postId, user.name, text);
-    fetchComments();
+    await fetchComments();
+    await fetchPost();
   }
 
   /// Загружает данные поста
   @action
   Future fetchPost() {
-    post = ObservableFuture(Future(() async {      
+    post = ObservableFuture(Future(() async {
       final post = await teamLeadService.postService.loadPost(_postId);
-      final user = await teamLeadService.userService.getUserInfoByName(post.userName);
+      final user =
+          await teamLeadService.userService.getUserInfoByName(post.userName);
+      await teamLeadService.postService.viewPost(_postId, user.id);
       return PostWithUserData(user, post);
     }));
 
@@ -52,7 +59,7 @@ abstract class _PostDiscussionPageStore with Store {
   /// Загружает данные поста
   @action
   Future fetchComments() {
-    comments = ObservableFuture(Future(() async {      
+    comments = ObservableFuture(Future(() async {
       _commentsCache.clear();
       _commentsCache.addAll(
           await teamLeadService.commentService.loadPostComments(_postId, 0, 5));
@@ -63,7 +70,7 @@ abstract class _PostDiscussionPageStore with Store {
 
   /// Загружает старые посты
   Future fetchOldComments() async {
-    final comments = ObservableFuture(Future(() async {      
+    final comments = ObservableFuture(Future(() async {
       final newPosts = await teamLeadService.commentService
           .loadPostComments(_postId, _commentsCache.length, 3);
       _commentsCache.clear();

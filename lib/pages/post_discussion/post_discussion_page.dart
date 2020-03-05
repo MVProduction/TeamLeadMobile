@@ -63,8 +63,8 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   }
 
   /// Возвращает вид с заголовком и заданным телом с владками
-  Widget getScafoldViewWithTabs(
-      String title, EditOptions editOptions, Widget body) {
+  Widget getScafoldViewWithTabs(String title, Widget body,
+      {EditOptions editOptions, bool isLoading}) {
     return DefaultTabController(
         initialIndex: 0,
         length: 2,
@@ -87,10 +87,20 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                     child: Container(child: Text("Пост")),
                     icon: new Icon(Icons.local_post_office),
                   ),
-                  Tab(
-                    child: Text("Комментарии"),
-                    icon: new Icon(Icons.message),
-                  )
+                  if (isLoading == true)
+                    Tab(
+                      child: Text("Комментарии"),
+                      icon: new Icon(Icons.message),
+                    )
+                  else
+                    Tab(
+                      child: Observer(builder: (context) {
+                        final commentCount = teamLeadAppStore
+                            .postDiscussionPageStore.commentCount;
+                        return Text("Комментарии ($commentCount)");
+                      }),
+                      icon: new Icon(Icons.message),
+                    )
                 ])));
   }
 
@@ -123,7 +133,8 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: Text(post.post.createDate.toLocalizedDateTimeString()),
+                    child:
+                        Text(post.post.createDate.toLocalizedDateTimeString()),
                   ),
                   if (post.user != null)
                     Padding(
@@ -202,14 +213,12 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             editOptions = EditOptions(true, post.post.id);
           }
 
-          return getScafoldViewWithTabs(
-            post.post.title,
-            editOptions,
-            getMainView(post),
-          );
+          return getScafoldViewWithTabs(post.post.title, getMainView(post),
+              editOptions: editOptions);
         default:
           return getScafoldViewWithTabs(
-              'Загружается', null, Center(child: CircularProgressIndicator()));
+              'Загружается', Center(child: CircularProgressIndicator()),
+              isLoading: true);
       }
     });
   }
