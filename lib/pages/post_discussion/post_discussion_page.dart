@@ -136,11 +136,19 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                     child:
                         Text(post.post.createDate.toLocalizedDateTimeString()),
                   ),
-                  if (post.user != null)
+                  if (post.user?.contacts != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: Text(post.user.contacts),
                     ),
+                  if (post.user?.skills?.isNotEmpty == true)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(post.user.skills),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                  ),
                   Text(post.post.text, style: TextStyle(fontSize: 18))
                 ])),
       ],
