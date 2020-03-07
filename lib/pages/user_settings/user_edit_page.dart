@@ -6,7 +6,6 @@ import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
 import 'package:team_lead/pages/user_settings/user_edit_form.dart';
-import 'package:team_lead/routes.dart';
 
 /// Страница редактирования настроек пользователя
 class UserEditPage extends StatelessWidget {
