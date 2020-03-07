@@ -7,13 +7,17 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_form_store.dart';
-import 'package:team_lead/widgets/choose_photo_widget.dart';
+import 'package:team_lead/widgets/choose_photo_widget/choose_photo_source_type.dart';
+import 'package:team_lead/widgets/choose_photo_widget/choose_photo_widget.dart';
 
 /// Функция обрабатывающая изменения данных пользователя
 typedef OnUserDataChangeFunc(ServiceUserData user);
 
 /// Форма редактирования пользователя
 class UserEditForm extends StatelessWidget {
+  /// Радиус фотки
+  static const double ImageRadius = 68;
+
   /// Состояние формы
   final _formStore = UserEditFormStore();
 
@@ -39,9 +43,18 @@ class UserEditForm extends StatelessWidget {
   }
 
   /// Обрабатывает получение фотки
-  Future _onGetImage() async {
+  Future _onGetImage(ChoosePhotoSourceType source) async {
+    ImageSource imageSource = ImageSource.camera;
+    if (source == ChoosePhotoSourceType.Galery) {
+      imageSource = ImageSource.gallery;
+    }
+
     var imageFile = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxWidth: 600, maxHeight: 600);
+        source: imageSource, maxWidth: 600, maxHeight: 600);
+
+    if (imageFile == null) {
+      return;
+    }
 
     final croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFile.path,
@@ -82,7 +95,7 @@ class UserEditForm extends StatelessWidget {
           Center(
             child: ChoosePhotoWidget(
               _onGetImage,
-              imageRadius: 56,
+              imageRadius: ImageRadius,
               image: _formStore.photoImage,
             ),
           ),
