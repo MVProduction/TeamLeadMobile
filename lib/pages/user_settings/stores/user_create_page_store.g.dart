@@ -29,9 +29,9 @@ mixin _$UserCreatePageStore on _UserCreatePageStore, Store {
   final _$createUserAsyncAction = AsyncAction('createUser');
 
   @override
-  Future<dynamic> createUser(String id, String name, String contacts,
-      String skills, BuildContext context) {
-    return _$createUserAsyncAction
-        .run(() => super.createUser(id, name, contacts, skills, context));
+  Future<dynamic> createUser(String id, String photoUrl, String name,
+      String contacts, String skills, BuildContext context) {
+    return _$createUserAsyncAction.run(
+        () => super.createUser(id, photoUrl, name, contacts, skills, context));
   }
 }

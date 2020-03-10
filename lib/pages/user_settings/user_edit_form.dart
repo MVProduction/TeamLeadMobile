@@ -5,7 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_form_store.dart';
 import 'package:team_lead/widgets/choose_photo_widget/choose_photo_source_type.dart';
 import 'package:team_lead/widgets/choose_photo_widget/choose_photo_widget.dart';
@@ -19,7 +21,7 @@ class UserEditForm extends StatelessWidget {
   static const double ImageRadius = 68;
 
   /// Состояние формы
-  final _formStore = UserEditFormStore();
+  final UserEditFormStore _formStore;
 
   /// Пользователь
   final ServiceUserData _editUser;
@@ -39,7 +41,7 @@ class UserEditForm extends StatelessWidget {
   /// Обрабатывает нажатие на кнопку сохранение
   void _onCommitClick() {
     _onChange(ServiceUserData(_editUser.id, _nameController.text,
-        _contactController.text, _skillController.text, ""));
+        _contactController.text, _skillController.text, _formStore.photoUrl));
   }
 
   /// Обрабатывает получение фотки
@@ -76,29 +78,48 @@ class UserEditForm extends StatelessWidget {
         ));
 
     if (croppedFile != null) {
-      _formStore.photoImage = Image.file(croppedFile);
+      final user = teamLeadService.userService.getLoginUser();
+      final userId = user.id;
+      final photoName = "${userId}_photo";
+      _formStore.savePhoto(croppedFile, photoName);
     }
   }
 
   /// Конструктор
-  UserEditForm(this._editUser, this._onChange) {
+  UserEditForm(this._editUser, this._onChange)
+      : _formStore = UserEditFormStore(_editUser.photoUrl) {
     _nameController.text = _editUser.name;
     _contactController.text = _editUser.contacts;
+
+    _formStore.fetchPhoto();
   }
 
   /// Создаёт виджет
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Observer(builder: (context) {
+      final photoFuture = _formStore.photoFuture;
+
+      Widget photoWidget;
+      switch (photoFuture.status) {
+        case FutureStatus.fulfilled:
+          final photo = photoFuture.value;
+          photoWidget = ChoosePhotoWidget(
+            _onGetImage,
+            imageRadius: ImageRadius,
+            image: photo,
+          );
+          break;
+        default:
+          photoWidget = Center(
+            child: CircularProgressIndicator(),
+          );
+          break;
+      }
+
       return ListView(
         children: <Widget>[
-          Center(
-            child: ChoosePhotoWidget(
-              _onGetImage,
-              imageRadius: ImageRadius,
-              image: _formStore.photoImage,
-            ),
-          ),
+          photoWidget,
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 16),
             child: Text("Имя пользователя",

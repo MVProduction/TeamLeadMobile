@@ -28,7 +28,7 @@ class UserEditPage extends StatelessWidget {
   /// Обрабатывает изменения данных пользователя
   void _onChange(ServiceUserData data, BuildContext context) async {
     await teamLeadService.userService
-        .updateUser(data.name, data.contacts, data.skills);
+        .updateUser(data.photoUrl, data.name, data.contacts, data.skills);
     Navigator.pop(context);
   }
 

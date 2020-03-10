@@ -9,20 +9,40 @@ part of 'user_edit_form_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$UserEditFormStore on _UserEditFormStore, Store {
-  final _$photoImageAtom = Atom(name: '_UserEditFormStore.photoImage');
+  final _$photoFutureAtom = Atom(name: '_UserEditFormStore.photoFuture');
 
   @override
-  Image get photoImage {
-    _$photoImageAtom.context.enforceReadPolicy(_$photoImageAtom);
-    _$photoImageAtom.reportObserved();
-    return super.photoImage;
+  ObservableFuture<Widget> get photoFuture {
+    _$photoFutureAtom.context.enforceReadPolicy(_$photoFutureAtom);
+    _$photoFutureAtom.reportObserved();
+    return super.photoFuture;
   }
 
   @override
-  set photoImage(Image value) {
-    _$photoImageAtom.context.conditionallyRunInAction(() {
-      super.photoImage = value;
-      _$photoImageAtom.reportChanged();
-    }, _$photoImageAtom, name: '${_$photoImageAtom.name}_set');
+  set photoFuture(ObservableFuture<Widget> value) {
+    _$photoFutureAtom.context.conditionallyRunInAction(() {
+      super.photoFuture = value;
+      _$photoFutureAtom.reportChanged();
+    }, _$photoFutureAtom, name: '${_$photoFutureAtom.name}_set');
+  }
+
+  final _$savePhotoAsyncAction = AsyncAction('savePhoto');
+
+  @override
+  Future<dynamic> savePhoto(File file, String name) {
+    return _$savePhotoAsyncAction.run(() => super.savePhoto(file, name));
+  }
+
+  final _$_UserEditFormStoreActionController =
+      ActionController(name: '_UserEditFormStore');
+
+  @override
+  Future<dynamic> fetchPhoto() {
+    final _$actionInfo = _$_UserEditFormStoreActionController.startAction();
+    try {
+      return super.fetchPhoto();
+    } finally {
+      _$_UserEditFormStoreActionController.endAction(_$actionInfo);
+    }
   }
 }

@@ -16,12 +16,12 @@ abstract class _UserCreatePageStore with Store {
 
   /// Сохраняет пользователя
   @action
-  Future createUser(
-      String id, String name, String contacts, String skills, BuildContext context) async {
+  Future createUser(String id, String photoUrl, String name, String contacts,
+      String skills, BuildContext context) async {
     state = UserEditPageStateType.Saving;
-    
+
     final user = await teamLeadService.userService
-        .createUser(id, name, contacts, skills);
+        .createUser(id, photoUrl, name, contacts, skills);
 
     await teamLeadService.userService.login(user.id);
     Navigator.popAndPushNamed(context, Routes.PostList);

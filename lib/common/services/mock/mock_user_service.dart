@@ -30,7 +30,8 @@ class MockUserService extends UserService {
   }
 
   /// Сохраняет информацию пользователя
-  Future updateUser(String name, String contact, String skill) async {
+  Future updateUser(
+      String photoUrl, String name, String contact, String skill) async {
     final id = getLoginUser().id;
     _loginUser = ServiceUserData(id, name, contact, skill, '');
   }
@@ -48,8 +49,8 @@ class MockUserService extends UserService {
   }
 
   @override
-  Future<ServiceUserData> createUser(
-      String id, String name, String contact, String skill) async {
+  Future<ServiceUserData> createUser(String id, String photoUrl, String name,
+      String contact, String skill) async {
     return _loginUser;
   }
 

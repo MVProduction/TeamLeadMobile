@@ -9,7 +9,7 @@ import 'package:team_lead/common/services/user_service.dart';
 import 'package:http/http.dart' as http;
 
 /// Сервис пользователя на основе Firebase
-class FirebaseUserService extends UserService {  
+class FirebaseUserService extends UserService {
   /// Для аутентификации через FireBase
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -34,7 +34,7 @@ class FirebaseUserService extends UserService {
     }
 
     return ServiceUserData(id, userData.data["name"], userData.data["contacts"],
-        userData.data["skills"], "");
+        userData.data["skills"], userData["photoUrl"]);
   }
 
   /// Возвращает пользователя по имени
@@ -51,8 +51,12 @@ class FirebaseUserService extends UserService {
     }
 
     final document = userDocs.documents[0];
-    return ServiceUserData(document.documentID, document.data["name"],
-        document.data["contacts"], document.data["skills"], "");
+    return ServiceUserData(
+        document.documentID,
+        document.data["name"],
+        document.data["contacts"],
+        document.data["skills"],
+        document.data["photoUrl"]);
   }
 
   /// Авторизируется через google
@@ -104,25 +108,30 @@ class FirebaseUserService extends UserService {
 
   /// Сохраняет пользователя
   @override
-  Future updateUser(String name, String contacts, String skills) async {
+  Future updateUser(
+      String photoUrl, String name, String contacts, String skills) async {
     final id = getLoginUser().id;
 
-    await Firestore.instance
-        .collection('users')
-        .document(id)
-        .updateData({'name': name, 'contacts': contacts, 'skills': skills});
+    await Firestore.instance.collection('users').document(id).updateData({
+      'name': name,
+      'contacts': contacts,
+      'skills': skills,
+      'photoUrl': photoUrl
+    });
 
     _loginUser = ServiceUserData(_loginUser.id, name, contacts, skills, "");
   }
 
   /// Создаёт пользователя
   @override
-  Future<ServiceUserData> createUser(
-      String id, String name, String contacts, String skills) async {
-    await Firestore.instance
-        .collection('users')
-        .document(id)
-        .setData({'name': name, 'contacts': contacts, 'skills': skills});
+  Future<ServiceUserData> createUser(String id, String photoUrl, String name,
+      String contacts, String skills) async {
+    await Firestore.instance.collection('users').document(id).setData({
+      'name': name,
+      'contacts': contacts,
+      'skills': skills,
+      'photoUrl': photoUrl
+    });
 
     return ServiceUserData(id, name, contacts, skills, "");
   }

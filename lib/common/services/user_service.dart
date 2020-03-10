@@ -34,8 +34,10 @@ abstract class UserService {
 
   /// Создаёт пользователя, возвращает пользователя
   /// Идентификатор [id] должен быть получен от провайдера аутентификации
-  Future<ServiceUserData> createUser(String id, String name, String contacts, String skills);
+  Future<ServiceUserData> createUser(
+      String id, String photoUrl, String name, String contacts, String skills);
 
   /// Сохраняет информацию пользователя
-  Future updateUser(String name, String contacts, String skills);
+  Future updateUser(
+      String photoUrl, String name, String contacts, String skills);
 }

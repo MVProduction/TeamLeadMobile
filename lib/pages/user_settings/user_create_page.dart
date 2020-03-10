@@ -32,7 +32,7 @@ class UserCreatePage extends StatelessWidget {
   /// Обрабатывает изменения данных пользователя
   void _onChange(ServiceUserData data, BuildContext context) async {
     _pageStore.createUser(
-        data.id, data.name, data.contacts, data.skills, context);
+        data.id, data.photoUrl, data.name, data.contacts, data.skills, context);
   }
 
   /// Создаёт виджет
