@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
 
 part 'user_edit_page_store.g.dart';
@@ -14,12 +15,16 @@ abstract class _UserSettingsPageStore with Store {
 
   /// Сохраняет пользователя
   @action
-  Future updateUser(
-      String photoUrl, String name, String contact, String skill) async {
+  Future updateUser(UserEditFormData user) async {
     state = UserEditPageStateType.Saving;
 
+    String photoUrl;
+    if (user.photo != null) {
+      photoUrl = "${user.id}_photo";
+      teamLeadService.storageService.saveFile(photoUrl, user.photo);
+    }
+
     await teamLeadService.userService
-        .updateUser(photoUrl, name, contact, skill);
-    state = UserEditPageStateType.Edit;
+        .updateUser(photoUrl, user.name, user.contacts, user.skills);
   }
 }

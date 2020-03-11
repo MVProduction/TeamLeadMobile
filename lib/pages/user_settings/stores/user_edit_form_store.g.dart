@@ -26,11 +26,11 @@ mixin _$UserEditFormStore on _UserEditFormStore, Store {
     }, _$photoFutureAtom, name: '${_$photoFutureAtom.name}_set');
   }
 
-  final _$savePhotoAsyncAction = AsyncAction('savePhoto');
+  final _$setPhotoAsyncAction = AsyncAction('setPhoto');
 
   @override
-  Future<dynamic> savePhoto(File file, String name) {
-    return _$savePhotoAsyncAction.run(() => super.savePhoto(file, name));
+  Future<dynamic> setPhoto(File file) {
+    return _$setPhotoAsyncAction.run(() => super.setPhoto(file));
   }
 
   final _$_UserEditFormStoreActionController =

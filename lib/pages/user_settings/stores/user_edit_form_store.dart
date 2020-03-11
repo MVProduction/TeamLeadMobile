@@ -10,6 +10,9 @@ class UserEditFormStore = _UserEditFormStore with _$UserEditFormStore;
 
 /// Состояние формы редактирования пользователя
 abstract class _UserEditFormStore with Store {
+  /// Файл фотки
+  File photoFile;
+
   /// Путь до файла фотки пользователя
   String photoUrl;
 
@@ -24,14 +27,14 @@ abstract class _UserEditFormStore with Store {
   /// Загружает фото
   @action
   Future fetchPhoto() {
-    photoFuture = ObservableFuture(Future(() async {      
+    print("fetchPhoto");
+    photoFuture = ObservableFuture(Future(() async {
       print(photoUrl);
       if (photoUrl != null && photoUrl.isNotEmpty) {
         final photoFile =
             await teamLeadService.storageService.loadFile(photoUrl);
         if (photoFile != null) {
-          return Padding(
-              padding: EdgeInsets.all(4), child: Image.file(photoFile));
+          return Image.file(photoFile, fit: BoxFit.cover);
         }
       }
 
@@ -41,14 +44,11 @@ abstract class _UserEditFormStore with Store {
     return photoFuture;
   }
 
-  /// Сохраняет фото
+  /// Устанавливает фото
   @action
-  Future savePhoto(File file, String name) async {
-    await teamLeadService.storageService.saveFile(name, file);
-    photoUrl = name;
-    photoFuture = ObservableFuture.value(
-        Padding(padding: EdgeInsets.all(4), child: Image.file(file)));
-
+  Future setPhoto(File file) async {
+    photoFuture = ObservableFuture.value(Image.file(file, fit: BoxFit.cover));
+    photoFile = file;
     return photoFuture;
   }
 }

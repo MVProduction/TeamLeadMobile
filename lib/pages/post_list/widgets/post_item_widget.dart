@@ -7,6 +7,7 @@ import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/common/date_utils.dart';
+import 'package:team_lead/widgets/service_user_avatar_widget/service_user_avatar_widget.dart';
 
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
@@ -64,13 +65,7 @@ class PostItemWidget extends StatelessWidget {
                         Container(
                             padding: EdgeInsets.only(top: 24),
                             width: 100,
-                            child: CircleAvatar(
-                                radius: 38,
-                                backgroundColor: Colors.red,
-                                child: ClipOval(
-                                    child: Image(
-                                        image: AssetImage(
-                                            "assets/dummy_face.jpg"))))),
+                            child: ServiceUserAvatarWidget(user.photoUrl)),
                         Expanded(
                             flex: 9,
                             child: Padding(

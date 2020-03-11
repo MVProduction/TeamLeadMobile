@@ -119,7 +119,7 @@ class FirebaseUserService extends UserService {
       'photoUrl': photoUrl
     });
 
-    _loginUser = ServiceUserData(_loginUser.id, name, contacts, skills, "");
+    _loginUser = ServiceUserData(_loginUser.id, name, contacts, skills, photoUrl);
   }
 
   /// Создаёт пользователя
@@ -133,7 +133,7 @@ class FirebaseUserService extends UserService {
       'photoUrl': photoUrl
     });
 
-    return ServiceUserData(id, name, contacts, skills, "");
+    return ServiceUserData(id, name, contacts, skills, photoUrl);
   }
 
   /// Подключается к приложению

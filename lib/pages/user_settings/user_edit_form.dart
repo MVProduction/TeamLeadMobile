@@ -7,13 +7,13 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
-import 'package:team_lead/common/services/team_lead_service.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_form_store.dart';
 import 'package:team_lead/widgets/choose_photo_widget/choose_photo_source_type.dart';
 import 'package:team_lead/widgets/choose_photo_widget/choose_photo_widget.dart';
 
 /// Функция обрабатывающая изменения данных пользователя
-typedef OnUserDataChangeFunc(ServiceUserData user);
+typedef OnUserDataChangeFunc(UserEditFormData data);
 
 /// Форма редактирования пользователя
 class UserEditForm extends StatelessWidget {
@@ -40,8 +40,8 @@ class UserEditForm extends StatelessWidget {
 
   /// Обрабатывает нажатие на кнопку сохранение
   void _onCommitClick() {
-    _onChange(ServiceUserData(_editUser.id, _nameController.text,
-        _contactController.text, _skillController.text, _formStore.photoUrl));
+    _onChange(UserEditFormData(_editUser.id, _nameController.text,
+        _contactController.text, _skillController.text, _formStore.photoFile));
   }
 
   /// Обрабатывает получение фотки
@@ -78,10 +78,7 @@ class UserEditForm extends StatelessWidget {
         ));
 
     if (croppedFile != null) {
-      final user = teamLeadService.userService.getLoginUser();
-      final userId = user.id;
-      final photoName = "${userId}_photo";
-      _formStore.savePhoto(croppedFile, photoName);
+      _formStore.setPhoto(croppedFile);
     }
   }
 
@@ -91,12 +88,13 @@ class UserEditForm extends StatelessWidget {
     _nameController.text = _editUser.name;
     _contactController.text = _editUser.contacts;
 
+    print("UserEditForm");
     _formStore.fetchPhoto();
   }
 
   /// Создаёт виджет
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return Observer(builder: (context) {
       final photoFuture = _formStore.photoFuture;
 
@@ -104,11 +102,12 @@ class UserEditForm extends StatelessWidget {
       switch (photoFuture.status) {
         case FutureStatus.fulfilled:
           final photo = photoFuture.value;
-          photoWidget = ChoosePhotoWidget(
+          photoWidget = Center(
+              child: ChoosePhotoWidget(
             _onGetImage,
             imageRadius: ImageRadius,
             image: photo,
-          );
+          ));
           break;
         default:
           photoWidget = Center(

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:team_lead/common/services/contracts/service_user_data.dart';
-import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_page_store.dart';
 import 'package:team_lead/pages/user_settings/user_edit_form.dart';
 
 /// Страница редактирования настроек пользователя
 class UserEditPage extends StatelessWidget {
+  /// Состояние страницы
+  final _pageState = UserEditPageStore();
+
   /// Возвращает вид с заголовками и телом [body]
   Widget getScaffold(String title, Widget body) {
     return Scaffold(
@@ -26,21 +29,19 @@ class UserEditPage extends StatelessWidget {
   }
 
   /// Обрабатывает изменения данных пользователя
-  void _onChange(ServiceUserData data, BuildContext context) async {
-    await teamLeadService.userService
-        .updateUser(data.photoUrl, data.name, data.contacts, data.skills);
-    Navigator.pop(context);
+  void _onChange(UserEditFormData data, BuildContext context) {
+    _pageState.updateUser(data).then((value) {
+      Navigator.pop(context);
+    });    
   }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    teamLeadAppStore.userSettingsPageStore.state = UserEditPageStateType.Edit;
-
     final user = teamLeadAppStore.usersStore.getLoginUser();
 
     return Observer(builder: (context) {
-      final state = teamLeadAppStore.userSettingsPageStore.state;
+      final state = _pageState.state;
       switch (state) {
         case UserEditPageStateType.Edit:
           return getScaffold(

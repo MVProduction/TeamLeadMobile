@@ -29,8 +29,5 @@ abstract class _TeamLeadAppStore with Store {
   final PostCreatePageStore postCreatePageStore = PostCreatePageStore();
 
   /// Модель редактирования поста
-  final PostEditPageStore postEditPageStore = PostEditPageStore();
-
-  /// Модель настроек пользователя
-  final UserEditPageStore userSettingsPageStore = UserEditPageStore();
+  final PostEditPageStore postEditPageStore = PostEditPageStore();  
 }

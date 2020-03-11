@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
@@ -16,9 +18,13 @@ abstract class _UserCreatePageStore with Store {
 
   /// Сохраняет пользователя
   @action
-  Future createUser(String id, String photoUrl, String name, String contacts,
+  Future createUser(String id, File photo, String name, String contacts,
       String skills, BuildContext context) async {
     state = UserEditPageStateType.Saving;
+
+    final photoUrl = "${name}_photo";
+
+    await teamLeadService.storageService.saveFile(photoUrl, photo);
 
     final user = await teamLeadService.userService
         .createUser(id, photoUrl, name, contacts, skills);

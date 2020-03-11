@@ -29,9 +29,7 @@ mixin _$UserEditPageStore on _UserSettingsPageStore, Store {
   final _$updateUserAsyncAction = AsyncAction('updateUser');
 
   @override
-  Future<dynamic> updateUser(
-      String photoUrl, String name, String contact, String skill) {
-    return _$updateUserAsyncAction
-        .run(() => super.updateUser(photoUrl, name, contact, skill));
+  Future<dynamic> updateUser(UserEditFormData user) {
+    return _$updateUserAsyncAction.run(() => super.updateUser(user));
   }
 }
