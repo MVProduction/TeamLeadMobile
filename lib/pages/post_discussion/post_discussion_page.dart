@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/models/post_with_user_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
-import 'package:team_lead/pages/post_discussion/stores/post_with_user_data.dart';
 import 'package:team_lead/common/date_utils.dart';
 import 'package:team_lead/pages/post_discussion/widgets/comment_list_widget.dart';
 import 'package:team_lead/routes.dart';
@@ -128,28 +129,28 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(post.post.userName,
+                    child: Text(post.userName,
                         style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child:
-                        Text(post.post.createDate.toLocalizedDateTimeString()),
+                        Text(post.postCreateDate.toLocalizedDateTimeString()),
                   ),
-                  if (post.user?.contacts != null)
+                  if (post.userContacts != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(post.user.contacts),
+                      child: Text(post.userContacts),
                     ),
-                  if (post.user?.skills?.isNotEmpty == true)
+                  if (post.userSkills?.isNotEmpty == true)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(post.user.skills),
+                      child: Text(post.userSkills),
                     ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                   ),
-                  Text(post.post.text, style: TextStyle(fontSize: 18))
+                  Text(post.postText, style: TextStyle(fontSize: 18))
                 ])),
       ],
     );
@@ -214,14 +215,14 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
         case FutureStatus.fulfilled:
           final post = future.value;
           if (post == null) return Text('NO DATA');
-          final user = teamLeadAppStore.usersStore.getLoginUser();
+          final user = teamLeadService.userService.getLoginUser();
           EditOptions editOptions;
 
-          if (post.user != null && user.name == post.user.name) {
-            editOptions = EditOptions(true, post.post.id);
+          if (user.name == post.userName) {
+            editOptions = EditOptions(true, post.postId);
           }
 
-          return getScafoldViewWithTabs(post.post.title, getMainView(post),
+          return getScafoldViewWithTabs(post.postTitle, getMainView(post),
               editOptions: editOptions);
         default:
           return getScafoldViewWithTabs(

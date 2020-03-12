@@ -58,7 +58,7 @@ class _MainPostListWidgetState extends State<MainPostListWidget> {
                 child: ListView.builder(itemBuilder: (context, index) {
                   if (index >= values.length) return null;
                   final post = values[index];
-                  return PostItemWidget(PostItemStore(post));
+                  return PostItemWidget(post);
                 }));
           }
 

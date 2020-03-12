@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:team_lead/common/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/models/post_with_user_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
+import 'package:team_lead/common/services/helpers/post_service_helper.dart';
 
 part 'main_post_list_store.g.dart';
 
@@ -12,21 +13,26 @@ abstract class _MainPostListStore with Store {
   static const MaxPostPerRequest = 5;
 
   /// Кэш всех постов
-  final _postCache = List<ServicePostData>();
+  final _postCache = List<PostWithUserData>();
 
   /// Все посты
   @observable
-  ObservableFuture<List<ServicePostData>> allPosts = ObservableFuture.value([]);
+  ObservableFuture<List<PostWithUserData>> allPosts =
+      ObservableFuture.value([]);
 
   /// Загружает новые посты если есть
   @action
   Future fetchPosts() async {
     print("_MainPostListStore fetchPosts");
     allPosts = ObservableFuture(Future(() async {
-      _postCache.clear();
       final lastId = await teamLeadService.postService.getLastPostId();
-      _postCache.addAll(await teamLeadService.postService
-          .loadPosts(lastId, MaxPostPerRequest));
+      final posts = await teamLeadService.postService
+          .loadPosts(lastId, MaxPostPerRequest);
+
+      final nposts = await teamLeadService.postService.loadPostsWithUserData(
+          posts, teamLeadService.userService, teamLeadService.storageService);
+      _postCache.clear();
+      _postCache.addAll(nposts);
       return _postCache;
     }));
     return allPosts;
@@ -35,10 +41,13 @@ abstract class _MainPostListStore with Store {
   /// Загружает старые посты
   Future fetchOld() async {
     print("fetchOld");
-    final allFuture = ObservableFuture(Future(() async {      
-      final newPosts = await teamLeadService.postService
-          .loadPosts(_postCache.last.id - 1, MaxPostPerRequest);
-      _postCache.addAll(newPosts);
+    final allFuture = ObservableFuture(Future(() async {
+      final posts = await teamLeadService.postService
+          .loadPosts(_postCache.last.postId - 1, MaxPostPerRequest);
+
+      final nposts = await teamLeadService.postService.loadPostsWithUserData(
+          posts, teamLeadService.userService, teamLeadService.storageService);
+      _postCache.addAll(nposts);
       return _postCache;
     }));
     return allFuture;

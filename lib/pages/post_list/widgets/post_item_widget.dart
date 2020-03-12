@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/models/post_with_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
 import 'package:team_lead/routes.dart';
@@ -14,11 +16,12 @@ class PostItemWidget extends StatelessWidget {
   /// Данные поста
   final PostItemStore postStore;
 
-  ServicePostData get post => postStore.post;
+  /// Пост пользователя
+  final PostWithUserData _post;
 
   /// Обрабатывает нажатие на пост
-  void _onPostClick(BuildContext context, ServicePostData post) {
-    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post.id)
+  void _onPostClick(BuildContext context, PostWithUserData post) {
+    Navigator.pushNamed(context, Routes.DiscussPost, arguments: post.postId)
         .then((value) {
       teamLeadAppStore.postListPageStore
           .setTab(teamLeadAppStore.postListPageStore.tabType);
@@ -26,27 +29,27 @@ class PostItemWidget extends StatelessWidget {
   }
 
   /// Обрабатывает нажатие удалить из избранного
-  void _onRemoveFromFavorite(BuildContext context, ServicePostData post) {
+  void _onRemoveFromFavorite(BuildContext context, PostWithUserData post) {
     postStore.removeFavorite();
   }
 
   /// Обрабатывает нажатие добавить в избранное
-  void _onAddToFavorite(BuildContext context, ServicePostData post) {
+  void _onAddToFavorite(BuildContext context, PostWithUserData post) {
     postStore.addToFavorite();
   }
 
   /// Конструктор
-  PostItemWidget(this.postStore);
+  PostItemWidget(this._post) : postStore = PostItemStore(_post);
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    final user = teamLeadAppStore.usersStore.getLoginUser();
+    final user = teamLeadService.userService.getLoginUser();
 
     return Padding(
         padding: EdgeInsets.only(bottom: 8, top: 8, right: 16, left: 16),
         child: InkWell(
-          onTap: () => _onPostClick(context, post),
+          onTap: () => _onPostClick(context, _post),
           child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -65,7 +68,10 @@ class PostItemWidget extends StatelessWidget {
                         Container(
                             padding: EdgeInsets.only(top: 24),
                             width: 100,
-                            child: ServiceUserAvatarWidget(user.photoUrl)),
+                            child: CircleAvatar(
+                                radius: 38,
+                                backgroundColor: Colors.red,
+                                child: ClipOval(child: Image.file(_post.userPhoto)))),
                         Expanded(
                             flex: 9,
                             child: Padding(
@@ -81,7 +87,7 @@ class PostItemWidget extends StatelessWidget {
                                       children: <Widget>[
                                         Expanded(
                                           flex: 9,
-                                          child: Text(post.title,
+                                          child: Text(_post.postTitle,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 2,
                                               style: TextStyle(
@@ -94,7 +100,7 @@ class PostItemWidget extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 4),
                                     child: Text(
-                                        post.createDate
+                                        _post.postCreateDate
                                             .toLocalizedDateTimeStringFromDate(
                                                 DateTime.now()),
                                         style: TextStyle(
@@ -102,12 +108,12 @@ class PostItemWidget extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8),
-                                    child: Text(post.userName,
+                                    child: Text(_post.userName,
                                         style: TextStyle(
                                             color: Colors.grey.shade500)),
                                   ),
                                   Text(
-                                    post.text,
+                                    _post.postText,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 4,
                                   ),
@@ -134,7 +140,7 @@ class PostItemWidget extends StatelessWidget {
                                       child: Icon(Icons.remove_red_eye,
                                           size: 24, color: Colors.grey),
                                     ),
-                                    Text((post.viewCount ?? 0).toString())
+                                    Text((_post.postViewCount ?? 0).toString())
                                   ],
                                 )),
                           ),
@@ -149,7 +155,8 @@ class PostItemWidget extends StatelessWidget {
                                       child: Icon(Icons.message,
                                           size: 24, color: Colors.grey),
                                     ),
-                                    Text((post.commentCount ?? 0).toString())
+                                    Text((_post.postCommentCount ?? 0)
+                                        .toString())
                                   ],
                                 )),
                           ),
@@ -157,7 +164,7 @@ class PostItemWidget extends StatelessWidget {
                             flex: 3,
                             child: Row(),
                           ),
-                          if (post.userName != user.name)
+                          if (_post.userId != user.id)
                             Observer(builder: (ctx) {
                               final future = postStore.isFavorite;
                               switch (future.status) {
@@ -173,7 +180,7 @@ class PostItemWidget extends StatelessWidget {
                                         icon: Icon(Icons.favorite,
                                             color: Colors.red),
                                         onPressed: () => _onRemoveFromFavorite(
-                                            context, post),
+                                            context, _post),
                                       ),
                                     );
                                   } else {
@@ -185,7 +192,7 @@ class PostItemWidget extends StatelessWidget {
                                         padding: EdgeInsets.all(0),
                                         icon: Icon(Icons.favorite_border),
                                         onPressed: () =>
-                                            _onAddToFavorite(context, post),
+                                            _onAddToFavorite(context, _post),
                                       ),
                                     );
                                   }

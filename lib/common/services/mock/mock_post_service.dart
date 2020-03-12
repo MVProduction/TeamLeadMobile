@@ -125,8 +125,8 @@ class MockPostService extends PostService {
 
   /// Загружает посты пользователя
   @override
-  Future<List<ServicePostData>> loadUserPosts(String userName) async {
-    return _allPosts.where((x) => x.userName == userName).toList();
+  Future<List<ServicePostData>> loadUserPosts(String userId) async {
+    return _allPosts.where((x) => x.userId == userId).toList();
   }
 
   /// Добавляет в избранное

@@ -18,15 +18,15 @@ class UserPostListWidget extends StatelessWidget {
       switch (future.status) {
         case FutureStatus.fulfilled:
           final values = future.value;
-          
+
           if (values.isNotEmpty) {
             return ListView.builder(itemBuilder: (context, index) {
               if (index >= values.length) return null;
               final post = values[index];
-              return PostItemWidget(PostItemStore(post));
+              return PostItemWidget(post);
             });
           }
-          
+
           return Center(child: Text("Добавьте объявление"));
         default:
           return Center(

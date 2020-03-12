@@ -29,9 +29,6 @@ abstract class UserService {
   /// Возвращает информацию пользователя по идентификатору
   Future<ServiceUserData> getUserInfoById(String id);
 
-  /// Возвращает информацию пользователя по имени
-  Future<ServiceUserData> getUserInfoByName(String userName);
-
   /// Создаёт пользователя, возвращает пользователя
   /// Идентификатор [id] должен быть получен от провайдера аутентификации
   Future<ServiceUserData> createUser(

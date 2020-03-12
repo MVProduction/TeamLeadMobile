@@ -12,14 +12,14 @@ mixin _$MainPostListStore on _MainPostListStore, Store {
   final _$allPostsAtom = Atom(name: '_MainPostListStore.allPosts');
 
   @override
-  ObservableFuture<List<ServicePostData>> get allPosts {
+  ObservableFuture<List<PostWithUserData>> get allPosts {
     _$allPostsAtom.context.enforceReadPolicy(_$allPostsAtom);
     _$allPostsAtom.reportObserved();
     return super.allPosts;
   }
 
   @override
-  set allPosts(ObservableFuture<List<ServicePostData>> value) {
+  set allPosts(ObservableFuture<List<PostWithUserData>> value) {
     _$allPostsAtom.context.conditionallyRunInAction(() {
       super.allPosts = value;
       _$allPostsAtom.reportChanged();

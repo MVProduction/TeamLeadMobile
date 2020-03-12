@@ -4,7 +4,7 @@ class ServicePostData {
   final int id;
 
   /// Имя пользователя
-  final String userName;
+  final String userId;
 
   /// Заголовок
   String title;
@@ -25,13 +25,13 @@ class ServicePostData {
   bool isFavorite;
 
   /// Конструктор
-  ServicePostData(this.id, this.userName, this.title, this.createDate,
+  ServicePostData(this.id, this.userId, this.title, this.createDate,
       this.text, this.viewCount, this.commentCount, this.isFavorite);
 
   @override
   String toString() {
     return """id: $id 
-    userName: $userName 
+    userId: $userId 
     title: $title 
     createDate: $createDate 
     shortText: $text 

@@ -8,7 +8,7 @@ class FirebasePostService extends PostService {
   ServicePostData _documentToPost(Map<String, dynamic> data) {
     return ServicePostData(
         data["id"],
-        data["userName"],
+        data["userId"],
         data["title"],
         (data["createDate"] as Timestamp).toDate(),
         data["text"],
@@ -21,7 +21,7 @@ class FirebasePostService extends PostService {
   Map<String, dynamic> _postToDocument(ServicePostData data) {
     return {
       "id": data.id,
-      "userName": data.userName,
+      "userId": data.userId,
       "title": data.title,
       "createDate": data.createDate,
       "text": data.text,
@@ -157,10 +157,10 @@ class FirebasePostService extends PostService {
 
   /// Загружает посты пользователя
   @override
-  Future<List<ServicePostData>> loadUserPosts(String userName) async {
+  Future<List<ServicePostData>> loadUserPosts(String userId) async {
     final postDocs = await Firestore.instance
         .collection('posts')
-        .where("userName", isEqualTo: userName)
+        .where("userId", isEqualTo: userId)
         .orderBy("id", descending: true)
         .getDocuments();
 

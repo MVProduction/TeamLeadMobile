@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
@@ -32,13 +33,13 @@ class UserEditPage extends StatelessWidget {
   void _onChange(UserEditFormData data, BuildContext context) {
     _pageState.updateUser(data).then((value) {
       Navigator.pop(context);
-    });    
+    });
   }
 
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
-    final user = teamLeadAppStore.usersStore.getLoginUser();
+    final user = teamLeadService.userService.getLoginUser();
 
     return Observer(builder: (context) {
       final state = _pageState.state;
