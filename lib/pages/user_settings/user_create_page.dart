@@ -48,8 +48,7 @@ class UserCreatePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: UserEditForm(
-                  ServiceUserData(user.id, user.name, user.email, user.photoUrl,
-                      user.photoUrl),
+                  ServiceUserData(user.id, user.name, user.email, "", null),
                   (d) => _onChange(d, context)),
             ));
       case UserEditPageStateType.Saving:

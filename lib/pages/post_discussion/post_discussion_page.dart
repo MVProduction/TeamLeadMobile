@@ -107,6 +107,14 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
 
   /// Возвращает вид с постом
   Widget getPostView(PostWithUserData post) {
+    Widget photo;
+
+    if (post.userPhoto != null) {
+      photo = Image.file(post.userPhoto);
+    } else {
+      photo = Padding(padding: EdgeInsets.all(4), child: Text("Нет фото"));
+    }
+
     return ListView(
       children: <Widget>[
         Container(
@@ -121,8 +129,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                       child: CircleAvatar(
                         radius: 56,
                         child: ClipOval(
-                          child:
-                              Image(image: AssetImage("assets/dummy_face.jpg")),
+                          child: photo,
                         ),
                       ),
                     ),

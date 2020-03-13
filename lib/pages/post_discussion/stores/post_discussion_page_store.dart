@@ -3,6 +3,7 @@ import 'package:team_lead/common/models/post_with_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
+import 'package:team_lead/common/services/helpers/post_service_helper.dart';
 
 part 'post_discussion_page_store.g.dart';
 
@@ -23,7 +24,7 @@ abstract class _PostDiscussionPageStore with Store {
 
   /// Количество постов
   @computed
-  int get commentCount => post.value.postCommentCount;
+  int get commentCount => post.value.postCommentCount ?? 0;
 
   /// Комментарии
   @observable
@@ -38,7 +39,6 @@ abstract class _PostDiscussionPageStore with Store {
   Future sendComment(String text) async {
     final user = teamLeadService.userService.getLoginUser();
     await teamLeadService.commentService.sendComment(_postId, user.name, text);
-    await fetchComments();
     await fetchPost();
   }
 
@@ -47,22 +47,12 @@ abstract class _PostDiscussionPageStore with Store {
   Future fetchPost() {
     post = ObservableFuture(Future(() async {
       final post = await teamLeadService.postService.loadPost(_postId);
-      final user =
-          await teamLeadService.userService.getUserInfoById(post.userId);
-      await teamLeadService.postService.viewPost(_postId, user.id);
-      return PostWithUserData(
-          userId: user.id,
-          userName: user.name,
-          userContacts: user.contacts,
-          userSkills: user.skills,
-          userPhotoUrl: user.photoUrl,
-          userPhoto: null,
-          postId: post.id,
-          postTitle: post.title,
-          postText: post.text,
-          postCreateDate: post.createDate,
-          postViewCount: post.viewCount,
-          postCommentCount: post.commentCount);
+      await fetchComments();
+
+      final nposts = await teamLeadService.postService.loadPostsWithUserData(
+          [post], teamLeadService.userService, teamLeadService.storageService);
+
+      return nposts.first;
     }));
 
     return post;

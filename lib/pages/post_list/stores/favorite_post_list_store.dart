@@ -33,7 +33,7 @@ abstract class _FavoritePostListStore with Store {
       final user = teamLeadService.userService.getLoginUser();
 
       final posts =
-          await teamLeadService.postService.loadUserFavoritePosts(user.name);
+          await teamLeadService.postService.loadUserFavoritePosts(user.id);
 
       final nposts = await teamLeadService.postService.loadPostsWithUserData(
           posts, teamLeadService.userService, teamLeadService.storageService);

@@ -33,10 +33,10 @@ class FirebasePostService extends PostService {
 
   /// Создаёт пост
   @override
-  Future createPost(String userName, String title, String text) async {
+  Future createPost(String userId, String title, String text) async {
     final id = await getLastPostId() + 1;
-    final data = _postToDocument(ServicePostData(
-        id, userName, title, DateTime.now(), text, 0, 0, false));
+    final data = _postToDocument(
+        ServicePostData(id, userId, title, DateTime.now(), text, 0, 0, false));
 
     await Firestore.instance
         .collection('posts')
@@ -140,10 +140,10 @@ class FirebasePostService extends PostService {
 
   /// Возвращает избранные посты
   @override
-  Future<List<ServicePostData>> loadUserFavoritePosts(String userName) async {
+  Future<List<ServicePostData>> loadUserFavoritePosts(String userId) async {
     final postDocs = await Firestore.instance
         .collection('posts')
-        .where("userName", isEqualTo: userName)
+        .where("userId", isEqualTo: userId)
         .where("isFavorite", isEqualTo: true)
         .orderBy("id", descending: true)
         .getDocuments();

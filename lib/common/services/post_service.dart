@@ -9,10 +9,10 @@ abstract class PostService {
   Future<List<ServicePostData>> loadPosts(int firstId, int count);
 
   /// Загружает избранные посты
-  Future<List<ServicePostData>> loadUserFavoritePosts(String name);
+  Future<List<ServicePostData>> loadUserFavoritePosts(String userId);
 
   /// Загружает посты пользователя
-  Future<List<ServicePostData>> loadUserPosts(String name);
+  Future<List<ServicePostData>> loadUserPosts(String userId);
 
   /// Загружает полные данные поста с информацией пользователя
   Future<ServicePostData> loadPost(int postId);

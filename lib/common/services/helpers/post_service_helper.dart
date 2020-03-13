@@ -16,9 +16,7 @@ extension PostServiceHelper on PostService {
       StorageService storageService) async {
     final userData = <String, UserWithPhoto>{};
 
-    for (var post in posts) {      
-      print(post.id);
-      print(post.userId);
+    for (var post in posts) {
       if (post.userId == null) continue;
       final user = await userService.getUserInfoById(post.userId);
       if (user == null) continue;
