@@ -1,10 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
+import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
-import 'package:team_lead/routes.dart';
 
 part 'user_create_page_store.g.dart';
 
@@ -18,18 +15,18 @@ abstract class _UserCreatePageStore with Store {
 
   /// Сохраняет пользователя
   @action
-  Future createUser(String id, File photo, String name, String contacts,
-      String skills, BuildContext context) async {
+  Future createUser(UserEditFormData user) async {
     state = UserEditPageStateType.Saving;
 
-    final photoUrl = "${name}_photo";
+    String photoUrl;
+    if (user.photo != null) {
+      photoUrl = "${user.id}_photo";
+      teamLeadService.storageService.saveFile(photoUrl, user.photo);
+    }
 
-    await teamLeadService.storageService.saveFile(photoUrl, photo);
+    final nuser = await teamLeadService.userService
+        .createUser(user.id, photoUrl, user.name, user.contacts, user.skills);
 
-    final user = await teamLeadService.userService
-        .createUser(id, photoUrl, name, contacts, skills);
-
-    await teamLeadService.userService.login(user.id);
-    Navigator.popAndPushNamed(context, Routes.PostList);
+    await teamLeadService.userService.login(nuser.id);
   }
 }

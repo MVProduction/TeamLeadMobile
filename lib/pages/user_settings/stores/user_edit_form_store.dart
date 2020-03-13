@@ -27,7 +27,7 @@ abstract class _UserEditFormStore with Store {
   /// Загружает фото
   @action
   Future fetchPhoto() {
-    print("fetchPhoto");
+    print("_UserEditFormStore fetchPhoto");
     photoFuture = ObservableFuture(Future(() async {
       print(photoUrl);
       if (photoUrl != null && photoUrl.isNotEmpty) {

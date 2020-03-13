@@ -6,6 +6,7 @@ import 'package:team_lead/pages/user_settings/stores/user_create_page_store.dart
 import 'package:team_lead/pages/user_settings/stores/user_edit_form_data.dart';
 import 'package:team_lead/pages/user_settings/stores/user_edit_page_state_type.dart';
 import 'package:team_lead/pages/user_settings/user_edit_form.dart';
+import 'package:team_lead/routes.dart';
 
 /// Страница создания настроек пользователя
 class UserCreatePage extends StatelessWidget {
@@ -30,8 +31,9 @@ class UserCreatePage extends StatelessWidget {
 
   /// Обрабатывает изменения данных пользователя
   void _onChange(UserEditFormData data, BuildContext context) async {
-    // _pageStore.createUser(
-    //     data.id, data.photoUrl, data.name, data.contacts, data.skills, context);
+    _pageStore.createUser(data).then((value) {
+      Navigator.popAndPushNamed(context, Routes.PostList);
+    });
   }
 
   /// Создаёт виджет
@@ -46,8 +48,8 @@ class UserCreatePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: UserEditForm(
-                  ServiceUserData(
-                      user.id, user.name, user.email, "", user.photoUrl),
+                  ServiceUserData(user.id, user.name, user.email, user.photoUrl,
+                      user.photoUrl),
                   (d) => _onChange(d, context)),
             ));
       case UserEditPageStateType.Saving:
