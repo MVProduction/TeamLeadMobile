@@ -36,14 +36,14 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
   final _$commentsAtom = Atom(name: '_PostDiscussionPageStore.comments');
 
   @override
-  ObservableFuture<List<ServiceCommentData>> get comments {
+  ObservableFuture<List<CommentWithUserData>> get comments {
     _$commentsAtom.context.enforceReadPolicy(_$commentsAtom);
     _$commentsAtom.reportObserved();
     return super.comments;
   }
 
   @override
-  set comments(ObservableFuture<List<ServiceCommentData>> value) {
+  set comments(ObservableFuture<List<CommentWithUserData>> value) {
     _$commentsAtom.context.conditionallyRunInAction(() {
       super.comments = value;
       _$commentsAtom.reportChanged();

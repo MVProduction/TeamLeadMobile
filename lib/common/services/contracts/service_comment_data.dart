@@ -6,11 +6,8 @@ class ServiceCommentData {
   /// Идентификатор поста
   final int postId;
 
-  /// Имя пользователя сделавшего пост
-  final String userName;
-
-  /// URL фотографии пользователя
-  final String userPhotoUrl;
+  /// Идентификатор пользователя сделавшего пост
+  final String userId;
 
   /// Дата и время комментария
   final DateTime dateTime;
@@ -20,5 +17,5 @@ class ServiceCommentData {
 
   /// Конструктор
   ServiceCommentData(
-      this.id, this.postId, this.userName, this.userPhotoUrl, this.dateTime, this.text);
+      this.id, this.postId, this.userId, this.dateTime, this.text);
 }

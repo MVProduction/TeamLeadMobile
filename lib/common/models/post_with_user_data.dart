@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:team_lead/common/services/contracts/service_post_data.dart';
-import 'package:team_lead/common/services/contracts/service_user_data.dart';
 
 /// Данные поста с данными
 class PostWithUserData {
-  // Идентификатор
+  /// Идентификатор
   final String userId;
 
   /// Имя пользователя
@@ -39,8 +37,8 @@ class PostWithUserData {
   /// Количество просмотров
   final int postViewCount;
 
-  /// Колличество комментариев
-  final int postCommentCount;
+  /// Последний идентификатор комментария
+  final int postLastCommentId;
 
   /// Добавлено ли в избранное
   bool postIsFavorite;
@@ -58,5 +56,5 @@ class PostWithUserData {
       @required this.postText,
       @required this.postCreateDate,
       @required this.postViewCount,
-      @required this.postCommentCount});
+      @required this.postLastCommentId});
 }

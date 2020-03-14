@@ -18,15 +18,15 @@ class ServicePostData {
   /// Количество просмотров
   final int viewCount;
 
-  /// Колличество комментариев
-  final int commentCount;
+  /// Последний идентификатор комментария
+  final int lastCommentId;
 
   /// Добавлено ли в избранное
   bool isFavorite;
 
   /// Конструктор
   ServicePostData(this.id, this.userId, this.title, this.createDate,
-      this.text, this.viewCount, this.commentCount, this.isFavorite);
+      this.text, this.viewCount, this.lastCommentId, this.isFavorite);
 
   @override
   String toString() {
@@ -36,7 +36,7 @@ class ServicePostData {
     createDate: $createDate 
     shortText: $text 
     viewCount: $viewCount
-    commentCount: $commentCount
+    lastCommentId: $lastCommentId
     isFavorite: $isFavorite
     """;
   }

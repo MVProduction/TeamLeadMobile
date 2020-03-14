@@ -26,7 +26,6 @@ class FirebasePostService extends PostService {
       "createDate": data.createDate,
       "text": data.text,
       "viewCount": data.viewCount,
-      "commentCount": data.commentCount,
       "isFavorite": data.isFavorite,
     };
   }

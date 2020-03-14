@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:team_lead/common/date_utils.dart';
+import 'package:team_lead/common/models/comment_with_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 
 /// Комментарий
 class CommentItemWidget extends StatelessWidget {
   /// Данные комментариям
-  final ServiceCommentData comment;
+  final CommentWithUserData comment;
 
   /// Конструктор
   CommentItemWidget(this.comment);
@@ -14,6 +15,13 @@ class CommentItemWidget extends StatelessWidget {
   /// Создаёт виджет
   @override
   Widget build(BuildContext context) {
+    Widget photo;
+    if (comment.userPhoto != null) {
+      photo = Image.file(comment.userPhoto);
+    } else {
+      photo = Icon(Icons.supervised_user_circle);
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -22,7 +30,7 @@ class CommentItemWidget extends StatelessWidget {
           child: CircleAvatar(
             radius: 20,
             child: ClipOval(
-              child: Image(image: AssetImage("assets/dummy_face.jpg")),
+              child: photo,
             ),
           ),
         ),
@@ -35,14 +43,14 @@ class CommentItemWidget extends StatelessWidget {
               Text(comment.userName,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               Text(
-                comment.dateTime
+                comment.commentDateTime
                     .toLocalizedDateTimeStringFromDate(DateTime.now()),
                 style: TextStyle(color: Colors.grey),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 0, bottom: 16),
                 child: Text(
-                  comment.text,
+                  comment.commentText,
                   style: TextStyle(fontSize: 14),
                 ),
               )

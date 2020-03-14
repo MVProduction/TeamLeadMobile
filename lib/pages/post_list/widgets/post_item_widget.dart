@@ -71,7 +71,8 @@ class PostItemWidget extends StatelessWidget {
                             child: CircleAvatar(
                                 radius: 38,
                                 backgroundColor: Colors.red,
-                                child: ClipOval(child: Image.file(_post.userPhoto)))),
+                                child: ClipOval(
+                                    child: Image.file(_post.userPhoto)))),
                         Expanded(
                             flex: 9,
                             child: Padding(
@@ -155,7 +156,7 @@ class PostItemWidget extends StatelessWidget {
                                       child: Icon(Icons.message,
                                           size: 24, color: Colors.grey),
                                     ),
-                                    Text((_post.postCommentCount ?? 0)
+                                    Text((_post.postLastCommentId ?? 0)
                                         .toString())
                                   ],
                                 )),

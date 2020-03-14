@@ -27,11 +27,8 @@ abstract class _UserEditFormStore with Store {
   /// Загружает фото
   @action
   Future fetchPhoto() {
-    print("_UserEditFormStore fetchPhoto");
-    photoFuture = ObservableFuture(Future(() async {
-      print('_UserEditFormStore: $photoUrl');
-      if (photoUrl != null && photoUrl.isNotEmpty) {
-        print('_UserEditFormStore load photo');
+    photoFuture = ObservableFuture(Future(() async {      
+      if (photoUrl != null && photoUrl.isNotEmpty) {        
         try {
           final photoFile =
               await teamLeadService.storageService.loadFile(photoUrl);

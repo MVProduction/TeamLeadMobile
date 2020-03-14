@@ -1,9 +1,9 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/models/comment_with_user_data.dart';
 import 'package:team_lead/common/models/post_with_user_data.dart';
-import 'package:team_lead/common/services/contracts/service_comment_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
-import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/common/services/helpers/post_service_helper.dart';
+import 'package:team_lead/common/services/helpers/comment_service_helper.dart';
 
 part 'post_discussion_page_store.g.dart';
 
@@ -12,11 +12,14 @@ class PostDiscussionPageStore = _PostDiscussionPageStore
 
 /// Состояние страницы обсуджения
 abstract class _PostDiscussionPageStore with Store {
+  /// Максимальное количество комментариев в одном запросе
+  static const MaxCommentRequest = 5;
+
   /// Идентификатор поста
   int _postId;
 
   /// Кэш комментариев
-  List<ServiceCommentData> _commentsCache = [];
+  List<CommentWithUserData> _commentsCache = [];
 
   /// Для загрузки поста
   @observable
@@ -24,11 +27,11 @@ abstract class _PostDiscussionPageStore with Store {
 
   /// Количество постов
   @computed
-  int get commentCount => post.value.postCommentCount ?? 0;
+  int get commentCount => post.value.postLastCommentId ?? 0;
 
   /// Комментарии
   @observable
-  ObservableFuture<List<ServiceCommentData>> comments;
+  ObservableFuture<List<CommentWithUserData>> comments;
 
   /// Устанавливает идентификатор поста
   void setPostId(int postId) {
@@ -38,7 +41,7 @@ abstract class _PostDiscussionPageStore with Store {
   /// Отправляет комментарий
   Future sendComment(String text) async {
     final user = teamLeadService.userService.getLoginUser();
-    await teamLeadService.commentService.sendComment(_postId, user.name, text);
+    await teamLeadService.commentService.sendComment(_postId, user.id, text);
     await fetchPost();
   }
 
@@ -62,9 +65,17 @@ abstract class _PostDiscussionPageStore with Store {
   @action
   Future fetchComments() {
     comments = ObservableFuture(Future(() async {
+      final post = await teamLeadService.postService.loadPost(_postId);
+
+      final comms = await teamLeadService.commentService
+          .loadPostComments(_postId, post.lastCommentId, MaxCommentRequest);
+
+      final ncomms = await teamLeadService.commentService
+          .loadCommentsWithUserData(comms, teamLeadService.userService,
+              teamLeadService.storageService);
+
       _commentsCache.clear();
-      _commentsCache.addAll(
-          await teamLeadService.commentService.loadPostComments(_postId, 0, 5));
+      _commentsCache.addAll(ncomms);
       return _commentsCache;
     }));
     return comments;
@@ -73,10 +84,14 @@ abstract class _PostDiscussionPageStore with Store {
   /// Загружает старые посты
   Future fetchOldComments() async {
     final comments = ObservableFuture(Future(() async {
-      final newPosts = await teamLeadService.commentService
-          .loadPostComments(_postId, _commentsCache.length, 3);
-      _commentsCache.clear();
-      _commentsCache.addAll(newPosts);
+      final newPosts = await teamLeadService.commentService.loadPostComments(
+          _postId, _commentsCache.last.commentId - 1, MaxCommentRequest);
+
+      final ncomms = await teamLeadService.commentService
+          .loadCommentsWithUserData(newPosts, teamLeadService.userService,
+              teamLeadService.storageService);
+
+      _commentsCache.addAll(ncomms);
       return _commentsCache;
     }));
     return comments;

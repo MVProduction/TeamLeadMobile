@@ -45,7 +45,7 @@ extension PostServiceHelper on PostService {
           postText: x.text,
           postCreateDate: x.createDate,
           postViewCount: x.viewCount,
-          postCommentCount: x.commentCount));
+          postLastCommentId: x.lastCommentId));
     }
 
     return nposts;

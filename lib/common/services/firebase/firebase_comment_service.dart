@@ -7,12 +7,11 @@ class FirebaseCommentService extends CommentService {
   /// Создаёт комментарий из документа Firebird
   ServiceCommentData documentToComment(Map<String, dynamic> data) {
     return ServiceCommentData(
-        data["id"],
-        data["postId"],
-        data["userName"],
-        data["userPhotoUrl"],
-        (data["dateTime"] as Timestamp).toDate(),
-        data["text"]);
+      data["id"], 
+      data["postId"], 
+      data["userId"],
+      (data["dateTime"] as Timestamp).toDate(), 
+      data["text"]);
   }
 
   /// Преобразует комментарий в документ
@@ -20,8 +19,7 @@ class FirebaseCommentService extends CommentService {
     return {
       "id": data.id,
       "postId": data.postId,
-      "userName": data.userName,
-      "userPhotoUrl": data.userPhotoUrl,
+      "userId": data.userId,
       "dateTime": data.dateTime,
       "text": data.text
     };
@@ -49,6 +47,9 @@ class FirebaseCommentService extends CommentService {
     final commentDocs = await Firestore.instance
         .collection('comments')
         .where("postId", isEqualTo: postId)
+        .where("id", isLessThanOrEqualTo: firstId)
+        .orderBy("id", descending: true)
+        .limit(count)
         .getDocuments();
 
     print("commentDocs.documents: ${commentDocs.documents.length}");
@@ -60,10 +61,11 @@ class FirebaseCommentService extends CommentService {
 
   /// Отправляет комментарий для поста и пользователя
   @override
-  Future sendComment(int postId, String userName, String text) async {
+  Future sendComment(int postId, String userId, String text) async {
     final id = await getLastCommentId(postId) + 1;
+
     final data = commentToDocument(
-        ServiceCommentData(id, postId, userName, "", DateTime.now(), text));
+        ServiceCommentData(id, postId, userId, DateTime.now(), text));
 
     await Firestore.instance.collection('comments').document().setData(data);
 
