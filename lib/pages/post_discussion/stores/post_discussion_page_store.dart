@@ -15,9 +15,6 @@ abstract class _PostDiscussionPageStore with Store {
   /// Максимальное количество комментариев в одном запросе
   static const MaxCommentRequest = 5;
 
-  /// Идентификатор поста
-  int _postId;
-
   /// Кэш комментариев
   List<CommentWithUserData> _commentsCache = [];
 
@@ -33,24 +30,23 @@ abstract class _PostDiscussionPageStore with Store {
   @observable
   ObservableFuture<List<CommentWithUserData>> comments;
 
-  /// Устанавливает идентификатор поста
-  void setPostId(int postId) {
-    _postId = postId;
-  }
+  /// Необходимо отображать кнопку редактирования объявления
+  @observable
+  bool needShowEdit = true;
 
   /// Отправляет комментарий
-  Future sendComment(String text) async {
+  Future sendComment(int postId, String text) async {
     final user = teamLeadService.userService.getLoginUser();
-    await teamLeadService.commentService.sendComment(_postId, user.id, text);
-    await fetchPost();
+    await teamLeadService.commentService.sendComment(postId, user.id, text);
+    await fetchPost(postId);
   }
 
   /// Загружает данные поста
   @action
-  Future fetchPost() {
+  Future fetchPost(int postId) {
     post = ObservableFuture(Future(() async {
-      final post = await teamLeadService.postService.loadPost(_postId);
-      await fetchComments();
+      final post = await teamLeadService.postService.loadPost(postId);
+      await fetchComments(postId);
 
       final nposts = await teamLeadService.postService.loadPostsWithUserData(
           [post], teamLeadService.userService, teamLeadService.storageService);
@@ -63,12 +59,12 @@ abstract class _PostDiscussionPageStore with Store {
 
   /// Загружает данные поста
   @action
-  Future fetchComments() {
+  Future fetchComments(int postId) {
     comments = ObservableFuture(Future(() async {
-      final post = await teamLeadService.postService.loadPost(_postId);
+      final post = await teamLeadService.postService.loadPost(postId);
 
       final comms = await teamLeadService.commentService
-          .loadPostComments(_postId, post.lastCommentId, MaxCommentRequest);
+          .loadPostComments(postId, post.lastCommentId, MaxCommentRequest);
 
       final ncomms = await teamLeadService.commentService
           .loadCommentsWithUserData(comms, teamLeadService.userService,
@@ -82,10 +78,10 @@ abstract class _PostDiscussionPageStore with Store {
   }
 
   /// Загружает старые посты
-  Future fetchOldComments() async {
+  Future fetchOldComments(int postId) async {
     final comments = ObservableFuture(Future(() async {
       final newPosts = await teamLeadService.commentService.loadPostComments(
-          _postId, _commentsCache.last.commentId - 1, MaxCommentRequest);
+          postId, _commentsCache.last.commentId - 1, MaxCommentRequest);
 
       final ncomms = await teamLeadService.commentService
           .loadCommentsWithUserData(newPosts, teamLeadService.userService,

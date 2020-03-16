@@ -21,13 +21,13 @@ extension DateUtils on DateTime {
     if (inHours > 24) {
       final hour = inHours - inDays * 24;
       // TODO: локализация часа
-      return "$inDays день $hour час";
+      return "$inDays день $hour час назад";
     }
 
     /// Если период не больше суток но больше или равен часу, то возвращает в часах
     if (inDays < 1 && inHours >= 1) {
       // TODO: локализация часа
-      return "$inHours час";
+      return "$inHours час назад";
     }
 
     final inMinutes = diff.inMinutes;
@@ -35,11 +35,11 @@ extension DateUtils on DateTime {
     /// Если меньше часа но больше минуты
     if (inHours < 1 && inMinutes >= 1) {
       // TODO: локализация мин
-      return "$inMinutes мин";
+      return "$inMinutes мин назад";
     }
 
     // TODO: локализация сек
-    return "${diff.inSeconds} сек";
+    return "${diff.inSeconds} сек назад";
   }
 
   /// Возвращает форматированную дату в зависимости от локализации

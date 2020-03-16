@@ -35,14 +35,19 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   /// Контроллер текста ввода комментария
   TextEditingController _commentTextController = TextEditingController();
 
+  /// Идентификатор объявления
+  int _postId = -1;
+
   /// Обрабатывает изменение вкладки
   void _onTabChange(int tabIndex) {
     switch (tabIndex) {
       case 0:
-        teamLeadAppStore.postDiscussionPageStore.fetchPost();
+        teamLeadAppStore.postDiscussionPageStore.needShowEdit = true;
+        teamLeadAppStore.postDiscussionPageStore.fetchPost(_postId);
         break;
       case 1:
-        teamLeadAppStore.postDiscussionPageStore.fetchComments();
+        teamLeadAppStore.postDiscussionPageStore.needShowEdit = false;
+        teamLeadAppStore.postDiscussionPageStore.fetchComments(_postId);
         break;
     }
   }
@@ -51,7 +56,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   void _onEditClick(int postId) {
     Navigator.pushNamed(context, Routes.EditPost, arguments: postId)
         .then((value) {
-      teamLeadAppStore.postDiscussionPageStore.fetchPost();
+      teamLeadAppStore.postDiscussionPageStore.fetchPost(_postId);
     });
   }
 
@@ -59,7 +64,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   void _onCommentSend() {
     final text = _commentTextController.text;
     if (text.isEmpty) return;
-    teamLeadAppStore.postDiscussionPageStore.sendComment(text);
+    teamLeadAppStore.postDiscussionPageStore.sendComment(_postId, text);
     _commentTextController.text = "";
   }
 
@@ -73,7 +78,8 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             appBar: AppBar(
                 title: Text(title, overflow: TextOverflow.ellipsis),
                 actions: <Widget>[
-                  if (editOptions?.canEdit == true)
+                  if (editOptions?.canEdit == true &&
+                      teamLeadAppStore.postDiscussionPageStore.needShowEdit)
                     IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () => _onEditClick(editOptions.postId))
@@ -171,7 +177,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
           flex: 9,
           child: Padding(
             padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
-            child: CommentListWidget(),
+            child: CommentListWidget(_postId),
           ),
         ),
         Container(
@@ -212,9 +218,9 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
   @override
   Widget build(BuildContext context) {
     final postId = ModalRoute.of(context).settings.arguments as int;
+    _postId = postId;
 
-    teamLeadAppStore.postDiscussionPageStore.setPostId(postId);
-    teamLeadAppStore.postDiscussionPageStore.fetchPost();
+    teamLeadAppStore.postDiscussionPageStore.fetchPost(_postId);
     return Observer(builder: (context) {
       final future = teamLeadAppStore.postDiscussionPageStore.post;
 

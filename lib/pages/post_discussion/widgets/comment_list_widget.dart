@@ -8,6 +8,12 @@ import 'package:team_lead/pages/post_discussion/widgets/comment_item_widget.dart
 
 /// Список комментариев
 class CommentListWidget extends StatefulWidget {
+  /// Идентификатор объявления
+  final int postId;
+
+  /// Конструктор
+  CommentListWidget(this.postId);
+
   /// Создаёт состояние
   @override
   State<StatefulWidget> createState() => CommentListWidgetState();
@@ -20,14 +26,15 @@ class CommentListWidgetState extends State<CommentListWidget> {
 
   /// Загружает ещё посты
   void _onLoading() async {
-    await teamLeadAppStore.postDiscussionPageStore.fetchOldComments();
+    await teamLeadAppStore.postDiscussionPageStore
+        .fetchOldComments(widget.postId);
     setState(() {});
     _controller.loadComplete();
   }
 
   /// Обновляет посты
   void _onRefresh() async {
-    await teamLeadAppStore.postDiscussionPageStore.fetchComments();
+    await teamLeadAppStore.postDiscussionPageStore.fetchComments(widget.postId);
     setState(() {});
     _controller.refreshCompleted();
   }
@@ -38,29 +45,29 @@ class CommentListWidgetState extends State<CommentListWidget> {
     return Observer(builder: (ctx) {
       final future = teamLeadAppStore.postDiscussionPageStore.comments;
 
-      switch (future.status) {        
+      switch (future.status) {
         case FutureStatus.fulfilled:
           final values = future.value;
 
           if (values.isNotEmpty) {
-          return SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropHeader(),
-              footer: ClassicFooter(
-                  loadingText: "Загружается",
-                  canLoadingText: "Нужно больше комментариев"),
-              controller: _controller,
-              onLoading: _onLoading,
-              onRefresh: _onRefresh,
-              child: ListView.builder(itemBuilder: (context, index) {                
-                if (index >= values.length) return null;
-                final post = values[index];
-                return CommentItemWidget(post);
-              }));
+            return SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: WaterDropHeader(),
+                footer: ClassicFooter(
+                    loadingText: "Загружается",
+                    canLoadingText: "Нужно больше комментариев"),
+                controller: _controller,
+                onLoading: _onLoading,
+                onRefresh: _onRefresh,
+                child: ListView.builder(itemBuilder: (context, index) {
+                  if (index >= values.length) return null;
+                  final post = values[index];
+                  return CommentItemWidget(post);
+                }));
           }
 
-          return Center(child: Text("Добавьте комментарий")); 
+          return Center(child: Text("Добавьте комментарий"));
         default:
           break;
       }

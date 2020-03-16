@@ -50,26 +50,44 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
     }, _$commentsAtom, name: '${_$commentsAtom.name}_set');
   }
 
+  final _$needShowEditAtom =
+      Atom(name: '_PostDiscussionPageStore.needShowEdit');
+
+  @override
+  bool get needShowEdit {
+    _$needShowEditAtom.context.enforceReadPolicy(_$needShowEditAtom);
+    _$needShowEditAtom.reportObserved();
+    return super.needShowEdit;
+  }
+
+  @override
+  set needShowEdit(bool value) {
+    _$needShowEditAtom.context.conditionallyRunInAction(() {
+      super.needShowEdit = value;
+      _$needShowEditAtom.reportChanged();
+    }, _$needShowEditAtom, name: '${_$needShowEditAtom.name}_set');
+  }
+
   final _$_PostDiscussionPageStoreActionController =
       ActionController(name: '_PostDiscussionPageStore');
 
   @override
-  Future<dynamic> fetchPost() {
+  Future<dynamic> fetchPost(int postId) {
     final _$actionInfo =
         _$_PostDiscussionPageStoreActionController.startAction();
     try {
-      return super.fetchPost();
+      return super.fetchPost(postId);
     } finally {
       _$_PostDiscussionPageStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  Future<dynamic> fetchComments() {
+  Future<dynamic> fetchComments(int postId) {
     final _$actionInfo =
         _$_PostDiscussionPageStoreActionController.startAction();
     try {
-      return super.fetchComments();
+      return super.fetchComments(postId);
     } finally {
       _$_PostDiscussionPageStoreActionController.endAction(_$actionInfo);
     }
