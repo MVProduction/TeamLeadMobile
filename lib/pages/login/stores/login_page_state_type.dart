@@ -4,7 +4,7 @@ enum LoginPageStateType {
   Input,
 
   /// Попытка логина
-  Login,  
+  LoginProcess,  
 
   /// Ошибка
   Error

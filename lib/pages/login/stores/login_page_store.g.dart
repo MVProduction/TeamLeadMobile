@@ -26,17 +26,27 @@ mixin _$LoginPageStore on _LoginPageStore, Store {
     }, _$stateAtom, name: '${_$stateAtom.name}_set');
   }
 
+  final _$errorStringAtom = Atom(name: '_LoginPageStore.errorString');
+
+  @override
+  String get errorString {
+    _$errorStringAtom.context.enforceReadPolicy(_$errorStringAtom);
+    _$errorStringAtom.reportObserved();
+    return super.errorString;
+  }
+
+  @override
+  set errorString(String value) {
+    _$errorStringAtom.context.conditionallyRunInAction(() {
+      super.errorString = value;
+      _$errorStringAtom.reportChanged();
+    }, _$errorStringAtom, name: '${_$errorStringAtom.name}_set');
+  }
+
   final _$loginGoogleAsyncAction = AsyncAction('loginGoogle');
 
   @override
   Future<dynamic> loginGoogle(BuildContext context) {
     return _$loginGoogleAsyncAction.run(() => super.loginGoogle(context));
-  }
-
-  final _$startLoginGithubAsyncAction = AsyncAction('startLoginGithub');
-
-  @override
-  Future<dynamic> startLoginGithub() {
-    return _$startLoginGithubAsyncAction.run(() => super.startLoginGithub());
   }
 }

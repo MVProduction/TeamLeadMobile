@@ -1,7 +1,5 @@
-import 'dart:async';
-
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:team_lead/pages/login/stores/login_page_state_type.dart';
@@ -24,7 +22,25 @@ class _LoginPageState extends State<LoginPage> {
 
   /// Подключается с помощью google
   void _signWithGoogle() async {
-    await _pageState.loginGoogle(context);
+    try {
+      await _pageState.loginGoogle(context);
+    } on PlatformException catch (e) {
+      if (e.code == "ERROR_NETWORK_REQUEST_FAILED") {
+        _pageState.state = LoginPageStateType.Error;
+        _pageState.errorString = "Отсутствует связь с интернетом";
+      } else {
+        _pageState.state = LoginPageStateType.Error;
+        _pageState.errorString = "Неизвестная ошибка";
+      }
+    } catch (e) {
+      _pageState.state = LoginPageStateType.Error;
+      _pageState.errorString = "Неизвестная ошибка";
+    }
+  }
+
+  /// Попробовать ещё раз после ошибки
+  void _tryAgain() {
+    _pageState.state = LoginPageStateType.Input;
   }
 
   /// Инициализирует состояние
@@ -75,13 +91,31 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ))));
-        case LoginPageStateType.Login:
+        case LoginPageStateType.LoginProcess:
           return Scaffold(
               body: Center(
             child: CircularProgressIndicator(),
           ));
         case LoginPageStateType.Error:
-          break;
+          return Scaffold(
+              body: Center(
+            child: Container(
+              height: 200,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.error, size: 56),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(_pageState.errorString),
+                  ),
+                  RaisedButton(child: Text("Попробовать ещё"), onPressed: _tryAgain)
+                ],
+              ),
+            ),
+          ));
       }
 
       return Row();
