@@ -20,11 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   /// Состояние
   final _pageState = LoginPageStore();
 
-  /// Подключается с помощью google
-  void _signWithGoogle() async {
-    try {
-      await _pageState.loginGoogle(context);
-    } on PlatformException catch (e) {
+  /// Обрабатывает исключения
+  void _processException(Exception e) {
+    if (e is PlatformException) {
       if (e.code == "ERROR_NETWORK_REQUEST_FAILED") {
         _pageState.state = LoginPageStateType.Error;
         _pageState.errorString = "Отсутствует связь с интернетом";
@@ -32,9 +30,27 @@ class _LoginPageState extends State<LoginPage> {
         _pageState.state = LoginPageStateType.Error;
         _pageState.errorString = "Неизвестная ошибка";
       }
-    } catch (e) {
+    } else {
       _pageState.state = LoginPageStateType.Error;
       _pageState.errorString = "Неизвестная ошибка";
+    }
+  }
+
+  /// Подключается с помощью google
+  void _signWithGoogle() async {
+    try {
+      await _pageState.loginGoogle(context);
+    } catch (e) {
+      _processException(e);
+    }
+  }
+
+  /// Анонимынй вход
+  void _anonymousLogin() async {
+    try {
+      await _pageState.anonymousLogin(context);
+    } catch (e) {
+      _processException(e);
     }
   }
 
@@ -86,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: RaisedButton(
                                   color: Colors.blue,
                                   child: Text("Мне только посмотреть"),
-                                  onPressed: () {}),
+                                  onPressed: _anonymousLogin),
                             ),
                           ),
                         ],
@@ -111,7 +127,8 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(_pageState.errorString),
                   ),
-                  RaisedButton(child: Text("Попробовать ещё"), onPressed: _tryAgain)
+                  RaisedButton(
+                      child: Text("Попробовать ещё"), onPressed: _tryAgain)
                 ],
               ),
             ),

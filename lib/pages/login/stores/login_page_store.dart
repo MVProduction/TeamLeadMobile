@@ -33,6 +33,13 @@ abstract class _LoginPageStore with Store {
     }
   }
 
+  /// Проводит анонимное подключение
+  @action
+  Future anonymousLogin(BuildContext context) async {
+    await teamLeadService.userService.anonymousLogin();
+    Navigator.popAndPushNamed(context, Routes.PostList);
+  }
+
   /// Проводит подключение через google
   @action
   Future loginGoogle(BuildContext context) async {

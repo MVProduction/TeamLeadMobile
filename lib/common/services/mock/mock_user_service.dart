@@ -1,4 +1,5 @@
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_anonymous_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/user_service.dart';
 
@@ -62,5 +63,11 @@ class MockUserService extends UserService {
   @override
   Future<AuthUserData> loginGithub(String code) async {
     return AuthUserData("1234567890", "pytachok", "pytachok@gmail.com", "");
+  }
+
+  @override
+  Future<ServiceAnonymousUserData> anonymousLogin() {
+    // TODO: implement anonymousLogin
+    throw UnimplementedError();
   }
 }

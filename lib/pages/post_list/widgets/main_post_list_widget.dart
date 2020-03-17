@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
-import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
 import 'package:team_lead/pages/post_list/widgets/post_item_widget.dart';
 
 /// Список со всеми постами

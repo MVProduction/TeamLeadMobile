@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_anonymous_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_base_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/user_service.dart';
 import 'package:http/http.dart' as http;
@@ -17,10 +19,10 @@ class FirebaseUserService extends UserService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   /// Вошедший пользователь
-  ServiceUserData _loginUser;
+  ServiceBaseUserData _loginUser;
 
   @override
-  ServiceUserData getLoginUser() {
+  ServiceBaseUserData getLoginUser() {
     return _loginUser;
   }
 
@@ -35,7 +37,7 @@ class FirebaseUserService extends UserService {
 
     return ServiceUserData(id, userData.data["name"], userData.data["contacts"],
         userData.data["skills"], userData["photoUrl"]);
-  }  
+  }
 
   /// Авторизируется через google
   @override
@@ -88,7 +90,7 @@ class FirebaseUserService extends UserService {
   @override
   Future updateUser(
       String photoUrl, String name, String contacts, String skills) async {
-    final id = getLoginUser().id;
+    final id = (getLoginUser() as ServiceUserData).id;
 
     await Firestore.instance.collection('users').document(id).updateData({
       'name': name,
@@ -97,7 +99,7 @@ class FirebaseUserService extends UserService {
       'photoUrl': photoUrl
     });
 
-    _loginUser = ServiceUserData(_loginUser.id, name, contacts, skills, photoUrl);
+    _loginUser = ServiceUserData(id, name, contacts, skills, photoUrl);
   }
 
   /// Создаёт пользователя
@@ -118,6 +120,13 @@ class FirebaseUserService extends UserService {
   @override
   Future<ServiceUserData> login(String id) async {
     _loginUser = await getUserInfoById(id);
+    return _loginUser;
+  }
+
+  /// Анонимный вход
+  @override
+  Future<ServiceAnonymousUserData> anonymousLogin() async {
+    _loginUser = ServiceAnonymousUserData();
     return _loginUser;
   }
 }

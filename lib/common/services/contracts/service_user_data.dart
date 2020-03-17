@@ -1,5 +1,7 @@
+import 'package:team_lead/common/services/contracts/service_base_user_data.dart';
+
 /// Данные пользователя
-class ServiceUserData {
+class ServiceUserData extends ServiceBaseUserData {
   /// Идентификатор
   final String id;
 

@@ -43,6 +43,13 @@ mixin _$LoginPageStore on _LoginPageStore, Store {
     }, _$errorStringAtom, name: '${_$errorStringAtom.name}_set');
   }
 
+  final _$anonymousLoginAsyncAction = AsyncAction('anonymousLogin');
+
+  @override
+  Future<dynamic> anonymousLogin(BuildContext context) {
+    return _$anonymousLoginAsyncAction.run(() => super.anonymousLogin(context));
+  }
+
   final _$loginGoogleAsyncAction = AsyncAction('loginGoogle');
 
   @override

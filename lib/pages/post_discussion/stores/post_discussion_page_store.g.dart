@@ -15,6 +15,12 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
   int get commentCount =>
       (_$commentCountComputed ??= Computed<int>(() => super.commentCount))
           .value;
+  Computed<bool> _$needShowSendCommentComputed;
+
+  @override
+  bool get needShowSendComment => (_$needShowSendCommentComputed ??=
+          Computed<bool>(() => super.needShowSendComment))
+      .value;
 
   final _$postAtom = Atom(name: '_PostDiscussionPageStore.post');
 

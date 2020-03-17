@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/models/post_with_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/common/date_utils.dart';
@@ -180,28 +181,29 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             child: CommentListWidget(_postId),
           ),
         ),
-        Container(
-          height: 70,
-          color: Colors.grey.shade100,
-          padding: EdgeInsets.only(left: 8, top: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                  flex: 9,
-                  child: TextField(
-                    controller: _commentTextController,
-                    decoration:
-                        InputDecoration(hintText: "Введите комментарий"),
-                  )),
-              Container(
-                  width: 40,
-                  child: IconButton(
-                      icon: Icon(Icons.send, color: Colors.indigo),
-                      onPressed: _onCommentSend))
-            ],
-          ),
-        )
+        if (teamLeadAppStore.postDiscussionPageStore.needShowSendComment)
+          Container(
+            height: 70,
+            color: Colors.grey.shade100,
+            padding: EdgeInsets.only(left: 8, top: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                    flex: 9,
+                    child: TextField(
+                      controller: _commentTextController,
+                      decoration:
+                          InputDecoration(hintText: "Введите комментарий"),
+                    )),
+                Container(
+                    width: 40,
+                    child: IconButton(
+                        icon: Icon(Icons.send, color: Colors.indigo),
+                        onPressed: _onCommentSend))
+              ],
+            ),
+          )
       ],
     );
   }
@@ -231,8 +233,10 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
           final user = teamLeadService.userService.getLoginUser();
           EditOptions editOptions;
 
-          if (user.name == post.userName) {
-            editOptions = EditOptions(true, post.postId);
+          if (user is ServiceUserData) {
+            if (user.name == post.userName) {
+              editOptions = EditOptions(true, post.postId);
+            }
           }
 
           return getScafoldViewWithTabs(post.postTitle, getMainView(post),

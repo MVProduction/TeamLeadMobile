@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/models/comment_with_user_data.dart';
 import 'package:team_lead/common/models/post_with_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/services/helpers/post_service_helper.dart';
 import 'package:team_lead/common/services/helpers/comment_service_helper.dart';
@@ -34,9 +35,13 @@ abstract class _PostDiscussionPageStore with Store {
   @observable
   bool needShowEdit = true;
 
+  /// Необходимо отображать отправку комментария
+  @computed
+  bool get needShowSendComment => (teamLeadService.userService.getLoginUser() is ServiceUserData);
+
   /// Отправляет комментарий
   Future sendComment(int postId, String text) async {
-    final user = teamLeadService.userService.getLoginUser();
+    final user = teamLeadService.userService.getLoginUser() as ServiceUserData;
     await teamLeadService.commentService.sendComment(postId, user.id, text);
     await fetchPost(postId);
   }

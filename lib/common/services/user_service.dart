@@ -1,4 +1,6 @@
 import 'package:team_lead/common/services/contracts/auth_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_anonymous_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_base_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 
 /// Сервис работы с пользователями
@@ -10,7 +12,7 @@ abstract class UserService {
   static const GithubClientSecret = "7cf504a993afbf78f494318d4ce53b5fc6cba355";
 
   /// Возвращает вошедшого пользователя
-  ServiceUserData getLoginUser();
+  ServiceBaseUserData getLoginUser();
 
   /// Подключается к гугл и возвращает информацию пользователя
   /// Которую можно использовать для логина в приложение
@@ -21,6 +23,9 @@ abstract class UserService {
   /// Которую можно использовать для логина в приложение
   /// Или создать нового пользователя
   Future<AuthUserData> loginGithub(String code);
+
+  /// Анонимный вход
+  Future<ServiceAnonymousUserData> anonymousLogin();
 
   /// Входит в приложение используя информацию полученную из провайдера
   /// Например гугл или github

@@ -3,13 +3,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/models/post_with_user_data.dart';
-import 'package:team_lead/common/services/contracts/service_post_data.dart';
+import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/post_item_store.dart';
 import 'package:team_lead/routes.dart';
 import 'package:team_lead/common/date_utils.dart';
-import 'package:team_lead/widgets/service_user_avatar_widget/service_user_avatar_widget.dart';
 
 /// Элемент поста
 class PostItemWidget extends StatelessWidget {
@@ -45,6 +44,10 @@ class PostItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = teamLeadService.userService.getLoginUser();
+    final userId = (user is ServiceUserData) ? user.id : null;
+
+    print("post_item_widget");
+    print(_post.userPhoto == null);
 
     return Padding(
         padding: EdgeInsets.only(bottom: 8, top: 8, right: 16, left: 16),
@@ -165,7 +168,7 @@ class PostItemWidget extends StatelessWidget {
                             flex: 3,
                             child: Row(),
                           ),
-                          if (_post.userId != user.id)
+                          if (userId != null && _post.userId != userId)
                             Observer(builder: (ctx) {
                               final future = postStore.isFavorite;
                               switch (future.status) {
