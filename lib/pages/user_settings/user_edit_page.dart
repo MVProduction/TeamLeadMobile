@@ -70,7 +70,12 @@ class UserEditPage extends StatelessWidget {
     return getScaffold(
         'Анонимный вход',
         Center(
-          child: Text("Зайдите как нормальный пользователь"),
-        ));
+            child: Padding(
+          padding: EdgeInsets.all(30),
+          child: Text(
+            "А если войдёте как нормальный пользователь, здесь будет информация о Вас, которую будут видеть другие пользователи!",
+            textAlign: TextAlign.center,
+          ),
+        )));
   }
 }

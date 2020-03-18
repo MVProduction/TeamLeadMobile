@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:team_lead/common/models/comment_with_user_data.dart';
 import 'package:team_lead/common/models/post_with_user_data.dart';
+import 'package:team_lead/common/services/contracts/service_anonymous_user_data.dart';
 import 'package:team_lead/common/services/contracts/service_user_data.dart';
 import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/services/helpers/post_service_helper.dart';
@@ -35,9 +36,9 @@ abstract class _PostDiscussionPageStore with Store {
   @observable
   bool needShowEdit = true;
 
-  /// Необходимо отображать отправку комментария
+  /// Признак анонимного входа
   @computed
-  bool get needShowSendComment => (teamLeadService.userService.getLoginUser() is ServiceUserData);
+  bool get isAnonymous => (teamLeadService.userService.getLoginUser() is ServiceAnonymousUserData);
 
   /// Отправляет комментарий
   Future sendComment(int postId, String text) async {

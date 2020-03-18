@@ -15,12 +15,11 @@ mixin _$PostDiscussionPageStore on _PostDiscussionPageStore, Store {
   int get commentCount =>
       (_$commentCountComputed ??= Computed<int>(() => super.commentCount))
           .value;
-  Computed<bool> _$needShowSendCommentComputed;
+  Computed<bool> _$isAnonymousComputed;
 
   @override
-  bool get needShowSendComment => (_$needShowSendCommentComputed ??=
-          Computed<bool>(() => super.needShowSendComment))
-      .value;
+  bool get isAnonymous =>
+      (_$isAnonymousComputed ??= Computed<bool>(() => super.isAnonymous)).value;
 
   final _$postAtom = Atom(name: '_PostDiscussionPageStore.post');
 

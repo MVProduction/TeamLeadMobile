@@ -181,7 +181,7 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
             child: CommentListWidget(_postId),
           ),
         ),
-        if (teamLeadAppStore.postDiscussionPageStore.needShowSendComment)
+        if (!teamLeadAppStore.postDiscussionPageStore.isAnonymous)
           Container(
             height: 70,
             color: Colors.grey.shade100,
@@ -202,6 +202,16 @@ class _PostDiscussionPageState extends State<PostDiscussionPage> {
                         icon: Icon(Icons.send, color: Colors.indigo),
                         onPressed: _onCommentSend))
               ],
+            ),
+          )
+        else
+          Container(
+            height: 70,
+            color: Colors.grey.shade100,
+            padding: EdgeInsets.only(left: 8, top: 8),
+            child: Text(
+              "Комментарии могут отправлять только зарегистрированные пользователи!",
+              textAlign: TextAlign.center,
             ),
           )
       ],

@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:team_lead/common/services/contracts/service_anonymous_user_data.dart';
+import 'package:team_lead/common/services/team_lead_service.dart';
 import 'package:team_lead/common/stores/team_lead_app_store.dart';
 import 'package:team_lead/pages/post_list/stores/favorite_post_list_store.dart';
 import 'package:team_lead/pages/post_list/stores/main_post_list_store.dart';
@@ -36,6 +38,11 @@ abstract class _PostListPageStore with Store {
   /// Состояние списка постов пользователя
   UserPostListStore userPostListStore = UserPostListStore();
 
+  /// Признак анонимного входа
+  @computed
+  bool get isAnonymous =>
+      (teamLeadService.userService.getLoginUser() is ServiceAnonymousUserData);
+
   /// Устанавливает отображать или нет панель поиска
   @action
   void setNeedShowSearchPanel(bool value) {
@@ -56,16 +63,20 @@ abstract class _PostListPageStore with Store {
     print(tabType);
     switch (tabType) {
       case PostTabType.All:
-        pageTitle = "Все объявления";        
+        pageTitle = "Все объявления";
         teamLeadAppStore.postListPageStore.mainPostListStore.fetchPosts();
         break;
       case PostTabType.Favorite:
         pageTitle = "Избранные объявления";
-        teamLeadAppStore.postListPageStore.favoritePostListStore.fetchPosts();
+        if (!isAnonymous) {
+          teamLeadAppStore.postListPageStore.favoritePostListStore.fetchPosts();
+        }
         break;
       case PostTabType.My:
         pageTitle = "Мои объявления";
-        teamLeadAppStore.postListPageStore.userPostListStore.fetchPosts();
+        if (!isAnonymous) {
+          teamLeadAppStore.postListPageStore.userPostListStore.fetchPosts();
+        }
         break;
     }
   }

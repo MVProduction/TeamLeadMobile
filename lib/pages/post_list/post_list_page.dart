@@ -75,6 +75,21 @@ class _PostListPageState extends State<PostListPage>
     }
   }
 
+  /// Возвращает кнопку добавить пост если не анонимный вход
+  Widget _getaddPostButton() {
+    if (!teamLeadAppStore.postListPageStore.isAnonymous) {
+      return FloatingActionButton(
+        onPressed: () {
+          _onPostAddClick();
+        },
+        tooltip: 'Добавить',
+        child: Icon(Icons.add),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   /// Конструктор
   _PostListPageState();
 
@@ -93,63 +108,73 @@ class _PostListPageState extends State<PostListPage>
       builder: (context) {
         _tabController.index = teamLeadAppStore.postListPageStore.tabType.index;
         return DefaultTabController(
-          initialIndex: 0,
-          length: _tabs.length,
-          child: Scaffold(
-            backgroundColor: Colors.grey.shade200,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Icon(Icons.supervised_user_circle, size: 32),
+            initialIndex: 0,
+            length: _tabs.length,
+            child: Scaffold(
+                backgroundColor: Colors.grey.shade200,
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  title: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Icon(Icons.supervised_user_circle, size: 32),
+                      ),
+                      Text(teamLeadAppStore.postListPageStore.pageTitle)
+                    ],
                   ),
-                  Text(teamLeadAppStore.postListPageStore.pageTitle)
-                ],
-              ),
-              actions: <Widget>[
-                // if (teamLeadAppStore.postListPageStore.needShowSearchButton)
-                //   IconButton(
-                //       icon: Icon(Icons.search),
-                //       onPressed: () {
-                //         _onSearchClick();
-                //       }),
-                IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      _onSettingsClick();
-                    })
-              ],
-              bottom: TabBar(
-                  controller: _tabController,
-                  onTap: (ti) => _onTabClick(ti),
-                  tabs: _tabs),
-            ),
-            body: Column(
-              children: <Widget>[
-                if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
-                  SearchWidget(),
-                Expanded(
-                    flex: 9,
-                    child: TabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
+                  actions: <Widget>[
+                    // if (teamLeadAppStore.postListPageStore.needShowSearchButton)
+                    //   IconButton(
+                    //       icon: Icon(Icons.search),
+                    //       onPressed: () {
+                    //         _onSearchClick();
+                    //       }),
+                    IconButton(
+                        icon: Icon(Icons.settings),
+                        onPressed: () {
+                          _onSettingsClick();
+                        })
+                  ],
+                  bottom: TabBar(
+                      controller: _tabController,
+                      onTap: (ti) => _onTabClick(ti),
+                      tabs: _tabs),
+                ),
+                body: Column(
+                  children: <Widget>[
+                    if (teamLeadAppStore.postListPageStore.needShowSearchPanel)
+                      SearchWidget(),
+                    Expanded(
+                        flex: 9,
+                        child:
+                            TabBarView(controller: _tabController, children: <
+                                Widget>[
                           MainPostListWidget(),
-                          FavoritePostListWidget(),
-                          UserPostListWidget()
+                          if (!teamLeadAppStore.postListPageStore.isAnonymous)
+                            FavoritePostListWidget()
+                          else                            
+                            Center(
+                                child: Padding(                                  
+                                  padding: EdgeInsets.all(30),
+                                  child: Text(
+                                      "А если войдёте как нормальный пользователь, здесь будут избранные объявления!",
+                                      textAlign: TextAlign.center,),
+                                )),
+                          if (!teamLeadAppStore.postListPageStore.isAnonymous)
+                            UserPostListWidget()
+                          else
+                            Center(
+                                child: Padding(                                  
+                                  padding: EdgeInsets.all(30),
+                                  child: Text(
+                                      "А если войдёте как нормальный пользователь, здесь будут Ваши личные объявления!",
+                                      textAlign: TextAlign.center,),
+                                ))
                         ]))
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                _onPostAddClick();
-              },
-              tooltip: 'Добавить',
-              child: Icon(Icons.add),
-            ),
-          ),
-        );
+                  ],
+                ),
+                floatingActionButton: _getaddPostButton()));
       },
     );
   }
