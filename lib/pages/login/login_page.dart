@@ -1,7 +1,9 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:team_lead/common/exceptions.dart';
 import 'package:team_lead/pages/login/stores/login_page_state_type.dart';
 import 'package:team_lead/pages/login/stores/login_page_store.dart';
 import 'package:team_lead/team_lead_app_font.dart';
@@ -30,15 +32,27 @@ class _LoginPageState extends State<LoginPage> {
         _pageState.state = LoginPageStateType.Error;
         _pageState.errorString = "Неизвестная ошибка";
       }
+    } else if (e is InternetDisconnectedException) {
+      _pageState.state = LoginPageStateType.Error;
+      _pageState.errorString = "Отсутствует связь с интернетом";
     } else {
       _pageState.state = LoginPageStateType.Error;
       _pageState.errorString = "Неизвестная ошибка";
     }
   }
 
+  // Проверяет интернет
+  Future _checkInternet() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      throw new InternetDisconnectedException();
+    }
+  }
+
   /// Подключается с помощью google
   void _signWithGoogle() async {
     try {
+      await _checkInternet();
       await _pageState.loginGoogle(context);
     } catch (e) {
       _processException(e);
@@ -48,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   /// Анонимынй вход
   void _anonymousLogin() async {
     try {
+      await _checkInternet();
       await _pageState.anonymousLogin(context);
     } catch (e) {
       _processException(e);
